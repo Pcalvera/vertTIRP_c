@@ -23,14 +23,14 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 */
 using namespace std;
 
-int timestamp_mode = 1;
+int timestamp_mode = 1;                    //TODO nomes pot ser mode 1
 float ver_sup = 0.01;  // vertical support TODO float o dobule
 float hor_sup = 0;  // horizontal support
 float eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids crisp borders in relations
 bool dummy = false;  // whether to execute relations without a pairing strategies
 bool trans = true;  // whether to use transitivity properties when assign a relation
 string result_file_name = "my_result_file.csv";  // an output file
-string filepath = "C:\\Users\\pauca\\Documents\\TFG\\vertTIRP_c\\toy.csv";  // a path to time interval data. Any valid string path is acceptable.
+string filepath = "D:\\COLE\\TFG\\toy.csv";  // a path to time interval data. Any valid string path is acceptable.
 char sep = ';';  // delimiter to use with the scv file
 string sid_column = "sid";   // sequence column name
 string date_column_name_start = "start_time";  // start time column name
@@ -61,3 +61,6 @@ int main () {
 }
 
 //TODO adaptar comentaris a c++
+
+//TODO preguntar timestamp_mode
+//TODO Llibreria importada date.h

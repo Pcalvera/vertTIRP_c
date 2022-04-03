@@ -9,7 +9,7 @@ using namespace std;
 
 class TI {
 public:
-    TI(char sym, float start, float end);
+    TI(char sym, long long start, long long end);
     friend ostream &operator<<(ostream &os, const TI &ti);
     bool operator==(const TI &rhs) const;
     bool operator!=(const TI &rhs) const;
@@ -24,8 +24,8 @@ public:
 
 private:
     char sym;
-    float start;
-    float end;
+    long long start;
+    long long end;
 };
 
 

@@ -4,7 +4,7 @@
 
 #include "TI.h"
 
-TI::TI(char sym, float start, float end) {
+TI::TI(char sym, long long start, long long end) {
     this->sym = sym;
     this->start = start;
     this->end = end;
@@ -48,4 +48,5 @@ bool TI::operator<=(const TI &rhs) const {
 bool TI::operator>=(const TI &rhs) const {
     return !(*this < rhs);
 }
+
 

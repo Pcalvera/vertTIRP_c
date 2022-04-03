@@ -3,4 +3,4 @@ project(vertTIRP_c)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(vertTIRP_c main.cpp VertTIRP.cpp VertTIRP.h Allen.cpp Allen.h TI.cpp TI.h Utils.cpp)
+add_executable(vertTIRP_c main.cpp VertTIRP.cpp VertTIRP.h Allen.cpp Allen.h TI.cpp TI.h Utils.cpp date.h)
