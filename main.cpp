@@ -30,7 +30,7 @@ float eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids 
 bool dummy = false;  // whether to execute relations without a pairing strategies
 bool trans = true;  // whether to use transitivity properties when assign a relation
 string result_file_name = "my_result_file.csv";  // an output file
-string filepath = "D:\\COLE\\TFG\\toy.csv";  // a path to time interval data. Any valid string path is acceptable.
+string filepath = "C:\\Users\\pauca\\Documents\\TFG\\vertTIRP_c\\toy.csv";  // a path to time interval data. Any valid string path is acceptable.
 char sep = ';';  // delimiter to use with the scv file
 string sid_column = "sid";   // sequence column name
 string date_column_name_start = "start_time";  // start time column name
@@ -48,10 +48,11 @@ string ps = "mocfbes";
 
 int main () {
     Utils utils;
-    list<list<TI>> list_of_ti_users = list<list<TI>>();
-    list<string> list_of_users = list<string>();
-    int ti_count;
     ReadTi filePatterns = utils.ti_read(filepath, sep, sid_column, date_column_name_start, date_column_name_end, date_format, value_column_name, true, timestamp_mode);
+    list<list<TI>> list_of_ti_users = filePatterns.list_of_ti_users;
+    list<string> list_of_users = filePatterns.list_of_users;
+    int ti_count = filePatterns.ti_count;
+
 
     VertTIRP co = VertTIRP(timestamp_mode,result_file_name,ver_sup,eps,ming,maxg,mind,maxd,dummy,ps,trans);
     int tirp_count = co.mine_patterns(list_of_ti_users,list_of_users,avoid_same_var_states);
@@ -63,4 +64,4 @@ int main () {
 //TODO adaptar comentaris a c++
 
 //TODO preguntar timestamp_mode
-//TODO Llibreria importada date.h
+//TODO Llibreria importada date.h https://github.com/HowardHinnant/date

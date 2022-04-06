@@ -45,7 +45,7 @@ private:
     float eps;  // karma lego epsilon in nanoseconds
     int tirp_count; //TODO int?
     int min_sup;  // absolute support //TODO int?
-    //f1;  // holds frequent 1-size items //TODO tipus?
+    list<string> f1;  // holds frequent 1-size items //TODO tipus?
     //vertical_db;  // holds database represented vertically //TODO map?
     //tree;  // we will save the patterns in a tree structure  //TODO estructura arbre
     int time_mode;  //  1- timestamp mode, 2- datetime mode 3- number mode(e.g. number of frame)
@@ -53,6 +53,7 @@ private:
     Allen allen;
 
     bool same_variable(string s1,string s2, bool avoid_same_var_states = true);
+    void dfs_pruning();
     void to_vertical(list<list<TI>> &list_of_ti_seqs, list<string> &list_of_seqs);
 };
 

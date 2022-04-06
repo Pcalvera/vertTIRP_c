@@ -22,7 +22,7 @@ VertTIRP::VertTIRP(int time_mode, string out_file, float min_sup_rel, float eps,
     tirp_count = 0;
     min_sup = 0;
 
-    //this->f1 = []; TODO
+    this->f1 = list<string>(); //TODO
     //this->vertical_db = dict(); TODO
     //this->tree = VertTirpNode() TODO
     time_mode = time_mode;
@@ -39,7 +39,13 @@ VertTIRP::VertTIRP(int time_mode, string out_file, float min_sup_rel, float eps,
 }
 
 int VertTIRP::mine_patterns(list<list<TI>> &list_of_ti_seqs, list<string> &list_of_seqs, bool avoid_same_var_states) {
-    return 0;
+    this->to_vertical(list_of_ti_seqs,list_of_seqs);
+    //TODO taula procs
+
+    for ( int i = 0 ; i < this->f1.size() ; i++){
+        this->dfs_pruning();  //TODO fer pruning
+    }
+    return this->tirp_count;
 }
 
 void VertTIRP::print_patterns(bool b) {
@@ -48,6 +54,10 @@ void VertTIRP::print_patterns(bool b) {
 
 bool VertTIRP::same_variable(string s1, string s2, bool avoid_same_var_states) {
     return avoid_same_var_states && s1 == s2;
+}
+
+void VertTIRP::dfs_pruning() {
+
 }
 
 void VertTIRP::to_vertical(list<list<TI>> &list_of_ti_seqs, list<string> &list_of_seqs) {
@@ -68,3 +78,5 @@ void VertTIRP::to_vertical(list<list<TI>> &list_of_ti_seqs, list<string> &list_o
     this->min_sup = ceil(this->min_sup_rel*n_sequences);
 
 }
+
+

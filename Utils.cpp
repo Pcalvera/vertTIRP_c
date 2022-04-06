@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <ctime>
 #include "TI.h"
-#include "date.h"
 #include "list"
 #include "vector"
 #include "map"
@@ -64,12 +64,13 @@ public:
                    bool is_null_f=true, int time_mode=1){
         //TODO is_null
         ReadTi result;
+        result.ti_count = 0;
         Csv_df df = csv_read(filepath);
         map<string,list<TI>> grouped_by_uid = df.groupbyUid();
 
         for (auto & i : df.content) {
             //TI ti = TI(i[3].at(0),1,2);
-            TI ti = vect_to_ti(i);
+            TI ti = vect_to_ti(i); //TODO tractar date_format
 
             if ( grouped_by_uid.count(i[0]) == 0 ) {
                 list<TI> aux = list<TI>();
@@ -80,7 +81,7 @@ public:
                 auto it = grouped_by_uid.find(i[0]);
                 it->second.push_back(ti);
             }
-
+            result.ti_count++;
         }
         for( auto & j : grouped_by_uid ){
             result.list_of_users.push_back(j.first);
@@ -91,14 +92,30 @@ public:
     }
 
     static TI vect_to_ti(vector<string> v){
-        long long a = to_sys_time(2019,12,1,14,0).time_since_epoch().count();
-        return TI(v[3].at(0),a,a);
+        tm start = splitDate(v[1]);
+        tm finish = splitDate(v[2]);
+        string value = "value_";
+        return TI(value+v[3].at(0),mktime(&start),mktime(&finish));
     }
-    static date::sys_seconds  to_sys_time(unsigned char y, unsigned char m, unsigned char d,
-                unsigned char h, unsigned char M, unsigned char s=0)
-    {
-        using namespace date;
-        using namespace std::chrono;
-        return sys_days{year{y+2000}/m/d} + hours{h} + minutes{M} + seconds{s};
+
+    static tm splitDate(string s){
+        string date = s.substr(0, s.find(" "));
+        string hourMinute = s.substr( s.find(" ")+1);
+        unsigned long long first = date.find("/");
+        unsigned long long second = date.find("/",first+1);
+        string date1 = date.substr(0, first );
+        string date2 = date.substr(first+1, second-first-1 );
+        string date3 = date.substr(second+1 );
+        unsigned long long third = hourMinute.find(":");
+        string hour1 = hourMinute.substr(0,third);
+        string hour2 = hourMinute.substr(third+1);
+
+        tm t = tm();
+        t.tm_min = stoi(hour2);
+        t.tm_hour = stoi(hour1);
+        t.tm_mday = stoi(date2);
+        t.tm_mon = stoi(date1)-1;
+        t.tm_year = stoi(date3)-1900;
+        return t;
     }
 };

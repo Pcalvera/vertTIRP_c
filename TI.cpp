@@ -4,7 +4,7 @@
 
 #include "TI.h"
 
-TI::TI(char sym, long long start, long long end) {
+TI::TI(string sym, long long start, long long end) {
     this->sym = sym;
     this->start = start;
     this->end = end;
