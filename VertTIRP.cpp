@@ -7,8 +7,9 @@
 
 VertTIRP::VertTIRP(int time_mode, string out_file, float min_sup_rel, float eps, int min_gap, long long max_gap,
                    int min_duration, long long max_duration, bool dummy_calc, string ps, bool trans, int min_confidence ,int max_length, int min_length) {
+
     this->out_file = out_file;
-    //events_per_sequence = dict();
+    events_per_sequence = map<string,int>();
     this->min_sup_rel = min_sup_rel;
     this->min_confidence = min_confidence;  //todo passar parametre
     this->min_gap = min_gap;
@@ -39,6 +40,8 @@ VertTIRP::VertTIRP(int time_mode, string out_file, float min_sup_rel, float eps,
 }
 
 int VertTIRP::mine_patterns(list<list<TI>> &list_of_ti_seqs, list<string> &list_of_seqs, bool avoid_same_var_states) {
+    if ( list_of_ti_seqs.size() != list_of_seqs.size() ) throw invalid_argument("list_of_ti_seqs and list_of_seqs must have the same size");
+
     this->to_vertical(list_of_ti_seqs,list_of_seqs);
     //TODO taula procs
 
@@ -71,8 +74,23 @@ void VertTIRP::to_vertical(list<list<TI>> &list_of_ti_seqs, list<string> &list_o
     :param time_mode:  1- timestamp mode, 2- datetime mode 3- number mode(e.g. number of frame)
     :return:
     */
-    int eid = 0;
+    unsigned eid = 0;
+    list<string>::iterator seqs_it;
+    list<list<TI>>::iterator ti_seqs_it = list_of_ti_seqs.begin();
+    for (seqs_it = list_of_seqs.begin() ; seqs_it != list_of_seqs.end() ; seqs_it++ ){
+        this->events_per_sequence.insert(pair<string,int>(*seqs_it,(*ti_seqs_it).size()));
+        for ( auto its : *ti_seqs_it){
+            // duration constraints
+            if ( its.get_end()-its.get_start() >= this->min_duration &&  its.get_end()-its.get_start() <= this->max_duration ){  //TODO condicio if
+                if ( ! ){
 
+                }
+                eid++;
+            }
+        }
+        eid = 0;
+        ti_seqs_it++;
+    }
     //TODO for
     int n_sequences = list_of_seqs.size();
     this->min_sup = ceil(this->min_sup_rel*n_sequences);

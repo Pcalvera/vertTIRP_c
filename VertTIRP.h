@@ -21,6 +21,7 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 #define VERTTIRP_C_VERTTIRP_H
 #include <iostream>
 #include <list>
+#include <map>
 #include "Allen.h"
 #include "TI.h"
 
@@ -33,7 +34,7 @@ public:
     void print_patterns(bool dfs);
 private:
     string out_file;  // output file
-    //events_per_sequence;   // necessary for relative horizontal support TODO map?
+    map<string,int> events_per_sequence;   // necessary for relative horizontal support TODO map?
     float min_sup_rel;  // relative minimum vertical support
     int min_confidence; //TODO int?
     int min_gap;  // minimum gap in seconds that is the gap between before consecutive elements
@@ -46,7 +47,7 @@ private:
     int tirp_count; //TODO int?
     int min_sup;  // absolute support //TODO int?
     list<string> f1;  // holds frequent 1-size items //TODO tipus?
-    //vertical_db;  // holds database represented vertically //TODO map?
+    //map<string,list<>> vertical_db;  // holds database represented vertically //TODO map?
     //tree;  // we will save the patterns in a tree structure  //TODO estructura arbre
     int time_mode;  //  1- timestamp mode, 2- datetime mode 3- number mode(e.g. number of frame)
 

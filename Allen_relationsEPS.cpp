@@ -1,0 +1,279 @@
+#include <iostream>
+#include <cstdlib>
+#include "map"
+#include "TI.h"
+
+using namespace std;
+
+const long long MAXGAP = 3155695200;
+
+
+class Allen_relationsEPS{
+public:
+    Allen_relationsEPS(){
+        // before b
+        trans_table_0.insert(pair<string,string>("bb","b"));
+        trans_table_0.insert(pair<string,string>("bc","b"));
+        trans_table_0.insert(pair<string,string>("bo","b"));
+        trans_table_0.insert(pair<string,string>("bm","b"));
+        trans_table_0.insert(pair<string,string>("bs","b"));
+        trans_table_0.insert(pair<string,string>("bf","b"));
+        trans_table_0.insert(pair<string,string>("be","b"));
+
+        // equal e
+        trans_table_0.insert(pair<string,string>("eb","b"));
+        trans_table_0.insert(pair<string,string>("ec","c"));
+        trans_table_0.insert(pair<string,string>("eo","o"));
+        trans_table_0.insert(pair<string,string>("em","m"));
+        trans_table_0.insert(pair<string,string>("es","s"));
+        trans_table_0.insert(pair<string,string>("ef","f"));
+        trans_table_0.insert(pair<string,string>("ee","e"));
+
+        // contains c
+        trans_table_0.insert(pair<string,string>("cb","bcfmo"));
+        trans_table_0.insert(pair<string,string>("cc","c"));
+        trans_table_0.insert(pair<string,string>("co","cfo"));
+        trans_table_0.insert(pair<string,string>("cm","cfo"));
+        trans_table_0.insert(pair<string,string>("cs","cfo"));
+        trans_table_0.insert(pair<string,string>("cf","c"));
+        trans_table_0.insert(pair<string,string>("ce","c"));
+
+        // overlaps o
+        trans_table_0.insert(pair<string,string>("ob","b"));
+        trans_table_0.insert(pair<string,string>("oc","bcfmo"));
+        trans_table_0.insert(pair<string,string>("oo","bmo"));
+        trans_table_0.insert(pair<string,string>("om","b"));
+        trans_table_0.insert(pair<string,string>("os","o"));
+        trans_table_0.insert(pair<string,string>("of","bmo"));
+        trans_table_0.insert(pair<string,string>("oe","o"));
+
+        // meets m
+        trans_table_0.insert(pair<string,string>("mb","b"));
+        trans_table_0.insert(pair<string,string>("mc","b"));
+        trans_table_0.insert(pair<string,string>("mo","b"));
+        trans_table_0.insert(pair<string,string>("mm","b"));
+        trans_table_0.insert(pair<string,string>("ms","m"));
+        trans_table_0.insert(pair<string,string>("mf","b"));
+        trans_table_0.insert(pair<string,string>("me","m"));
+
+        // starts s
+        trans_table_0.insert(pair<string,string>("sb","b"));
+        trans_table_0.insert(pair<string,string>("sc","bcfmo"));
+        trans_table_0.insert(pair<string,string>("so","bmo"));
+        trans_table_0.insert(pair<string,string>("sm","b"));
+        trans_table_0.insert(pair<string,string>("ss","s"));
+        trans_table_0.insert(pair<string,string>("sf","bmo"));
+        trans_table_0.insert(pair<string,string>("se","s"));
+
+        // finished by
+        trans_table_0.insert(pair<string,string>("fb","b"));
+        trans_table_0.insert(pair<string,string>("fc","c"));
+        trans_table_0.insert(pair<string,string>("fo","o"));
+        trans_table_0.insert(pair<string,string>("fm","m"));
+        trans_table_0.insert(pair<string,string>("fs","o"));
+        trans_table_0.insert(pair<string,string>("ff","f"));
+        trans_table_0.insert(pair<string,string>("fe","f"));
+
+        //Trans table based of the vertTIRP article
+
+        // before b
+        trans_table.insert(pair<string,string>("bb","b"));
+        trans_table.insert(pair<string,string>("bc","b"));
+        trans_table.insert(pair<string,string>("bo","b"));
+        trans_table.insert(pair<string,string>("bm","b"));
+        trans_table.insert(pair<string,string>("bs","b"));
+        trans_table.insert(pair<string,string>("bf","b"));
+        trans_table.insert(pair<string,string>("be","b"));
+
+        // contains c
+        trans_table.insert(pair<string,string>("cb","bcfmo"));
+        trans_table.insert(pair<string,string>("cc","c"));
+        trans_table.insert(pair<string,string>("co","cfo"));
+        trans_table.insert(pair<string,string>("cm","cfo"));
+        trans_table.insert(pair<string,string>("cs","cfo"));
+        trans_table.insert(pair<string,string>("cf","cf"));
+        trans_table.insert(pair<string,string>("ce","cf"));
+
+        // overlaps o
+        trans_table.insert(pair<string,string>("ob","b"));
+        trans_table.insert(pair<string,string>("oc","bcfmo"));
+        trans_table.insert(pair<string,string>("oo","bmo"));
+        trans_table.insert(pair<string,string>("om","bm"));
+        trans_table.insert(pair<string,string>("os","mo"));
+        trans_table.insert(pair<string,string>("of","bfmo"));
+        trans_table.insert(pair<string,string>("oe","mo"));
+
+        // meets m
+        trans_table.insert(pair<string,string>("mb","b"));
+        trans_table.insert(pair<string,string>("mc","bm"));
+        trans_table.insert(pair<string,string>("mo","bm"));
+        trans_table.insert(pair<string,string>("mm","bm"));
+        trans_table.insert(pair<string,string>("ms","bm"));
+        trans_table.insert(pair<string,string>("mf","bm"));
+        trans_table.insert(pair<string,string>("me","bm"));
+
+        // starts s
+        trans_table.insert(pair<string,string>("sb","b"));
+        trans_table.insert(pair<string,string>("sc","bcfmo"));
+        trans_table.insert(pair<string,string>("so","bmo"));
+        trans_table.insert(pair<string,string>("sm","bm"));
+        trans_table.insert(pair<string,string>("ss","ms"));
+        trans_table.insert(pair<string,string>("sf","bmo"));
+        trans_table.insert(pair<string,string>("se","emos"));
+
+        // finished-by fi
+        trans_table.insert(pair<string,string>("fb","bm"));
+        trans_table.insert(pair<string,string>("fc","cf"));
+        trans_table.insert(pair<string,string>("fo","fmo"));
+        trans_table.insert(pair<string,string>("fm","bmo"));
+        trans_table.insert(pair<string,string>("fs","fmo"));
+        trans_table.insert(pair<string,string>("ff","cfmo"));
+        trans_table.insert(pair<string,string>("fe","cflmo"));
+
+        // equal e
+        trans_table.insert(pair<string,string>("eb","bm"));
+        trans_table.insert(pair<string,string>("ec","cf"));
+        trans_table.insert(pair<string,string>("eo","fmo"));
+        trans_table.insert(pair<string,string>("em","bemo"));
+        trans_table.insert(pair<string,string>("es","eos"));
+        trans_table.insert(pair<string,string>("ef","cfm"));
+        trans_table.insert(pair<string,string>("ee","cefo"));
+
+        // equal l
+        trans_table.insert(pair<string,string>("lb","bcfmo"));
+        trans_table.insert(pair<string,string>("lc","c"));
+        trans_table.insert(pair<string,string>("lo","cfo"));
+        trans_table.insert(pair<string,string>("lm","cmo"));
+        trans_table.insert(pair<string,string>("ls","celo"));
+        trans_table.insert(pair<string,string>("lf","cf"));
+        trans_table.insert(pair<string,string>("le","cefl"));
+    }
+
+    //TODO get_pairing_strategy
+
+    static pair<string,int> before_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+        long long b_s_a_e = b.get_start()-a.get_end();
+        if ( b_s_a_e > eps ){
+            if ( min_gap != 0 && b_s_a_e < min_gap )
+                return pair<string,int>("1",1);
+            else if ( max_gap != MAXGAP && b_s_a_e > max_gap )
+                return pair<string,int>("2",2);
+            else
+                return pair<string,int>("b",3);
+        }
+        else
+            return pair<string,int>("-2",-2);
+    }
+    static pair<string,int> meets_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+        long long b_s_a_e = b.get_start()-a.get_end();
+        if ( abs(b_s_a_e) <= eps )
+            return pair<string,int>("m",3);
+        else
+            return pair<string,int>("-2",-2);
+    }
+    static pair<string,int> overlaps_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+        long long b_s_a_e = b.get_start()-a.get_end();
+        if ( b_s_a_e < (-eps) )
+            return pair<string,int>("o",3);
+        else
+            return pair<string,int>("-2",-2);
+
+    }
+    static pair<string,int> contains_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+        long long b_s_a_e = b.get_end()-a.get_end();
+        if ( b_s_a_e < (-eps) )
+            return pair<string,int>("c",3);
+        else
+            return pair<string,int>("-2",-2);
+    }
+    static pair<string,int> finish_by_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+        long long b_s_a_e = b.get_end()-a.get_end();
+        if ( abs(b_s_a_e) <= eps )
+            return pair<string,int>("f",3);
+        else
+            return pair<string,int>("-2",-2);
+    }
+    static pair<string,int> equal_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+        long long b_s_a_e = b.get_end()-a.get_end();
+        if ( abs(b_s_a_e) <= eps )
+            return pair<string,int>("e",3);
+        else
+            return pair<string,int>("-2",-2);
+    }
+    static pair<string,int> starts_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+        long long b_s_a_e = b.get_end()-a.get_end();
+        if ( b_s_a_e > eps )
+            return pair<string,int>("s",3);
+        else
+            return pair<string,int>("-2",-2);
+    }
+    static pair<string,int> left_contains_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+        if ( eps == 0 )
+        return pair<string,int>("-2",2);
+        long long b_s_a_e = b.get_end()-a.get_end();
+        if ( b_s_a_e < (-eps) )
+            return pair<string,int>("l",3);
+        else
+            return pair<string,int>("-2",-2);
+    }
+    static bool sel_cond(TI a, TI b, float eps, long long min_gap, long long max_gap){
+        long long b_s_a_s = b.get_start()-a.get_start();
+        return abs(b_s_a_s) <= eps;
+    }
+    static bool cfmo_cond(TI a, TI b, float eps, long long min_gap, long long max_gap){
+        long long b_s_a_s = b.get_start()-a.get_start();
+        return b_s_a_s > eps;
+    }
+    static bool mo_cond(TI a, TI b, float eps, long long min_gap, long long max_gap){
+        long long b_s_a_e = b.get_end()-a.get_end();
+        return b_s_a_e > eps;
+    }
+    static bool true_cond(TI a, TI b, float eps, long long min_gap, long long max_gap){
+        return true;
+    }
+
+    // Trans table based on Mantaining Knowledge about Temporal Intervals
+    // by James F.Allen
+    map<string,string> trans_table_0;
+    //Trans table based of the vertTIRP article
+    map<string,string> trans_table;
+    //TODO mapes amb funcions
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
