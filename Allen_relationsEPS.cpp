@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cstdlib>
 #include "map"
+#include "list"
 #include "TI.h"
+#include "PairingStrategy.h"
 
 using namespace std;
 
@@ -149,7 +151,20 @@ public:
         trans_table.insert(pair<string,string>("le","cefl"));
     }
 
-    //TODO get_pairing_strategy
+    static pair<PairingStrategy,list<string>> get_pairing_strategy(string str_rels){
+        PairingStrategy rels_arr = PairingStrategy();
+        list<string> gr_arr = list<string>();
+
+        int i = 0;
+        map<char,bool> added = map<char,bool>();
+        while ( i < str_rels.size() ){
+            char c = str_rels.at(i);
+            if ( added.find(c) != added.end() && c == 'b') {   //TODO millor al reves?
+                
+            }
+        }
+        return pair<PairingStrategy,list<string>>(rels_arr,gr_arr);
+    }
 
     static pair<string,int> before_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
         long long b_s_a_e = b.get_start()-a.get_end();

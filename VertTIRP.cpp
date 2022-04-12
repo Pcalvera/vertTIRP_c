@@ -24,7 +24,7 @@ VertTIRP::VertTIRP(int time_mode, string out_file, float min_sup_rel, float eps,
     min_sup = 0;
 
     this->f1 = list<string>(); //TODO
-    //this->vertical_db = dict(); TODO
+    this->vertical_db = map<string,VertTirpSidList>();
     //this->tree = VertTirpNode() TODO
     time_mode = time_mode;
 
@@ -77,24 +77,41 @@ void VertTIRP::to_vertical(list<list<TI>> &list_of_ti_seqs, list<string> &list_o
     unsigned eid = 0;
     list<string>::iterator seqs_it;
     list<list<TI>>::iterator ti_seqs_it = list_of_ti_seqs.begin();
+    map<string,VertTirpSidList>::iterator sym_it;
     for (seqs_it = list_of_seqs.begin() ; seqs_it != list_of_seqs.end() ; seqs_it++ ){
         this->events_per_sequence.insert(pair<string,int>(*seqs_it,(*ti_seqs_it).size()));
         for ( auto its : *ti_seqs_it){
             // duration constraints
             if ( its.get_end()-its.get_start() >= this->min_duration &&  its.get_end()-its.get_start() <= this->max_duration ){  //TODO condicio if
-                if ( ! ){
+                sym_it = this->vertical_db.find(its.get_sym());
+                if ( sym_it == this->vertical_db.end() )
+                    sym_it = this->vertical_db.insert(pair<string,VertTirpSidList>(its.get_sym(),VertTirpSidList())).first;    //Adds the VertTirpSidList to the map
+                sym_it->second.append_item(its,its.get_sym(),eid);
 
-                }
                 eid++;
             }
         }
         eid = 0;
         ti_seqs_it++;
     }
-    //TODO for
+
+    // calculate the absolute support based on number of sequences
     int n_sequences = list_of_seqs.size();
     this->min_sup = ceil(this->min_sup_rel*n_sequences);
+    if ( this->min_sup == 0 )
+        this->min_sup = 1;
 
+    // save a set of frequent 1-sized items sorted lexicographically
+    for ( auto db_pos : this->vertical_db ){
+        if ( db_pos.second.get_support() >= this->min_sup ){
+            db_pos.second.set_n_sequences(n_sequences);
+            this->f1.push_back(db_pos.first);
+        }
+        else
+            this->vertical_db.erase(db_pos.first);
+    }
+
+    this->f1.sort();
 }
 
 

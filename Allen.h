@@ -5,6 +5,8 @@
 #ifndef VERTTIRP_C_ALLEN_H
 #define VERTTIRP_C_ALLEN_H
 #include <iostream>
+#include "PairingStrategy.h"
+
 using namespace std;
 
 class Allen {

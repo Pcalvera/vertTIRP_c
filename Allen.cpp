@@ -13,7 +13,7 @@ Allen::Allen(bool dummy_calc, bool trans, float eps, string calc_sort) {
     this->dummy_calc = dummy_calc;
     this->trans = trans;
     this->eps = eps;
-    if ( dummy_calc ) {
+    if ( !dummy_calc ) {
         this->calc_sort = calc_sort;
         //TODO acabar def
     }

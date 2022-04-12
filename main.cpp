@@ -3,6 +3,7 @@
 #include "TI.h"
 #include "list"
 #include "Utils.cpp"
+#include "PairingStrategy.h"
 /*
 author: Pau Calvera
 email: paucalvera@gmail.com
@@ -30,7 +31,7 @@ float eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids 
 bool dummy = false;  // whether to execute relations without a pairing strategies
 bool trans = true;  // whether to use transitivity properties when assign a relation
 string result_file_name = "my_result_file.csv";  // an output file
-string filepath = "C:\\Users\\pauca\\Documents\\TFG\\vertTIRP_c\\toy.csv";  // a path to time interval data. Any valid string path is acceptable.
+string filepath = "D:\\COLE\\TFG\\toy.csv";  // a path to time interval data. Any valid string path is acceptable.
 char sep = ';';  // delimiter to use with the scv file
 string sid_column = "sid";   // sequence column name
 string date_column_name_start = "start_time";  // start time column name
@@ -54,6 +55,28 @@ int main () {
     int ti_count = filePatterns.ti_count;
 
 
+
+    PairingStrategy p = PairingStrategy();
+    p.append('m')
+    p.appendSubLast('')
+    p.append('m')
+    p.append('m')
+    p.append('m')
+    p.append('m')
+    p.append('m')
+    p.append('m')
+    p.append('m')
+    p.append('m')
+    p.append('m')
+
+
+
+
+
+
+
+
+
     VertTIRP co = VertTIRP(timestamp_mode,result_file_name,ver_sup,eps,ming,maxg,mind,maxd,dummy,ps,trans);
     int tirp_count = co.mine_patterns(list_of_ti_users,list_of_users,avoid_same_var_states);
     co.print_patterns(true);
@@ -62,6 +85,9 @@ int main () {
 }
 
 //TODO adaptar comentaris a c++
+//TODO comprovar funcions constants
+//TODO comprovar insercions existents a map
 
 //TODO preguntar timestamp_mode
 //TODO Llibreria importada date.h https://github.com/HowardHinnant/date
+//TODO arbre N-ari de la teoria de EDA (Arbres, pagina 30) (modificacions)

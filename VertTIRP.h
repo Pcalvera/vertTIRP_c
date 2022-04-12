@@ -24,6 +24,7 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 #include <map>
 #include "Allen.h"
 #include "TI.h"
+#include "VertTirpSidList.h"
 
 using namespace std;
 
@@ -45,9 +46,9 @@ private:
     int min_length;  // minimum pattern length
     float eps;  // karma lego epsilon in nanoseconds
     int tirp_count; //TODO int?
-    int min_sup;  // absolute support //TODO int?
+    float min_sup;  // absolute support //TODO int?
     list<string> f1;  // holds frequent 1-size items //TODO tipus?
-    //map<string,list<>> vertical_db;  // holds database represented vertically //TODO map?
+    map<string,VertTirpSidList> vertical_db;  // holds database represented vertically //TODO map?
     //tree;  // we will save the patterns in a tree structure  //TODO estructura arbre
     int time_mode;  //  1- timestamp mode, 2- datetime mode 3- number mode(e.g. number of frame)
 
