@@ -31,7 +31,7 @@ float eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids 
 bool dummy = false;  // whether to execute relations without a pairing strategies
 bool trans = true;  // whether to use transitivity properties when assign a relation
 string result_file_name = "my_result_file.csv";  // an output file
-string filepath = "D:\\COLE\\TFG\\toy.csv";  // a path to time interval data. Any valid string path is acceptable.
+string filepath = "C:\\Users\\pauca\\Documents\\TFG\\vertTIRP_c\\toy.csv";  // a path to time interval data. Any valid string path is acceptable.
 char sep = ';';  // delimiter to use with the scv file
 string sid_column = "sid";   // sequence column name
 string date_column_name_start = "start_time";  // start time column name
@@ -55,22 +55,14 @@ int main () {
     int ti_count = filePatterns.ti_count;
 
 
-
-    PairingStrategy p = PairingStrategy();
-    p.append('m')
-    p.appendSubLast('')
-    p.append('m')
-    p.append('m')
-    p.append('m')
-    p.append('m')
-    p.append('m')
-    p.append('m')
-    p.append('m')
-    p.append('m')
-    p.append('m')
-
-
-
+    //PairingStrategy p = PairingStrategy();
+    //p.add2('m');
+    //p.append2('o');
+    //p.append('c');
+    //p.append('f');
+    //p.add('b');
+    //p.add('e');
+    //p.append('s');
 
 
 

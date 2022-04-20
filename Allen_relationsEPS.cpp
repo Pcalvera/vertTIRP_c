@@ -8,7 +8,7 @@
 using namespace std;
 
 const long long MAXGAP = 3155695200;
-
+const string NONE = "N";
 
 class Allen_relationsEPS{
 public:
@@ -155,15 +155,73 @@ public:
         PairingStrategy rels_arr = PairingStrategy();
         list<string> gr_arr = list<string>();
 
-        int i = 0;
+        int i,j,k = 0;
+        char c;
         map<char,bool> added = map<char,bool>();
+        bool c_in_added;
         while ( i < str_rels.size() ){
-            char c = str_rels.at(i);
-            if ( added.find(c) != added.end() && c == 'b') {   //TODO millor al reves?
-                
+            c = str_rels.at(i);
+            c_in_added = added.find(c) == added.end();
+            if ( !c_in_added && c == 'b') {   //TODO millor al reves?
+                rels_arr.add(c);
+                gr_arr.push_back(NONE);
+                update_added(added,c,true);
             }
+            else if ( !c_in_added && (c=='c' || c=='f' || c=='m' || c=='o') ){
+                gr_arr.push_back("cfmo");
+                if ( c == 'm' || c == 'o' ){
+                    rels_arr.add2(c);
+                    update_added(added,c,true);
+                    j = i + 1;
+
+                    k = i + 1;
+                    while ( k < str_rels.size() ){
+                        c = str_rels.at(k);
+                        c_in_added = added.find(c) == added.end();
+                        if ( !c_in_added && (c == 'm' || c == 'o') ){
+                            rels_arr.append2(c);
+                            update_added(added,c,true);
+                        }
+                        k++;
+                    }
+                    while ( j < str_rels.size() ){
+                        c = str_rels.at(j);
+                        c_in_added = added.find(c) == added.end();
+                        if ( !c_in_added && (c == 'c' || c == 'f') ){
+                            rels_arr.append(c);
+                            update_added(added,c,true);
+                        }
+                        j++;
+                    }
+                }
+                else{
+
+                }
+            }
+            else{
+                rels_arr.add(c);
+                update_added(added,c,true);
+                gr_arr.push_back("sel");
+                j = i+1;
+                while ( j < str_rels.size() ){
+                    c = str_rels.at(j);
+                    c_in_added = added.find(c) == added.end();
+                    if ( !c_in_added ){
+                        if ( c == 's' || c == 'e' || c == 'l' ){
+                            rels_arr.append(c);
+                            update_added(added,c,true);
+                        }
+                    }
+                    j ++;
+                }
+            }
+            i++;
         }
         return pair<PairingStrategy,list<string>>(rels_arr,gr_arr);
+    }
+    static void update_added(map<char,bool> &added,char c, bool b){
+        auto added_it = added.insert(pair<char,bool>(c,true));
+        if (!added_it.second) added_it.first->second = true;
     }
 
     static pair<string,int> before_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){

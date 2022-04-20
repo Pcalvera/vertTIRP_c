@@ -6,6 +6,7 @@
 #define VERTTIRP_C_ALLEN_H
 #include <iostream>
 #include "PairingStrategy.h"
+#include "Allen_relationsEPS.cpp"
 
 using namespace std;
 

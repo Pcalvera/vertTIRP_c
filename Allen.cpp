@@ -15,6 +15,19 @@ Allen::Allen(bool dummy_calc, bool trans, float eps, string calc_sort) {
     this->eps = eps;
     if ( !dummy_calc ) {
         this->calc_sort = calc_sort;
+        pair<PairingStrategy,list<string>> aux_pair = Allen_relationsEPS.get_pairing_strategy(this->calc_sort);
+        this->rels_arr = aux_pair.first;
+        this->gr_arr = aux_pair.second;
+
+        //this->sorted_trans_table = map    TODO fer
+
+        if ( this->eps > 0 ){
+
+        }
+        else{
+
+        }
+
         //TODO acabar def
     }
 }
