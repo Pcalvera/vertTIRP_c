@@ -34,9 +34,9 @@ VertTIRP::VertTIRP(int time_mode, string out_file, float min_sup_rel, float eps,
         throw invalid_argument("max_gap must be greater than min_gap");
 
     if ( !dummy_calc )
-        this->allen = Allen(dummy_calc,trans,eps,ps);
+        this->allen = Allen_relationsEPS::Allen(dummy_calc,trans,eps,ps);
     else
-        this->allen = Allen(dummy_calc,trans,eps);
+        this->allen = Allen_relationsEPS::Allen(dummy_calc,trans,eps);
 }
 
 int VertTIRP::mine_patterns(list<list<TI>> &list_of_ti_seqs, list<string> &list_of_seqs, bool avoid_same_var_states) {

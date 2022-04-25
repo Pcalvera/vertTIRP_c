@@ -316,7 +316,7 @@ public:
     class Allen {
         public:
             Allen();
-            Allen(bool dummy_calc, bool trans = true, float eps = 0, string calc_sort="bselfmoc", Allen_relationsEPS supClass = this);
+            Allen(bool dummy_calc, bool trans = true, float eps = 0, string calc_sort="bselfmoc", Allen_relationsEPS supClass = Allen_relationsEPS() );
             string sort_rels(string reducted_group);
 
         private:

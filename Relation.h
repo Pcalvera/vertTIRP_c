@@ -12,14 +12,14 @@ using namespace std;
 class Relation {
 public:
     Relation(string s);
-    Relation(PairingStrategy p);
+    Relation(pair<PairingStrategy,list<string>> p);
     bool isString()const;
-    char getString()const;
-    PairingStrategy getPairingStrategy()const;
+    string getString()const;
+    pair<PairingStrategy,list<string>> getPairingStrategy()const;
 private:
     bool isS; //True if contains a char, false if contaings a PairingStrategy
-    char s;
-    PairingStrategy p;
+    string s;
+    pair<PairingStrategy,list<string>> p;
 };
 
 

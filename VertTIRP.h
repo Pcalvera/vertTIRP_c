@@ -52,7 +52,7 @@ private:
     //tree;  // we will save the patterns in a tree structure  //TODO estructura arbre
     int time_mode;  //  1- timestamp mode, 2- datetime mode 3- number mode(e.g. number of frame)
 
-    Allen allen;
+    Allen_relationsEPS::Allen allen;
 
     bool same_variable(string s1,string s2, bool avoid_same_var_states = true);
     void dfs_pruning();

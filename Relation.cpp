@@ -8,7 +8,7 @@ Relation::Relation(string s) {
     this->s = s;
     this->isS = true;
 }
-Relation::Relation(PairingStrategy p) {
+Relation::Relation(pair<PairingStrategy,list<string>> p) {
     this->p = p;
     this->isS = false;
 }
@@ -17,13 +17,13 @@ bool Relation::isString() const {
     return this->isS;
 }
 
-//Pre: this->isC == true
-char Relation::getString() const {
+//Pre: this->isS == true
+string Relation::getString() const {
     //TODO comprovar? if ( !isString() ) throw("");
     return this->s;
 }
-//Pre: this->isC == false
-PairingStrategy Relation::getPairingStrategy() const {
+//Pre: this->isS == false
+pair<PairingStrategy,list<string>> Relation::getPairingStrategy() const {
     //TODO comprovar? if ( isString() ) throw("");
     return this->p;
 }
