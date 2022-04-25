@@ -24,3 +24,5 @@ private:
 
 
 #endif //VERTTIRP_C_ALLEN_H
+
+//TODO es pot borrar aquest .h (la definicio de la classe esta a Allen_relationsEPS)

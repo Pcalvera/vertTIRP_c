@@ -4,6 +4,7 @@
 #include "list"
 #include "TI.h"
 #include "PairingStrategy.h"
+#include "Relation.h"
 
 using namespace std;
 
@@ -311,6 +312,24 @@ public:
     //Trans table based of the vertTIRP article
     map<string,string> trans_table;
     //TODO mapes amb funcions
+
+    class Allen {
+        public:
+            Allen();
+            Allen(bool dummy_calc, bool trans = true, float eps = 0, string calc_sort="bselfmoc", Allen_relationsEPS supClass = this);
+            string sort_rels(string reducted_group);
+
+        private:
+            string calc_sort;
+            bool dummy_calc;
+            bool trans;
+            float eps;
+
+            //For non dummy
+            PairingStrategy rels_arr;
+            list<string> gr_arr;
+            map<string,Relation> sorted_trans_table;
+    };
 };
 
 
