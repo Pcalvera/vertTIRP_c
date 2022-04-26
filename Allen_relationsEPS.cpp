@@ -156,13 +156,13 @@ public:
         PairingStrategy rels_arr = PairingStrategy();
         list<string> gr_arr = list<string>();
 
-        int i,j,k = 0;
+        int i = 0,j = 0,k = 0;
         char c;
         map<char,bool> added = map<char,bool>();
         bool c_in_added;
         while ( i < str_rels.size() ){
             c = str_rels.at(i);
-            c_in_added = added.find(c) == added.end();
+            c_in_added = added.find(c) != added.end();
             if ( !c_in_added && c == 'b') {   //TODO millor al reves?
                 rels_arr.add(c);
                 gr_arr.push_back(NONE);
@@ -178,7 +178,7 @@ public:
                     k = i + 1;
                     while ( k < str_rels.size() ){
                         c = str_rels.at(k);
-                        c_in_added = added.find(c) == added.end();
+                        c_in_added = added.find(c) != added.end();
                         if ( !c_in_added && (c == 'm' || c == 'o') ){
                             rels_arr.append2(c);
                             update_added(added,c,true);
@@ -187,7 +187,7 @@ public:
                     }
                     while ( j < str_rels.size() ){
                         c = str_rels.at(j);
-                        c_in_added = added.find(c) == added.end();
+                        c_in_added = added.find(c) != added.end();
                         if ( !c_in_added && (c == 'c' || c == 'f') ){
                             rels_arr.append(c);
                             update_added(added,c,true);
@@ -206,7 +206,7 @@ public:
                 j = i+1;
                 while ( j < str_rels.size() ){
                     c = str_rels.at(j);
-                    c_in_added = added.find(c) == added.end();
+                    c_in_added = added.find(c) != added.end();
                     if ( !c_in_added ){
                         if ( c == 's' || c == 'e' || c == 'l' ){
                             rels_arr.append(c);
