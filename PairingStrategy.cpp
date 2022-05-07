@@ -23,6 +23,11 @@ void PairingStrategy::append2(char c) {
     this->ps.back().back().l.push_back(c);
 }
 
+void PairingStrategy::appendAdd(char c) {
+    if ( this->ps.empty() ) throw("La llista és buida"); //TODO missatge error
+        this->ps.back().push_back( Node(c,1) );
+}
+
 void PairingStrategy::add(char c) {
     this->ps.push_back(list<Node>(1,Node(c,0)));
 }

@@ -54,21 +54,6 @@ int main () {
     list<string> list_of_users = filePatterns.list_of_users;
     int ti_count = filePatterns.ti_count;
 
-
-    //PairingStrategy p = PairingStrategy();
-    //p.add2('m');
-    //p.append2('o');
-    //p.append('c');
-    //p.append('f');
-    //p.add('b');
-    //p.add('e');
-    //p.append('s');
-
-
-
-
-
-
     VertTIRP co = VertTIRP(timestamp_mode,result_file_name,ver_sup,eps,ming,maxg,mind,maxd,dummy,ps,trans);
     int tirp_count = co.mine_patterns(list_of_ti_users,list_of_users,avoid_same_var_states);
     co.print_patterns(true);
@@ -77,6 +62,7 @@ int main () {
 }
 
 //TODO adaptar comentaris a c++
+//TODO Missatges throws
 //TODO comprovar funcions constants
 //TODO comprovar insercions existents a map
 

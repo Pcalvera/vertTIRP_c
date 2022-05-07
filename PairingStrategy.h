@@ -14,6 +14,7 @@ public:
     PairingStrategy();
     void append(char c);
     void append2(char c);
+    void appendAdd(char c);
     void add(char c);
     void add2(char c);
     //void appendSubLast(char c);
