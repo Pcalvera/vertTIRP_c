@@ -15,24 +15,24 @@ VertTirpSidList::VertTirpSidList() {
 
 void VertTirpSidList::append_item(TI ti, string sid, unsigned eid) {
     //TODO comentaris
-    //TIRP new_tirp =  TIRP(vector<TI>(1,ti), ti.get_start(), ti.get_end() );  //TODO inicialitzar amb 1?
+    TIRP new_tirp =  TIRP(vector<TI>(1,ti), ti.get_start(), ti.get_end() );  //TODO inicialitzar amb 1?
 
-    //if ( this->definitive_discovered_tirp_dict.empty() ){
-    //    this->definitive_discovered_tirp_dict.insert(pair<string,TIRPstatistics>("",TIRPstatistics()));
-    //    this->seq_str.push_back(ti.get_sym());
-    //}
+    if ( this->definitive_discovered_tirp_dict.empty() ){
+        this->definitive_discovered_tirp_dict.insert(pair<string,TIRPstatistics>("",TIRPstatistics()));
+        this->seq_str.push_back(ti.get_sym());
+    }
 
-    //auto doid_it = this->definitive_ones_indices_dict.find(sid);
-    //if ( doid_it == definitive_ones_indices_dict.end() )
-    //    doid_it = this->definitive_ones_indices_dict.insert(pair<string,map<unsigned,list<TIRP>>>(sid,map<unsigned,list<TIRP>>() ) ).first;
+    auto doid_it = this->definitive_ones_indices_dict.find(sid);
+    if ( doid_it == definitive_ones_indices_dict.end() )
+        doid_it = this->definitive_ones_indices_dict.insert(pair<string,map<unsigned,list<TIRP>>>(sid,map<unsigned,list<TIRP>>() ) ).first;
 
-    //this->definitive_discovered_tirp_dict.find("")->second.append_tirp(sid,eid,new_tirp); //TODO potser es pot fer abans
+    this->definitive_discovered_tirp_dict.find("")->second.append_tirp(sid,eid,new_tirp); //TODO potser es pot fer abans
 
-    //auto doid_it2 = doid_it->second.find(eid);
-    //if ( doid_it2 == doid_it->second.end() )
-    //    doid_it->second.insert(pair<unsigned,list<TIRP>>(eid,list<TIRP>(1,new_tirp)));
-    //else
-    //    doid_it2->second.push_back(new_tirp);
+    auto doid_it2 = doid_it->second.find(eid);
+    if ( doid_it2 == doid_it->second.end() )
+        doid_it->second.insert(pair<unsigned,list<TIRP>>(eid,list<TIRP>(1,new_tirp)));
+    else
+        doid_it2->second.push_back(new_tirp);
 }
 
 void VertTirpSidList::set_n_sequences(int n_sequences) {
