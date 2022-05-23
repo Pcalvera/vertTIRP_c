@@ -36,6 +36,10 @@ void PairingStrategy::add2(char c) {
     this->ps.push_back(list<Node>(1,Node(c,1)));
 }
 
+bool PairingStrategy::empty() const {
+    return ps.empty();
+}
+
 //void PairingStrategy::appendSubLast(char c) {
 //    if (isEmpty()) //TODO missatge error
 //        throw(" ");

@@ -17,6 +17,7 @@ public:
     void appendAdd(char c);
     void add(char c);
     void add2(char c);
+    bool empty()const;
     //void appendSubLast(char c);
     //void appendSub2Last(char c);
     //bool isEmpty() const;

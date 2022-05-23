@@ -39,7 +39,7 @@ VertTIRP::VertTIRP(int time_mode, string out_file, float min_sup_rel, float eps,
         this->allen = Allen(dummy_calc,trans,eps);
 }
 
-int VertTIRP::mine_patterns(list<list<TI>> &list_of_ti_seqs, list<string> &list_of_seqs, bool avoid_same_var_states) {
+int VertTIRP::mine_patterns(list<list<TI>> const &list_of_ti_seqs, list<string> const &list_of_seqs, bool avoid_same_var_states) {
     if ( list_of_ti_seqs.size() != list_of_seqs.size() ) throw invalid_argument("list_of_ti_seqs and list_of_seqs must have the same size");
 
     this->to_vertical(list_of_ti_seqs,list_of_seqs);
@@ -63,7 +63,7 @@ void VertTIRP::dfs_pruning() {
 
 }
 
-void VertTIRP::to_vertical(list<list<TI>> &list_of_ti_seqs, list<string> &list_of_seqs) {
+void VertTIRP::to_vertical(list<list<TI>> const &list_of_ti_seqs, list<string> const &list_of_seqs) {
     /*
     Constructs the vertical database representation.
     For each frequent item there are an sidlist representation of that item, which is stored in the
@@ -75,18 +75,19 @@ void VertTIRP::to_vertical(list<list<TI>> &list_of_ti_seqs, list<string> &list_o
     :return:
     */
     unsigned eid = 0;
-    list<string>::iterator seqs_it;
-    list<list<TI>>::iterator ti_seqs_it = list_of_ti_seqs.begin();
+    list<string>::const_iterator seqs_it;
+    list<list<TI>>::const_iterator ti_seqs_it = list_of_ti_seqs.begin();
     map<string,VertTirpSidList>::iterator sym_it;
     for (seqs_it = list_of_seqs.begin() ; seqs_it != list_of_seqs.end() ; seqs_it++ ){
         this->events_per_sequence.insert(pair<string,int>(*seqs_it,(*ti_seqs_it).size()));
         for ( auto its : *ti_seqs_it){
             // duration constraints
-            if ( its.get_end()-its.get_start() >= this->min_duration &&  its.get_end()-its.get_start() <= this->max_duration ){  //TODO condicio if
+            long long duration = its.get_end()-its.get_start();
+            if ( duration >= this->min_duration && duration <= this->max_duration ){  //TODO condicio if
                 sym_it = this->vertical_db.find(its.get_sym());
                 if ( sym_it == this->vertical_db.end() )
                     sym_it = this->vertical_db.insert(pair<string,VertTirpSidList>(its.get_sym(),VertTirpSidList())).first;    //Adds the VertTirpSidList to the map
-                sym_it->second.append_item(its,its.get_sym(),eid);
+                sym_it->second.append_item(its,*seqs_it,eid);
 
                 eid++;
             }

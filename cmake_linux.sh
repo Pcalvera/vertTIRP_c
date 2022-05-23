@@ -1,3 +1,4 @@
-g++ -c main.cpp VertTIRP.cpp Allen.cpp TI.cpp Utils.cpp
-g++ -o main.exe main.o VertTIRP.o Allen.o TI.o Utils.o
+g++ -c main.cpp VertTIRP.cpp Allen.cpp TI.cpp Utils.cpp Allen_relationsEPS.cpp PairingStrategy.cpp Relation.cpp TIRP.cpp TIRPstatistics.cpp VertTirpSidList.cpp
+g++ -o executable main.o VertTIRP.o Allen.o TI.o Utils.o Allen_relationsEPS.o PairingStrategy.o Relation.o TIRP.o TIRPstatistics.o VertTirpSidList.o
 
+valgrind --leak-check=yes ./executable

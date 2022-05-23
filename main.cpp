@@ -32,6 +32,7 @@ bool dummy = false;  // whether to execute relations without a pairing strategie
 bool trans = true;  // whether to use transitivity properties when assign a relation
 string result_file_name = "my_result_file.csv";  // an output file
 string filepath = "D:\\COLE\\TFG\\toy.csv";  // a path to time interval data. Any valid string path is acceptable.
+//string filepath = "/mnt/d/COLE/TFG/toy.csv";  // a path to time interval data. Any valid string path is acceptable.
 char sep = ';';  // delimiter to use with the scv file
 string sid_column = "sid";   // sequence column name
 string date_column_name_start = "start_time";  // start time column name
@@ -41,9 +42,9 @@ vector<string> value_column_name = vector<string>({"value"});  // the interestin
 
 
 bool avoid_same_var_states = false;
-int ming = 0;  // minimum gap in seconds that is the gap between before consecutive elements
+long long ming = 0;  // minimum gap in seconds that is the gap between before consecutive elements
 long long maxg = 3155695200;  // maximum gap in seconds that is the gap between before consecutive elements
-int mind = 0;  // each event interval should have a duration of at least min_duration seconds
+long long mind = 0;  // each event interval should have a duration of at least min_duration seconds
 long long maxd = 3155695200;   // each tirp should have a duration of at most min_duration seconds
 string ps = "mocfbes";
 

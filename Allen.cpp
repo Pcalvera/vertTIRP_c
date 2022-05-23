@@ -78,3 +78,19 @@ Relation Allen::get_possible_rels(char a, char b) const{
     }
 }
 
+pair<string, int>
+Allen::calc_rel(TI a, TI b, float eps, long long int min_gap, long long int max_gap, PairingStrategy rels_arr, list<string> gr_arr) {
+    if (rels_arr.empty()){
+        rels_arr = this->rels_arr;
+        gr_arr = this->gr_arr;
+    }
+
+    // if b is less than a
+    if ( b.get_start() < a.get_start() || ( b.get_start()==a.get_start() && b.get_end()<a.get_end() ) )
+        return pair<string,int>("1",1);
+
+    for ()
+
+    return pair<string,int>("1",1);
+}
+

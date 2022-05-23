@@ -36,5 +36,4 @@ private:
 
 };
 
-
 #endif //VERTTIRP_C_VERTTIRPSIDLIST_H
