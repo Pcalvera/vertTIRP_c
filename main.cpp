@@ -31,7 +31,7 @@ float eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids 
 bool dummy = false;  // whether to execute relations without a pairing strategies
 bool trans = true;  // whether to use transitivity properties when assign a relation
 string result_file_name = "my_result_file.csv";  // an output file
-string filepath = "D:\\COLE\\TFG\\toy.csv";  // a path to time interval data. Any valid string path is acceptable.
+string filepath = "C:\\Users\\pauca\\Documents\\TFG\\vertTIRP_c\\toy.csv";  // a path to time interval data. Any valid string path is acceptable.
 //string filepath = "/mnt/d/COLE/TFG/toy.csv";  // a path to time interval data. Any valid string path is acceptable.
 char sep = ';';  // delimiter to use with the scv file
 string sid_column = "sid";   // sequence column name
@@ -61,12 +61,3 @@ int main () {
     cout << "Algorithm finished" << endl;
     return 0;
 }
-
-//TODO adaptar comentaris a c++
-//TODO Missatges throws
-//TODO comprovar funcions constants
-//TODO comprovar insercions existents a map
-
-//TODO preguntar timestamp_mode
-//TODO Llibreria importada date.h https://github.com/HowardHinnant/date
-//TODO arbre N-ari de la teoria de EDA (Arbres, pagina 30) (modificacions)

@@ -103,7 +103,9 @@ void VertTIRP::to_vertical(list<list<TI>> const &list_of_ti_seqs, list<string> c
         this->min_sup = 1;
 
     // save a set of frequent 1-sized items sorted lexicographically
+    //TODO pq funcioni ha d'estar fet VertTirpStatistics.h
     for ( auto db_pos : this->vertical_db ){
+        unsigned aux = db_pos.second.get_support();
         if ( db_pos.second.get_support() >= this->min_sup ){
             db_pos.second.set_n_sequences(n_sequences);
             this->f1.push_back(db_pos.first);

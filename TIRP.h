@@ -21,7 +21,7 @@ public:
     bool operator>=(const TIRP &rhs) const;
     string get_rel_as_str()const;
     long long get_duration()const;
-    pair<bool,pair<TIRP,unsigned>> extend_with(TI s_ti, float eps, long long min_gap, long long max_gap, long long max_duration, bool mine_last_equal, Allen &allen);
+    //pair<bool,pair<TIRP,unsigned>> extend_with(TI s_ti, float eps, long long min_gap, long long max_gap, long long max_duration, bool mine_last_equal, Allen &allen);
 
 
 private:

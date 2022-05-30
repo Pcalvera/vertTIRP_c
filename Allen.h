@@ -13,9 +13,9 @@ using namespace std;
 class Allen {
 public:
     Allen();
-    Allen(bool dummy_calc, bool trans = true, float eps = 0, string calc_sort="bselfmoc", Allen_relationsEPS supClass = Allen_relationsEPS() );
+    Allen(bool dummy_calc, bool trans = true, float eps = 0, string calc_sort="bselfmoc", Allen_relationsEPS supClass = Allen_relationsEPS() );  //TODO passar supClass per ref?
     string sort_rels(string reducted_group);
-    pair<string,int> calc_rel(TI a, TI b, float eps, long long min_gap, long long max_gap, PairingStrategy rels_arr = PairingStrategy(), list<string> gr_arr = list<string>() );
+    pair<string,int> calc_rel(TI a, TI b, float eps, long long min_gap, long long max_gap, PairingStrategy rels_arr = PairingStrategy(), list<string> gr_arr = list<string>() );   //TODO passar per ref?
 
 private:
     string calc_sort;
