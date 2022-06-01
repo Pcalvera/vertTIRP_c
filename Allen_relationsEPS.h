@@ -6,6 +6,7 @@
 #define VERTTIRP_C_ALLEN_RELATIONSEPS_H
 #include <iostream>
 #include <cstdlib>
+#include <functional>
 #include "map"
 #include "list"
 #include "TI.h"
@@ -28,8 +29,11 @@ public:
     //Trans table based of the vertTIRP article
     map<string,string> trans_table;
 
-    //TODO mapes amb funcions
-private:
+    //TODO potser hi ha maneres mes eficients d'implementar-ho
+    map<string,function<pair<string,int>(TI,TI,float, long long, long long)>> ind_func_dict;
+    map<string,function<bool(TI,TI,float, long long, long long)>> cond_dict;
+
+    private:
 
     static void update_added(map<char,bool> &added,char c, bool b);
 

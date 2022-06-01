@@ -1,127 +1,146 @@
 #include "Allen_relationsEPS.h"
 
 Allen_relationsEPS::Allen_relationsEPS(){
-    // before b
-    trans_table_0.insert(pair<string,string>("bb","b"));
-    trans_table_0.insert(pair<string,string>("bc","b"));
-    trans_table_0.insert(pair<string,string>("bo","b"));
-    trans_table_0.insert(pair<string,string>("bm","b"));
-    trans_table_0.insert(pair<string,string>("bs","b"));
-    trans_table_0.insert(pair<string,string>("bf","b"));
-    trans_table_0.insert(pair<string,string>("be","b"));
-    // equal e
-    trans_table_0.insert(pair<string,string>("eb","b"));
-    trans_table_0.insert(pair<string,string>("ec","c"));
-    trans_table_0.insert(pair<string,string>("eo","o"));
-    trans_table_0.insert(pair<string,string>("em","m"));
-    trans_table_0.insert(pair<string,string>("es","s"));
-    trans_table_0.insert(pair<string,string>("ef","f"));
-    trans_table_0.insert(pair<string,string>("ee","e"));
-    // contains c
-    trans_table_0.insert(pair<string,string>("cb","bcfmo"));
-    trans_table_0.insert(pair<string,string>("cc","c"));
-    trans_table_0.insert(pair<string,string>("co","cfo"));
-    trans_table_0.insert(pair<string,string>("cm","cfo"));
-    trans_table_0.insert(pair<string,string>("cs","cfo"));
-    trans_table_0.insert(pair<string,string>("cf","c"));
-    trans_table_0.insert(pair<string,string>("ce","c"));
-    // overlaps o
-    trans_table_0.insert(pair<string,string>("ob","b"));
-    trans_table_0.insert(pair<string,string>("oc","bcfmo"));
-    trans_table_0.insert(pair<string,string>("oo","bmo"));
-    trans_table_0.insert(pair<string,string>("om","b"));
-    trans_table_0.insert(pair<string,string>("os","o"));
-    trans_table_0.insert(pair<string,string>("of","bmo"));
-    trans_table_0.insert(pair<string,string>("oe","o"));
-    // meets m
-    trans_table_0.insert(pair<string,string>("mb","b"));
-    trans_table_0.insert(pair<string,string>("mc","b"));
-    trans_table_0.insert(pair<string,string>("mo","b"));
-    trans_table_0.insert(pair<string,string>("mm","b"));
-    trans_table_0.insert(pair<string,string>("ms","m"));
-    trans_table_0.insert(pair<string,string>("mf","b"));
-    trans_table_0.insert(pair<string,string>("me","m"));
-    // starts s
-    trans_table_0.insert(pair<string,string>("sb","b"));
-    trans_table_0.insert(pair<string,string>("sc","bcfmo"));
-    trans_table_0.insert(pair<string,string>("so","bmo"));
-    trans_table_0.insert(pair<string,string>("sm","b"));
-    trans_table_0.insert(pair<string,string>("ss","s"));
-    trans_table_0.insert(pair<string,string>("sf","bmo"));
-    trans_table_0.insert(pair<string,string>("se","s"));
-    // finished by
-    trans_table_0.insert(pair<string,string>("fb","b"));
-    trans_table_0.insert(pair<string,string>("fc","c"));
-    trans_table_0.insert(pair<string,string>("fo","o"));
-    trans_table_0.insert(pair<string,string>("fm","m"));
-    trans_table_0.insert(pair<string,string>("fs","o"));
-    trans_table_0.insert(pair<string,string>("ff","f"));
-    trans_table_0.insert(pair<string,string>("fe","f"));
+    trans_table_0 = {
+            // before b
+            {"bb", "b"},
+            {"bc", "b"},
+            {"bo", "b"},
+            {"bm", "b"},
+            {"bs", "b"},
+            {"bf", "b"},
+            {"be", "b"},
+            // equal e
+            {"eb", "b"},
+            {"ec", "c"},
+            {"eo", "o"},
+            {"em", "m"},
+            {"es", "s"},
+            {"ef", "f"},
+            {"ee", "e"},
+            // contains c
+            {"cb", "bcfmo"},
+            {"cc", "c"},
+            {"co", "cfo"},
+            {"cm", "cfo"},
+            {"cs", "cfo"},
+            {"cf", "c"},
+            {"ce", "c"},
+            // overlaps o
+            {"ob", "b"},
+            {"oc", "bcfmo"},
+            {"oo", "bmo"},
+            {"om", "b"},
+            {"os", "o"},
+            {"of", "bmo"},
+            {"oe", "o"},
+            // meets m
+            {"mb", "b"},
+            {"mc", "b"},
+            {"mo", "b"},
+            {"mm", "b"},
+            {"ms", "m"},
+            {"mf", "b"},
+            {"me", "m"},
+            // starts s
+            {"sb", "b"},
+            {"sc", "bcfmo"},
+            {"so", "bmo"},
+            {"sm", "b"},
+            {"ss", "s"},
+            {"sf", "bmo"},
+            {"se", "s"},
+            // finished by
+            {"fb", "b"},
+            {"fc", "c"},
+            {"fo", "o"},
+            {"fm", "m"},
+            {"fs", "o"},
+            {"ff", "f"},
+            {"fe", "f"}
+    };
     //Trans table based of the vertTIRP article
-    // before b
-    trans_table.insert(pair<string,string>("bb","b"));
-    trans_table.insert(pair<string,string>("bc","b"));
-    trans_table.insert(pair<string,string>("bo","b"));
-    trans_table.insert(pair<string,string>("bm","b"));
-    trans_table.insert(pair<string,string>("bs","b"));
-    trans_table.insert(pair<string,string>("bf","b"));
-    trans_table.insert(pair<string,string>("be","b"));
-    // contains c
-    trans_table.insert(pair<string,string>("cb","bcfmo"));
-    trans_table.insert(pair<string,string>("cc","c"));
-    trans_table.insert(pair<string,string>("co","cfo"));
-    trans_table.insert(pair<string,string>("cm","cfo"));
-    trans_table.insert(pair<string,string>("cs","cfo"));
-    trans_table.insert(pair<string,string>("cf","cf"));
-    trans_table.insert(pair<string,string>("ce","cf"));
-    // overlaps o
-    trans_table.insert(pair<string,string>("ob","b"));
-    trans_table.insert(pair<string,string>("oc","bcfmo"));
-    trans_table.insert(pair<string,string>("oo","bmo"));
-    trans_table.insert(pair<string,string>("om","bm"));
-    trans_table.insert(pair<string,string>("os","mo"));
-    trans_table.insert(pair<string,string>("of","bfmo"));
-    trans_table.insert(pair<string,string>("oe","mo"));
-    // meets m
-    trans_table.insert(pair<string,string>("mb","b"));
-    trans_table.insert(pair<string,string>("mc","bm"));
-    trans_table.insert(pair<string,string>("mo","bm"));
-    trans_table.insert(pair<string,string>("mm","bm"));
-    trans_table.insert(pair<string,string>("ms","bm"));
-    trans_table.insert(pair<string,string>("mf","bm"));
-    trans_table.insert(pair<string,string>("me","bm"));
-    // starts s
-    trans_table.insert(pair<string,string>("sb","b"));
-    trans_table.insert(pair<string,string>("sc","bcfmo"));
-    trans_table.insert(pair<string,string>("so","bmo"));
-    trans_table.insert(pair<string,string>("sm","bm"));
-    trans_table.insert(pair<string,string>("ss","ms"));
-    trans_table.insert(pair<string,string>("sf","bmo"));
-    trans_table.insert(pair<string,string>("se","emos"));
-    // finished-by fi
-    trans_table.insert(pair<string,string>("fb","bm"));
-    trans_table.insert(pair<string,string>("fc","cf"));
-    trans_table.insert(pair<string,string>("fo","fmo"));
-    trans_table.insert(pair<string,string>("fm","bmo"));
-    trans_table.insert(pair<string,string>("fs","fmo"));
-    trans_table.insert(pair<string,string>("ff","cfmo"));
-    trans_table.insert(pair<string,string>("fe","cflmo"));
-    // equal e
-    trans_table.insert(pair<string,string>("eb","bm"));
-    trans_table.insert(pair<string,string>("ec","cf"));
-    trans_table.insert(pair<string,string>("eo","fmo"));
-    trans_table.insert(pair<string,string>("em","bemo"));
-    trans_table.insert(pair<string,string>("es","eos"));
-    trans_table.insert(pair<string,string>("ef","cfm"));
-    trans_table.insert(pair<string,string>("ee","cefo"));
-    // equal l
-    trans_table.insert(pair<string,string>("lb","bcfmo"));
-    trans_table.insert(pair<string,string>("lc","c"));
-    trans_table.insert(pair<string,string>("lo","cfo"));
-    trans_table.insert(pair<string,string>("lm","cmo"));
-    trans_table.insert(pair<string,string>("ls","celo"));
-    trans_table.insert(pair<string,string>("lf","cf"));
-    trans_table.insert(pair<string,string>("le","cefl"));
+    trans_table = {
+            // before b
+            {"bb", "b"},
+            {"bc", "b"},
+            {"bo", "b"},
+            {"bm", "b"},
+            {"bs", "b"},
+            {"bf", "b"},
+            {"be", "b"},
+            // contains c
+            {"cb", "bcfmo"},
+            {"cc", "c"},
+            {"co", "cfo"},
+            {"cm", "cfo"},
+            {"cs", "cfo"},
+            {"cf", "cf"},
+            {"ce", "cf"},
+            // overlaps o
+            {"ob", "b"},
+            {"oc", "bcfmo"},
+            {"oo", "bmo"},
+            {"om", "bm"},
+            {"os", "mo"},
+            {"of", "bfmo"},
+            {"oe", "mo"},
+            // meets m
+            {"mb", "b"},
+            {"mc", "bm"},
+            {"mo", "bm"},
+            {"mm", "bm"},
+            {"ms", "bm"},
+            {"mf", "bm"},
+            {"me", "bm"},
+            // starts s
+            {"sb", "b"},
+            {"sc", "bcfmo"},
+            {"so", "bmo"},
+            {"sm", "bm"},
+            {"ss", "ms"},
+            {"sf", "bmo"},
+            {"se", "emos"},
+            // finished-by fi
+            {"fb", "bm"},
+            {"fc", "cf"},
+            {"fo", "fmo"},
+            {"fm", "bmo"},
+            {"fs", "fmo"},
+            {"ff", "cfmo"},
+            {"fe", "cflmo"},
+            // equal e
+            {"eb", "bm"},
+            {"ec", "cf"},
+            {"eo", "fmo"},
+            {"em", "bemo"},
+            {"es", "eos"},
+            {"ef", "cfm"},
+            {"ee", "cefo"},
+            // equal l
+            {"lb", "bcfmo"},
+            {"lc", "c"},
+            {"lo", "cfo"},
+            {"lm", "cmo"},
+            {"ls", "celo"},
+            {"lf", "cf"},
+            {"le", "cefl"}
+    };
+    ind_func_dict = {
+            {"b", before_ind},
+            {"m", meets_ind},
+            {"o", overlaps_ind},
+            {"c", contains_ind},
+            {"f", finish_by_ind},
+            {"e", equal_ind},
+            {"s", starts_ind},
+            {"l", left_contains_ind}
+    };
+    cond_dict = {
+            {"sel", sel_cond},
+            {"cfmo", cfmo_cond},
+            {"mo", mo_cond}
+    };
 }
 
 pair<PairingStrategy,list<string>> Allen_relationsEPS::get_pairing_strategy(string str_rels){
