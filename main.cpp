@@ -2,7 +2,7 @@
 #include "VertTIRP.h"
 #include "TI.h"
 #include "list"
-#include "Utils.cpp"
+#include "Utils.h"
 #include "PairingStrategy.h"
 /*
 author: Pau Calvera
@@ -31,8 +31,8 @@ float eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids 
 bool dummy = false;  // whether to execute relations without a pairing strategies
 bool trans = true;  // whether to use transitivity properties when assign a relation
 string result_file_name = "my_result_file.csv";  // an output file
-string filepath = "C:\\Users\\pauca\\Documents\\TFG\\vertTIRP_c\\toy.csv";  // a path to time interval data. Any valid string path is acceptable.
-//string filepath = "/mnt/d/COLE/TFG/toy.csv";  // a path to time interval data. Any valid string path is acceptable.
+string filepath = R"(C:\Users\pauca\Documents\TFG\vertTIRP_c\toy.csv)";  // a path to time interval data. Any valid string path is acceptable.
+//string filepath = "/mnt/c/Users/pauca/Documents/TFG/vertTIRP_c/toy.csv";  // a path to time interval data. Any valid string path is acceptable.
 char sep = ';';  // delimiter to use with the scv file
 string sid_column = "sid";   // sequence column name
 string date_column_name_start = "start_time";  // start time column name
@@ -49,8 +49,8 @@ long long maxd = 3155695200;   // each tirp should have a duration of at most mi
 string ps = "mocfbes";
 
 int main () {
-    Utils utils;
-    ReadTi filePatterns = utils.ti_read(filepath, sep, sid_column, date_column_name_start, date_column_name_end, date_format, value_column_name, true, timestamp_mode);
+
+    ReadTi filePatterns = utils_tiRead(filepath, sep, sid_column, date_column_name_start, date_column_name_end, date_format, value_column_name, true, timestamp_mode);
     list<list<TI>> list_of_ti_users = filePatterns.list_of_ti_users;
     list<string> list_of_users = filePatterns.list_of_users;
     int ti_count = filePatterns.ti_count;

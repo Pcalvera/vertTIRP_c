@@ -3,7 +3,6 @@
 //
 
 #include "VertTIRP.h"
-#include <cmath>
 
 VertTIRP::VertTIRP(int time_mode, string out_file, float min_sup_rel, float eps, int min_gap, long long max_gap,
                    int min_duration, long long max_duration, bool dummy_calc, string ps, bool trans, int min_confidence ,int max_length, int min_length) {
@@ -23,9 +22,9 @@ VertTIRP::VertTIRP(int time_mode, string out_file, float min_sup_rel, float eps,
     tirp_count = 0;
     min_sup = 0;
 
-    this->f1 = list<string>(); //TODO
+    this->f1 = vector<string>(); //TODO
     this->vertical_db = map<string,VertTirpSidList>();
-    //this->tree = VertTirpNode() TODO
+    this->tree = VertTirpNode();
     time_mode = time_mode;
 
     if ( min_gap < 0 || max_gap < 0 )
@@ -46,9 +45,12 @@ int VertTIRP::mine_patterns(list<list<TI>> const &list_of_ti_seqs, list<string> 
     //TODO taula procs
 
     for ( int i = 0 ; i < this->f1.size() ; i++){
-        this->dfs_pruning();  //TODO fer pruning
+        //this->dfs_pruning(this->f1[i],this->f1,
+        //                  VertTirpNode(this->vertical_db[this->f1[i]].get_seq_str(),1,this->tree,this->vertical_db[this->f1[i]]),
+        //                  this->tree,avoid_same_var_states);  //TODO fer pruning
     }
     return this->tirp_count;
+
 }
 
 void VertTIRP::print_patterns(bool b) {
@@ -59,7 +61,7 @@ bool VertTIRP::same_variable(string s1, string s2, bool avoid_same_var_states) {
     return avoid_same_var_states && s1 == s2;
 }
 
-void VertTIRP::dfs_pruning() {
+void VertTIRP::dfs_pruning(char pat_sidlist, vector<char> &f_l, VertTirpNode father, bool avoid_same_var_states ) {
 
 }
 
@@ -80,14 +82,14 @@ void VertTIRP::to_vertical(list<list<TI>> const &list_of_ti_seqs, list<string> c
     map<string,VertTirpSidList>::iterator sym_it;
     for (seqs_it = list_of_seqs.begin() ; seqs_it != list_of_seqs.end() ; seqs_it++ ){
         this->events_per_sequence.insert(pair<string,int>(*seqs_it,(*ti_seqs_it).size()));
-        for ( auto its : *ti_seqs_it){
+        for (auto its: *ti_seqs_it) {
             // duration constraints
-            long long duration = its.get_end()-its.get_start();
-            if ( duration >= this->min_duration && duration <= this->max_duration ){  //TODO condicio if
+            long long duration = its.get_end() - its.get_start();
+            if (duration >= this->min_duration && duration <= this->max_duration) {  //TODO condicio if
                 sym_it = this->vertical_db.find(its.get_sym());
-                if ( sym_it == this->vertical_db.end() )
-                    sym_it = this->vertical_db.insert(pair<string,VertTirpSidList>(its.get_sym(),VertTirpSidList())).first;    //Adds the VertTirpSidList to the map
-                sym_it->second.append_item(its,*seqs_it,eid);
+                if (sym_it == this->vertical_db.end())
+                    sym_it = this->vertical_db.insert(pair<string, VertTirpSidList>(its.get_sym(),VertTirpSidList())).first;    //Adds the VertTirpSidList to the map
+                sym_it->second.append_item(its, *seqs_it, eid);
 
                 eid++;
             }
@@ -103,7 +105,6 @@ void VertTIRP::to_vertical(list<list<TI>> const &list_of_ti_seqs, list<string> c
         this->min_sup = 1;
 
     // save a set of frequent 1-sized items sorted lexicographically
-    //TODO pq funcioni ha d'estar fet VertTirpStatistics.h
     for ( auto db_pos : this->vertical_db ){
         unsigned aux = db_pos.second.get_support();
         if ( db_pos.second.get_support() >= this->min_sup ){
@@ -114,7 +115,8 @@ void VertTIRP::to_vertical(list<list<TI>> const &list_of_ti_seqs, list<string> c
             this->vertical_db.erase(db_pos.first);
     }
 
-    this->f1.sort();
+
+    sort(this->f1.begin(),this->f1.end());
 }
 
 

@@ -20,11 +20,14 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 #ifndef VERTTIRP_C_VERTTIRP_H
 #define VERTTIRP_C_VERTTIRP_H
 #include <iostream>
+#include <cmath>
+#include <bits/stdc++.h>
 #include <list>
 #include <map>
 #include "Allen.h"
 #include "TI.h"
 #include "VertTirpSidList.h"
+#include "VertTirpNode.h"
 
 using namespace std;
 
@@ -47,15 +50,15 @@ private:
     float eps;  // karma lego epsilon in nanoseconds
     int tirp_count; //TODO int?
     float min_sup;  // absolute support //TODO int?
-    list<string> f1;  // holds frequent 1-size items //TODO tipus?
+    vector<string> f1;  // holds frequent 1-size items //TODO tipus?
     map<string,VertTirpSidList> vertical_db;  // holds database represented vertically //TODO map?
-    //tree;  // we will save the patterns in a tree structure  //TODO estructura arbre
+    VertTirpNode tree;  // we will save the patterns in a tree structure  //TODO estructura arbre
     int time_mode;  //  1- timestamp mode, 2- datetime mode 3- number mode(e.g. number of frame)
 
     Allen allen;
 
     bool same_variable(string s1,string s2, bool avoid_same_var_states = true);
-    void dfs_pruning();
+    void dfs_pruning(char pat_sidlist, vector<char> &f_l, VertTirpNode father, bool avoid_same_var_states = true );
     void to_vertical(list<list<TI>> const &list_of_ti_seqs, list<string> const &list_of_seqs);
 };
 

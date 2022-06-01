@@ -22,6 +22,7 @@ public:
     float get_mean_hor_support(map<string,unsigned> &events_per_sequence,TIRPstatistics &tirp_stat) const;   //TODO float o double?
     float get_ver_support(TIRPstatistics &tirp) const;                            //TODO float o double?
     unsigned get_support() const;                                                 //TODO comprovar que sigui unsigned
+    vector<string> get_seq_str()const;      //TODO retornar ref?
     //TODO join
     //TODO update_tirp_attrs
     //TODO first_sorted_extend

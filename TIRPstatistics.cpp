@@ -118,10 +118,7 @@ string TIRPstatistics::get_mean_of_means_duration(unsigned units) {
     :param: units: 0-seconds, 1-minutes, 2-hours, 3-days, 4-weeks, 5-years
     :return: returns the overall mean
     */
-    long long aux = 0;
     vector<long long> l = this->get_mean_duration();
-    for (long long i : l)
-        aux += i;
     //auto j = (aux/l.size())/switcher[units]);
-    return to_string((aux/l.size())/UNITS_NUMBER[units]) + " " + UNITS_STRING[units];
+    return to_string(utils_mean(l)/UNITS_NUMBER[units]) + " " + UNITS_STRING[units];
 }

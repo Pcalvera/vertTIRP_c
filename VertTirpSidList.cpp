@@ -55,3 +55,7 @@ unsigned VertTirpSidList::get_support() const {
     return this->definitive_discovered_tirp_dict.find("")->second.get_sum_ver_supp();
 }
 
+vector<string> VertTirpSidList::get_seq_str() const {
+    return this->seq_str;
+}
+
