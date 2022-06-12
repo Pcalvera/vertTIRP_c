@@ -14,13 +14,10 @@ using namespace std;
 
 class VertTirpNode {
 public:
+    VertTirpNode();
     VertTirpNode(string &patt, unsigned pat_len, VertTirpSidList sidList, bool is_root=true);
-    void add_child(shared_ptr<VertTirpNode> &ch );
-    void add_childs(vector<shared_ptr<VertTirpNode>> &ch );
+    void add_child(unique_ptr<VertTirpNode> ch );
 private:
-    void add_brother(shared_ptr<VertTirpNode> &ch );
-    void add_brothers(vector<shared_ptr<VertTirpNode>> &ch,int i);
-
 
 
     //struct Node {
@@ -33,7 +30,7 @@ private:
     //shared_ptr<Node> node;
     //bool is_root;
     //TODO de moment prescideixo de l'atribut parent
-    shared_ptr<VertTirpNode> child,brother;
+    vector<unique_ptr<VertTirpNode>> child_nodes;
     string patt;
     unsigned pat_len;
     VertTirpSidList sidlist;
