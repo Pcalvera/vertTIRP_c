@@ -15,6 +15,7 @@
 
 using namespace std;
 
+
 struct ReadTi {
     list<list<TI>> list_of_ti_users = list<list<TI>>();
     list<string> list_of_users = list<string>();
@@ -36,5 +37,6 @@ ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &da
 TI utils_vectToTi(vector<string> &v);
 tm utils_splitDate(string &s);
 long long utils_mean(vector<long long> &l);
+template <typename T,typename V> vector<T> get_keys(map<T,V> m);
 
 #endif //VERTTIRP_C_UTILS_H

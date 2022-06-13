@@ -11,6 +11,7 @@ VertTirpSidList::VertTirpSidList() {
     this->definitive_discovered_tirp_dict = map<string,TIRPstatistics>();  //TODO
     //temp_discovered_tirp_dict = map<>();  //TODO
     this->n_sequences = 0;
+    this->support = 0;
 }
 
 void VertTirpSidList::append_item(TI ti, string sid, unsigned eid) {
@@ -57,5 +58,33 @@ unsigned VertTirpSidList::get_support() const {
 
 vector<string> VertTirpSidList::get_seq_str() const {
     return this->seq_str;
+}
+
+unsigned VertTirpSidList::get_seq_length() const {
+    return this->seq_str.size();
+}
+
+map<string, map<unsigned, list<TIRP>>> VertTirpSidList::get_definitive_ones_indices_dict() const {
+    return this->definitive_ones_indices_dict;
+}
+
+map<string, TIRPstatistics> VertTirpSidList::get_definitive_discovered_tirp_dict() const {
+    return this->definitive_discovered_tirp_dict;
+}
+
+VertTirpSidList VertTirpSidList::join(VertTirpSidList f, Allen ps, float eps, int min_gap, int max_gap,
+                                      long long int max_duration, float min_ver_sup, int min_confidence) const {
+    //TODO comentaris
+    VertTirpSidList new_sidlist = VertTirpSidList();   //TODO potser millor fer un constructor amb tots els paràmetres
+    new_sidlist.seq_str = vector<string>(this->seq_str);
+    new_sidlist.seq_str.push_back(f.seq_str[0]);
+
+    new_sidlist.n_sequences = this->n_sequences;
+
+    bool mine_last_equal = this->seq_str.back() < f.seq_str[0];
+
+    // TODO for
+
+    return new_sidlist;
 }
 

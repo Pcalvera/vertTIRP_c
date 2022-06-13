@@ -24,6 +24,7 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 #include <bits/stdc++.h>
 #include <list>
 #include <map>
+#include "Utils.h"
 #include "Allen.h"
 #include "TI.h"
 #include "VertTirpSidList.h"
@@ -58,7 +59,7 @@ private:
     Allen allen;
 
     bool same_variable(string s1,string s2, bool avoid_same_var_states = true);
-    void dfs_pruning(char pat_sidlist, vector<char> &f_l, VertTirpNode father, bool avoid_same_var_states = true );
+    void dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, VertTirpNode &node,VertTirpNode &father, bool avoid_same_var_states = true );
     void to_vertical(list<list<TI>> const &list_of_ti_seqs, list<string> const &list_of_seqs);
 };
 

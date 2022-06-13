@@ -61,8 +61,29 @@ bool VertTIRP::same_variable(string s1, string s2, bool avoid_same_var_states) {
     return avoid_same_var_states && s1 == s2;
 }
 
-void VertTIRP::dfs_pruning(char pat_sidlist, vector<char> &f_l, VertTirpNode father, bool avoid_same_var_states ) {
+void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, VertTirpNode &node,VertTirpNode &father, bool avoid_same_var_states ) {
+    father.add_child(node);
 
+    if ( pat_sidlist.get_seq_length() >= this->min_length )
+        this->tirp_count += pat_sidlist.get_definitive_discovered_tirp_dict().size();
+
+    map<string,VertTirpSidList> s_temp;
+
+    // to control the maximum length
+    if ( this->max_length == -1 || (this->max_length != -1 && (pat_sidlist.get_seq_length() + 1) <= this->max_length ) ){
+        for ( string s : f_l){
+            if ( !this->same_variable(s, pat_sidlist.get_seq_str().back(), avoid_same_var_states) ){
+                VertTirpSidList s_bm = pat_sidlist.join(this->vertical_db[s], this->allen, this->eps, this->min_gap, this->max_gap, this->max_duration, this->min_sup, this->min_confidence);
+                if ( !s_bm.get_definitive_ones_indices_dict().empty() )
+                    s_temp[s] = s_bm;
+            }
+        }
+        vector<string> s_syms = get_keys(s_temp);
+        for ( auto it : s_temp ){
+            // TODO
+            //VertTirpNode s_node = VertTirpNode(it.second.get_seq_str(),);
+        }
+    }
 }
 
 void VertTIRP::to_vertical(list<list<TI>> const &list_of_ti_seqs, list<string> const &list_of_seqs) {

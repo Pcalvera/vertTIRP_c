@@ -14,6 +14,8 @@
 
 using namespace std;
 
+const long long MAXDURATION = 3155695200;
+
 class VertTirpSidList {
 public:
     VertTirpSidList();
@@ -23,6 +25,10 @@ public:
     float get_ver_support(TIRPstatistics &tirp) const;                            //TODO float o double?
     unsigned get_support() const;                                                 //TODO comprovar que sigui unsigned
     vector<string> get_seq_str()const;      //TODO retornar ref?
+    unsigned get_seq_length()const;
+    map<string,map<unsigned,list<TIRP>>> get_definitive_ones_indices_dict()const;
+    map<string,TIRPstatistics> get_definitive_discovered_tirp_dict()const;
+    VertTirpSidList join(VertTirpSidList f, Allen ps, float eps, int min_gap = 0, int max_gap = MAXGAP, long long max_duration = MAXDURATION, float min_ver_sup = 0, int min_confidence = 0.9)const;
     //TODO join
     //TODO update_tirp_attrs
     //TODO first_sorted_extend
@@ -34,6 +40,7 @@ private:
     //temp_discovered_tirp_dict;  //TODO
     //unsigned seq_length;  //TODO
     unsigned n_sequences;
+    unsigned support;
 
 };
 

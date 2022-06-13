@@ -17,9 +17,9 @@ VertTirpNode::VertTirpNode(string &patt, unsigned int pat_len,  VertTirpSidList 
     this->pat_len = pat_len;
     this->sidlist = sidList;
     this->is_root = is_root;
-    this->child_nodes = vector<unique_ptr<VertTirpNode>>();
+    this->child_nodes = vector<VertTirpNode>();
 }
 
-void VertTirpNode::add_child(unique_ptr<VertTirpNode> ch) {
+void VertTirpNode::add_child(VertTirpNode &ch) {
     this->child_nodes.push_back(ch);
 }

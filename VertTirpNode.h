@@ -16,7 +16,7 @@ class VertTirpNode {
 public:
     VertTirpNode();
     VertTirpNode(string &patt, unsigned pat_len, VertTirpSidList sidList, bool is_root=true);
-    void add_child(unique_ptr<VertTirpNode> ch );
+    void add_child(VertTirpNode &ch);
 private:
 
 
@@ -30,7 +30,7 @@ private:
     //shared_ptr<Node> node;
     //bool is_root;
     //TODO de moment prescideixo de l'atribut parent
-    vector<unique_ptr<VertTirpNode>> child_nodes;
+    vector<VertTirpNode> child_nodes;
     string patt;
     unsigned pat_len;
     VertTirpSidList sidlist;

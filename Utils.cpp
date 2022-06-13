@@ -98,4 +98,12 @@ long long utils_mean(vector<long long> &l) {
     return sum / (unsigned) l.size();
 }
 
+template<typename T, typename V>
+vector<T> get_keys(map<T, V> m) {
+    vector<T> res =  vector<T>();
+    for ( auto it : m)
+        res.push_back( it.first );
+    return res;
+}
+
 
