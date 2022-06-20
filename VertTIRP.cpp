@@ -44,10 +44,12 @@ int VertTIRP::mine_patterns(list<list<TI>> const &list_of_ti_seqs, list<string> 
     this->to_vertical(list_of_ti_seqs,list_of_seqs);
     //TODO taula procs
 
-    for ( int i = 0 ; i < this->f1.size() ; i++){
-        //this->dfs_pruning(this->f1[i],this->f1,
-        //                  VertTirpNode(this->vertical_db[this->f1[i]].get_seq_str(),1,this->tree,this->vertical_db[this->f1[i]]),
-        //                  this->tree,avoid_same_var_states);  //TODO fer pruning
+    for (auto & i : this->f1){
+        vector<string> seq_str_strings = this->vertical_db[i].get_seq_str();
+        string seq_str_string = accumulate(seq_str_strings.begin(),seq_str_strings.end(),string(""));
+        this->dfs_pruning(this->vertical_db[i],this->f1,
+                          VertTirpNode(seq_str_string,1,this->vertical_db[i]),
+                          this->tree,avoid_same_var_states);  //TODO fer pruning
     }
     return this->tirp_count;
 
@@ -61,7 +63,7 @@ bool VertTIRP::same_variable(string s1, string s2, bool avoid_same_var_states) {
     return avoid_same_var_states && s1 == s2;
 }
 
-void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, VertTirpNode &node,VertTirpNode &father, bool avoid_same_var_states ) {
+void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, VertTirpNode node,VertTirpNode &father, bool avoid_same_var_states ) {
     father.add_child(node);
 
     if ( pat_sidlist.get_seq_length() >= this->min_length )
@@ -78,7 +80,12 @@ void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, Ve
                     s_temp[s] = s_bm;
             }
         }
-        vector<string> s_syms = get_keys(s_temp);
+        //vector<string> s_syms = utils_getKeys(s_temp);   //TODO fer funcionar la funcio
+        vector<string> s_syms =  vector<string>();
+        for ( auto it : s_temp)
+            s_syms.push_back( it.first );
+        //TODO fi
+
         for ( auto it : s_temp ){
             // TODO
             //VertTirpNode s_node = VertTirpNode(it.second.get_seq_str(),);

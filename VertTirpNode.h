@@ -15,7 +15,7 @@ using namespace std;
 class VertTirpNode {
 public:
     VertTirpNode();
-    VertTirpNode(string &patt, unsigned pat_len, VertTirpSidList sidList, bool is_root=true);
+    VertTirpNode(string &patt, unsigned pat_len, VertTirpSidList &sidList, bool is_root=true);
     void add_child(VertTirpNode &ch);
 private:
 

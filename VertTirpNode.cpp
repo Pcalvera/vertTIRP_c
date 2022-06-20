@@ -12,7 +12,7 @@ VertTirpNode::VertTirpNode() {
     //this->child_nodes = vector<unique_ptr<VertTirpNode>>();
 }
 
-VertTirpNode::VertTirpNode(string &patt, unsigned int pat_len,  VertTirpSidList sidList, bool is_root) {
+VertTirpNode::VertTirpNode(string &patt, unsigned int pat_len,  VertTirpSidList &sidList, bool is_root) {
     this->patt = patt;
     this->pat_len = pat_len;
     this->sidlist = sidList;

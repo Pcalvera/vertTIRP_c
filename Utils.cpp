@@ -99,7 +99,7 @@ long long utils_mean(vector<long long> &l) {
 }
 
 template<typename T, typename V>
-vector<T> get_keys(map<T, V> m) {
+vector<T> utils_getKkeys(map<T, V> m) {
     vector<T> res =  vector<T>();
     for ( auto it : m)
         res.push_back( it.first );
