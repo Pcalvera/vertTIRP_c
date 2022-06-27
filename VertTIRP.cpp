@@ -47,15 +47,13 @@ int VertTIRP::mine_patterns(list<list<TI>> const &list_of_ti_seqs, list<string> 
     for (auto & i : this->f1){
         vector<string> seq_str_strings = this->vertical_db[i].get_seq_str();
         string seq_str_string = accumulate(seq_str_strings.begin(),seq_str_strings.end(),string(""));
-        this->dfs_pruning(this->vertical_db[i],this->f1,
-                          VertTirpNode(seq_str_string,1,this->vertical_db[i]),
-                          this->tree,avoid_same_var_states);  //TODO fer pruning
+        VertTirpNode s_node = VertTirpNode(seq_str_string,1,this->vertical_db[i],this->tree);
+        this->dfs_pruning(this->vertical_db[i],this->f1,s_node,this->tree,avoid_same_var_states);  //TODO fer pruning
     }
     return this->tirp_count;
-
 }
 
-void VertTIRP::print_patterns(bool b) {
+void VertTIRP::print_patterns(bool b) { //TODO
     cout<<"Patrons printed"<<endl;
 }
 
@@ -63,7 +61,7 @@ bool VertTIRP::same_variable(string s1, string s2, bool avoid_same_var_states) {
     return avoid_same_var_states && s1 == s2;
 }
 
-void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, VertTirpNode node,VertTirpNode &father, bool avoid_same_var_states ) {
+void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, VertTirpNode &node,VertTirpNode &father, bool avoid_same_var_states ) {
     father.add_child(node);
 
     if ( pat_sidlist.get_seq_length() >= this->min_length )
@@ -72,7 +70,7 @@ void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, Ve
     map<string,VertTirpSidList> s_temp;
 
     // to control the maximum length
-    if ( this->max_length == -1 || (this->max_length != -1 && (pat_sidlist.get_seq_length() + 1) <= this->max_length ) ){
+    if ( this->max_length == -1 || (pat_sidlist.get_seq_length() + 1) <= this->max_length ){
         for ( string s : f_l){
             if ( !this->same_variable(s, pat_sidlist.get_seq_str().back(), avoid_same_var_states) ){
                 VertTirpSidList s_bm = pat_sidlist.join(this->vertical_db[s], this->allen, this->eps, this->min_gap, this->max_gap, this->max_duration, this->min_sup, this->min_confidence);
@@ -88,7 +86,10 @@ void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, Ve
 
         for ( auto it : s_temp ){
             // TODO
-            //VertTirpNode s_node = VertTirpNode(it.second.get_seq_str(),);
+            vector<string> seq_str_strings = it.second.get_seq_str();
+            string seq_str_string = accumulate(seq_str_strings.begin(),seq_str_strings.end(),string(""));
+            VertTirpNode s_node = VertTirpNode(seq_str_string,it.second.get_seq_length(),it.second,node);
+            this->dfs_pruning(it.second,s_syms,s_node,node, avoid_same_var_states );
         }
     }
 }
@@ -133,14 +134,14 @@ void VertTIRP::to_vertical(list<list<TI>> const &list_of_ti_seqs, list<string> c
         this->min_sup = 1;
 
     // save a set of frequent 1-sized items sorted lexicographically
-    for ( auto db_pos : this->vertical_db ){
-        unsigned aux = db_pos.second.get_support();
-        if ( db_pos.second.get_support() >= this->min_sup ){
-            db_pos.second.set_n_sequences(n_sequences);
-            this->f1.push_back(db_pos.first);
+    for ( auto db_pos = this->vertical_db.begin() ; db_pos != this->vertical_db.end() ; db_pos++ ){
+        unsigned aux = db_pos->second.get_support();
+        if ( db_pos->second.get_support() >= this->min_sup ){
+            db_pos->second.set_n_sequences(n_sequences);
+            this->f1.push_back(db_pos->first);
         }
         else
-            this->vertical_db.erase(db_pos.first);
+            this->vertical_db.erase(db_pos->first);
     }
 
 

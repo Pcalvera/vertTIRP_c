@@ -15,26 +15,32 @@ using namespace std;
 class VertTirpNode {
 public:
     VertTirpNode();
-    VertTirpNode(string &patt, unsigned pat_len, VertTirpSidList &sidList, bool is_root=true);
+    VertTirpNode(string &patt, unsigned pat_len, VertTirpSidList &sidList, VertTirpNode &parent, bool is_root=false);
     void add_child(VertTirpNode &ch);
 private:
 
 
-    //struct Node {
-    //    //TODO de moment prescideixo de l'atribut parent
-    //    shared_ptr<Node> child,brother;
-    //    string patt;
-    //    unsigned pat_len;
-    //    VertTirpSidList sidlist;
-    //};
-    //shared_ptr<Node> node;
+    struct Node {
+        //TODO de moment prescideixo de l'atribut parent
+        shared_ptr<Node> parent;
+        vector<shared_ptr<Node>> child_nodes;
+        string patt;
+        unsigned pat_len;
+        VertTirpSidList sidlist;
+        bool is_root;
+    };
+    shared_ptr<Node> node;
     //bool is_root;
+    //TODO gestionar is_root
     //TODO de moment prescideixo de l'atribut parent
-    vector<VertTirpNode> child_nodes;
-    string patt;
-    unsigned pat_len;
-    VertTirpSidList sidlist;
-    bool is_root;
+
+
+    //VertTirpNode parent;
+    //vector<VertTirpNode> child_nodes;
+    //string patt;
+    //unsigned pat_len;
+    //VertTirpSidList sidlist;
+    //bool is_root;
 };
 
 
