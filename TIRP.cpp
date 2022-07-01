@@ -47,6 +47,10 @@ long long TIRP::get_duration() const {   //TODO comprovar que funcioni correctam
     return this->max_last - this->first;
 }
 
+long long TIRP::get_first() const {
+    return this->first;
+}
+
 //pair<bool, pair<TIRP, unsigned>>
 //TIRP::extend_with(TI s_ti, float eps, long long int min_gap, long long int max_gap, long long int max_duration,
 //                  bool mine_last_equal, Allen &allen) {

@@ -26,16 +26,16 @@ public:
     unsigned get_support() const;                                                 //TODO comprovar que sigui unsigned
     vector<string> get_seq_str()const;      //TODO retornar ref?
     unsigned get_seq_length()const;
-    map<string,map<unsigned,list<TIRP>>> get_definitive_ones_indices_dict()const;
+    map<string,map<unsigned,vector<TIRP>>> get_definitive_ones_indices_dict()const;
     map<string,TIRPstatistics> get_definitive_discovered_tirp_dict()const;
-    VertTirpSidList join(VertTirpSidList f, Allen ps, float eps, int min_gap = 0, int max_gap = MAXGAP, long long max_duration = MAXDURATION, float min_ver_sup = 0, int min_confidence = 0.9)const;
+    VertTirpSidList join(VertTirpSidList f, Allen ps, float eps, long long  min_gap = 0, long long  max_gap = MAXGAP, long long max_duration = MAXDURATION, float min_ver_sup = 0, int min_confidence = 0.9)const;
     //TODO join
     //TODO update_tirp_attrs
     //TODO first_sorted_extend
 
 private:
     vector<string> seq_str;
-    map<string,map<unsigned,list<TIRP>>> definitive_ones_indices_dict;
+    map<string,map<unsigned,vector<TIRP>>> definitive_ones_indices_dict; //TODO comprovar que hagi de ser un vector i no list
     map<string,TIRPstatistics> definitive_discovered_tirp_dict;  //TODO
     //temp_discovered_tirp_dict;  //TODO
     //unsigned seq_length;  //TODO
