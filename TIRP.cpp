@@ -51,6 +51,16 @@ long long TIRP::get_first() const {
     return this->first;
 }
 
+vector<TI> TIRP::get_ti() const {
+    return this->ti;
+}
+
+pair<pair<bool, TIRP>, unsigned>
+TIRP::extend_with(TI s_ti, float eps, long long int min_gap, long long int max_gap, long long int max_duration,
+                  bool mine_last_equal, const Allen &allen)const {
+    //TODO
+}
+
 //pair<bool, pair<TIRP, unsigned>>
 //TIRP::extend_with(TI s_ti, float eps, long long int min_gap, long long int max_gap, long long int max_duration,
 //                  bool mine_last_equal, Allen &allen) {

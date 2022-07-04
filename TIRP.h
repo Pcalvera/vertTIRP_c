@@ -22,7 +22,8 @@ public:
     string get_rel_as_str()const;
     long long get_duration()const;
     long long get_first()const;
-    //pair<bool,pair<TIRP,unsigned>> extend_with(TI s_ti, float eps, long long min_gap, long long max_gap, long long max_duration, bool mine_last_equal, Allen &allen);
+    vector<TI> get_ti()const;
+    pair<pair<bool,TIRP>,unsigned> extend_with(TI s_ti, float eps, long long min_gap, long long max_gap, long long max_duration, bool mine_last_equal,const Allen &allen)const;
 
 
 private:

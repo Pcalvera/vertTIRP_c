@@ -245,7 +245,7 @@ void Allen_relationsEPS::update_added(map<char,bool> &added,char c, bool b){
     auto added_it = added.insert(pair<char,bool>(c,true));
     if (!added_it.second) added_it.first->second = true;
 }
-
+//TODO canviar els return pair per return make_pair
 pair<string,int> Allen_relationsEPS::before_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
     long long b_s_a_e = b.get_start()-a.get_end();
     if ( b_s_a_e > eps ){
