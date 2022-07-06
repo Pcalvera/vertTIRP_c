@@ -25,7 +25,7 @@ public:
     float get_ver_support(unsigned n_sequences) const;
     vector<long long> get_mean_duration();
     string get_mean_of_means_duration(unsigned units=2);
-
+    map<string,map<unsigned,vector<TIRP>>> get_sequence_events_tirps_dict();
 private:
     map<string,map<unsigned,vector<TIRP>>> sequence_events_tirps_dict;
     unsigned sum_ver_supp;

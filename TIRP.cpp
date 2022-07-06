@@ -61,6 +61,10 @@ TIRP::extend_with(TI s_ti, float eps, long long int min_gap, long long int max_g
     //TODO
 }
 
+long long TIRP::get_max_last() const {
+    return this->max_last;
+}
+
 //pair<bool, pair<TIRP, unsigned>>
 //TIRP::extend_with(TI s_ti, float eps, long long int min_gap, long long int max_gap, long long int max_duration,
 //                  bool mine_last_equal, Allen &allen) {

@@ -29,12 +29,12 @@ public:
     map<string,map<unsigned,vector<TIRP>>> get_definitive_ones_indices_dict()const;
     map<string,TIRPstatistics> get_definitive_discovered_tirp_dict()const;
     VertTirpSidList join(VertTirpSidList f, Allen ps, float eps, long long min_gap = 0, long long max_gap = MAXGAP, long long max_duration = MAXDURATION, float min_ver_sup = 0, int min_confidence = 0.9)const;
-    unsigned update_tirp_attrs(const string &seq_id, unsigned f_eid, VertTirpSidList &f_sidlist, bool mine_last_equal, const Allen &ps, const vector<TIRP> &tirps_to_extend, float eps, long long  min_gap, long long  max_gap, long long int max_duration, float min_ver_sup, map<string,TIRPstatistics> &father_discovered_tirp_dict, int min_confidence);
-    //TODO first_sorted_extend
+    unsigned update_tirp_attrs(const string &seq_id, unsigned f_eid, const VertTirpSidList &f_sidlist, bool mine_last_equal, const Allen &ps, const vector<TIRP> &tirps_to_extend, float eps, long long  min_gap, long long  max_gap, long long int max_duration, float min_ver_sup, const map<string,TIRPstatistics> &father_discovered_tirp_dict, int min_confidence);
+    void first_sorted_extend(const string &sid, unsigned eid, const vector<TIRP> &new_tirps);
 
 private:
     vector<string> seq_str;
-    map<string,map<unsigned,vector<TIRP>>> definitive_ones_indices_dict; //TODO comprovar que hagi de ser un vector i no list
+    map<string,map<unsigned,vector<TIRP>>> definitive_ones_indices_dict; //TODO potser list (first_sorted_extend() fa inserció a davant)
     map<string,TIRPstatistics> definitive_discovered_tirp_dict;  //TODO
     map<string,TIRPstatistics> temp_discovered_tirp_dict;  //TODO
     //unsigned seq_length;  //TODO

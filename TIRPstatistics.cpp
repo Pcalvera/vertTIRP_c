@@ -122,3 +122,7 @@ string TIRPstatistics::get_mean_of_means_duration(unsigned units) {
     //auto j = (aux/l.size())/switcher[units]);
     return to_string(utils_mean(l)/UNITS_NUMBER[units]) + " " + UNITS_STRING[units];
 }
+
+map<string, map<unsigned, vector<TIRP>>> TIRPstatistics::get_sequence_events_tirps_dict() {
+    return this->sequence_events_tirps_dict;
+}

@@ -23,6 +23,7 @@ public:
     long long get_duration()const;
     long long get_first()const;
     vector<TI> get_ti()const;
+    long long get_max_last()const;
     pair<pair<bool,TIRP>,unsigned> extend_with(TI s_ti, float eps, long long min_gap, long long max_gap, long long max_duration, bool mine_last_equal,const Allen &allen)const;
 
 

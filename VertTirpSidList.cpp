@@ -90,12 +90,12 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList f, Allen ps, float eps, lo
         if ( f.definitive_ones_indices_dict.find(seq_id) != f.definitive_ones_indices_dict.end() ) {
             //vector<int> f_eids = utils_getKeys(f.definitive_ones_indices_dict[seq_id]);   //TODO fer funcionar la funcio
             vector<unsigned> f_eids = vector<unsigned>();
-            for (auto it: f.definitive_ones_indices_dict[seq_id])
+            for (auto it: f.definitive_ones_indices_dict.at(seq_id))
                 f_eids.push_back(it.first);
             //TODO fi
 
-            long long last_f_first = f.definitive_ones_indices_dict[seq_id][f_eids.back()][0].get_first();
-            long long first_f_first = f.definitive_ones_indices_dict[seq_id][f_eids.front()][0].get_first();
+            long long last_f_first = f.definitive_ones_indices_dict.at(seq_id).at(f_eids.back())[0].get_first();
+            long long first_f_first = f.definitive_ones_indices_dict.at(seq_id).at(f_eids.front())[0].get_first();
             for (const auto &item2: dict_pos_tirps) {
                 unsigned self_first_eid = item2.first;
                 vector<TIRP> self_tirps = item2.second;
@@ -118,7 +118,7 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList f, Allen ps, float eps, lo
                             me_second = me_first + max_gap;
                             me_second_init = true;
                         }
-                        if ( max_gap == MAXGAP || ( me_second_init && first_f_first <= me_second ) ){
+                        if  ( max_gap == MAXGAP || ( me_second_init && first_f_first <= me_second ) ){
                              for ( const auto &item3 : f.definitive_ones_indices_dict[seq_id] ){
                                  unsigned f_pos = item3.first;
                                  vector<TIRP> f_tirps = item3.second;
@@ -146,13 +146,13 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList f, Allen ps, float eps, lo
     return new_sidlist;
 }
 
-unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f_eid, VertTirpSidList &f_sidlist,
+unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f_eid, const VertTirpSidList &f_sidlist,
                                             bool mine_last_equal, const Allen &ps, const vector<TIRP> &tirps_to_extend,
                                             float eps, long long int min_gap, long long int max_gap,
                                             long long int max_duration, float min_ver_sup,
-                                            map<string, TIRPstatistics> &father_discovered_tirp_dict,
+                                            const map<string, TIRPstatistics> &father_discovered_tirp_dict,
                                             int min_confidence) {
-    vector<TI> f_ti = f_sidlist.definitive_ones_indices_dict[seq_id][f_eid][0].get_ti();
+    vector<TI> f_ti = f_sidlist.definitive_ones_indices_dict.at(seq_id).at(f_eid)[0].get_ti();
 
     bool all_max_gap_exceeded = true;
     bool at_least_one_tirp = false;
@@ -180,9 +180,9 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
             if ( min_confidence != -1 ){
                 float father_supp;
                 if ( tirp_to_extend.get_rel_as_str() == "" )
-                    father_supp = father_discovered_tirp_dict[""].get_sum_ver_supp();
+                    father_supp = father_discovered_tirp_dict.at("").get_sum_ver_supp();
                 else
-                    father_supp = father_discovered_tirp_dict[tirp_to_extend.get_rel_as_str()].get_sum_ver_supp();
+                    father_supp = father_discovered_tirp_dict.at(tirp_to_extend.get_rel_as_str()).get_sum_ver_supp();
                 conf_constraint = ((float)vert_supp / father_supp) >= (float)min_confidence; // TODO comprovar conversio unsigned float
             }
 
@@ -190,14 +190,49 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
                 auto new_rel_in_definitive_disc_tirp_dict = this->definitive_discovered_tirp_dict.find(new_rel);
                 if ( new_rel_in_definitive_disc_tirp_dict != this->definitive_discovered_tirp_dict.end() ){
                     // if the new_rel exists in the this->definitive_discovered_tirp_dict
-                    new_rel_in_definitive_disc_tirp_dict->second = this->temp_discovered_tirp_dict[new_rel];
+                    new_rel_in_definitive_disc_tirp_dict->second = this->temp_discovered_tirp_dict.at(new_rel);
 
                     // update this->definitive_ones_indices_dict with a new_tirp
-                    //TODO
+                    this->definitive_ones_indices_dict[seq_id];
+                    this->definitive_ones_indices_dict[seq_id][f_eid];
+
+                    auto it = this->definitive_ones_indices_dict.find(seq_id);
+                    if ( it == this->definitive_ones_indices_dict.end() )
+                        it->second[f_eid] = vector<TIRP>(1,extended_tirp.first.second);
+                    else
+                        this->first_sorted_extend(seq_id, f_eid, vector<TIRP>(1,extended_tirp.first.second));
                 }
+                else {
+                    // If the new_rel does not exists in the self.definitive_discovered_tirp_dict
+                    // what means that the new_rel just became frequent
+                    this->definitive_discovered_tirp_dict[new_rel] = this->temp_discovered_tirp_dict.at(new_rel);
 
+                    // copy all the frequent tirps at the correspondent event ids of
+                    // self.definitive_ones_indices_dict
+                    for ( const auto &sid_eidtirps : this->definitive_discovered_tirp_dict.at(new_rel).get_sequence_events_tirps_dict()){
+                        string sid = sid_eidtirps.first;
+                        for ( const auto &eid_tirps : sid_eidtirps.second ){
+                            unsigned eid = eid_tirps.first;
+                            auto it2 = this->definitive_ones_indices_dict.find(sid);
+                            if ( it2 == this->definitive_ones_indices_dict.end() ){
+                                this->support++;
+                                it2 = this->definitive_ones_indices_dict.insert(pair<string,map<unsigned,vector<TIRP>>>(
+                                        sid,
+                                        map<unsigned,vector<TIRP>>()
+                                        )).first;
+                            }
+
+                            auto it3 = it2->second.find(eid);
+                            if ( it3 == it2->second.end() )
+                                it2->second.insert(pair<unsigned,vector<TIRP>>(
+                                        eid,
+                                        vector<TIRP>(eid_tirps.second)));
+                            else
+                                this->first_sorted_extend(sid,eid, eid_tirps.second);
+                        }
+                    }
+                }
             }
-
         }
         else if ( extended_tirp.second != 2 )
             all_max_gap_exceeded = false;
@@ -210,6 +245,20 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
     else
         return 1;
 }
+
+void VertTirpSidList::first_sorted_extend(const string &sid, unsigned eid, const vector<TIRP> &new_tirps) {
+    //TODO comentaris
+
+    vector<TIRP> &current_tirps = this->definitive_ones_indices_dict[sid][eid];
+    unsigned i = 0;
+    unsigned j = new_tirps.size();
+    while ( i < j ){
+        //if ( new_tirps[i].get_max_last() > current_tirps.front().get_max_last() ) //TODO afegir al principi i mirar si definitive_ones_indices_dict ha de ser llista
+            current_tirps.push_back(new_tirps[i]);
+    }
+}
+
+
 
 
 
