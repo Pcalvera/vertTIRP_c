@@ -255,6 +255,7 @@ void VertTirpSidList::first_sorted_extend(const string &sid, unsigned eid, const
     while ( i < j ){
         //if ( new_tirps[i].get_max_last() > current_tirps.front().get_max_last() ) //TODO afegir al principi i mirar si definitive_ones_indices_dict ha de ser llista
             current_tirps.push_back(new_tirps[i]);
+            i++;
     }
 }
 

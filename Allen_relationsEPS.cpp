@@ -143,7 +143,7 @@ Allen_relationsEPS::Allen_relationsEPS(){
     };
 }
 
-pair<PairingStrategy,list<string>> Allen_relationsEPS::get_pairing_strategy(string str_rels){
+pair<PairingStrategy,list<string>> Allen_relationsEPS::get_pairing_strategy(string str_rels){ //TODO arreglar
     PairingStrategy rels_arr = PairingStrategy();
     list<string> gr_arr = list<string>();
 

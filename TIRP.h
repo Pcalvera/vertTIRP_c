@@ -5,6 +5,7 @@
 #ifndef VERTTIRP_C_TIRP_H
 #define VERTTIRP_C_TIRP_H
 #include <iostream>
+#include <cmath>
 #include "TI.h"
 #include "vector"
 #include "list"
@@ -14,7 +15,8 @@ using namespace std;
 
 class TIRP {
 public:
-    TIRP(vector<TI> ti, long long first, long long max_last, list<char> r = list<char>() );
+    TIRP();
+    TIRP(vector<TI> ti, long long first, long long max_last, vector<char> r = vector<char>() );
     bool operator<(const TIRP &rhs) const;
     bool operator>(const TIRP &rhs) const;
     bool operator<=(const TIRP &rhs) const;
@@ -24,14 +26,14 @@ public:
     long long get_first()const;
     vector<TI> get_ti()const;
     long long get_max_last()const;
-    pair<pair<bool,TIRP>,unsigned> extend_with(TI s_ti, float eps, long long min_gap, long long max_gap, long long max_duration, bool mine_last_equal,const Allen &allen)const;
+    pair<pair<bool,TIRP&>,unsigned> extend_with(const TI &s_ti, float eps, long long min_gap, long long max_gap, long long max_duration, bool mine_last_equal,const Allen &allen)const;
 
 
 private:
     vector<TI> ti;
     long long first;
     long long max_last;
-    list<char> r;
+    vector<char> r;
 };
 
 

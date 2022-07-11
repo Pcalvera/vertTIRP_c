@@ -10,9 +10,9 @@ using namespace std;
 class TI {
 public:
     TI(string sym, long long start, long long end);
-    long long get_start();
-    long long get_end();
-    string get_sym();
+    long long get_start()const;
+    long long get_end()const;
+    string get_sym()const;
 
     friend ostream &operator<<(ostream &os, const TI &ti);
     bool operator==(const TI &rhs) const;

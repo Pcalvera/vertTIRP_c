@@ -78,8 +78,8 @@ Relation Allen::get_possible_rels(char a, char b) const{
     }
 }
 
-pair<string, int>
-Allen::calc_rel(TI a, TI b, float eps, long long int min_gap, long long int max_gap, PairingStrategy rels_arr, list<string> gr_arr) {
+pair<char, int>
+Allen::calc_rel(TI &a, TI &b, float eps, long long int min_gap, long long int max_gap, PairingStrategy rels_arr, list<string> gr_arr)const {
     if (rels_arr.empty()){
         rels_arr = this->rels_arr;
         gr_arr = this->gr_arr;
@@ -87,10 +87,24 @@ Allen::calc_rel(TI a, TI b, float eps, long long int min_gap, long long int max_
 
     // if b is less than a
     if ( b.get_start() < a.get_start() || ( b.get_start()==a.get_start() && b.get_end()<a.get_end() ) )
-        return pair<string,int>("1",1);
+        return make_pair('1',1);
 
     //TODO for
 
-    return pair<string,int>("1",1);
+    return make_pair('1',1);
+}
+
+pair<char, int>
+Allen::assign_rel(TI a, TI b, Relation &possible_rels, float eps, long long int min_gap, long long int max_gap) const {
+    if ( this->dummy_calc ) {
+
+    }
+    else{
+        if ( possible_rels.)
+    }
+}
+
+bool Allen::get_trans() const {
+    return this->trans;
 }
 

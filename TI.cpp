@@ -49,15 +49,15 @@ bool TI::operator>=(const TI &rhs) const {
     return !(*this < rhs);
 }
 
-long long TI::get_start() {
+long long TI::get_start()const {
     return this->start;
 }
 
-long long TI::get_end() {
+long long TI::get_end()const {
     return this->end;
 }
 
-string TI::get_sym() {
+string TI::get_sym()const {
     return this->sym;
 }
 
