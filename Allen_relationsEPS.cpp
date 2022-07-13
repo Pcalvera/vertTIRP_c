@@ -28,135 +28,133 @@ Allen_relationsEPS::rel_func_dict = {
         {'s', Allen_relationsEPS::starts},
         {'l', Allen_relationsEPS::left_contains}
 };
-
-Allen_relationsEPS::Allen_relationsEPS(){
-    trans_table_0 = {
-            // before b
-            {"bb", "b"},
-            {"bc", "b"},
-            {"bo", "b"},
-            {"bm", "b"},
-            {"bs", "b"},
-            {"bf", "b"},
-            {"be", "b"},
-            // equal e
-            {"eb", "b"},
-            {"ec", "c"},
-            {"eo", "o"},
-            {"em", "m"},
-            {"es", "s"},
-            {"ef", "f"},
-            {"ee", "e"},
-            // contains c
-            {"cb", "bcfmo"},
-            {"cc", "c"},
-            {"co", "cfo"},
-            {"cm", "cfo"},
-            {"cs", "cfo"},
-            {"cf", "c"},
-            {"ce", "c"},
-            // overlaps o
-            {"ob", "b"},
-            {"oc", "bcfmo"},
-            {"oo", "bmo"},
-            {"om", "b"},
-            {"os", "o"},
-            {"of", "bmo"},
-            {"oe", "o"},
-            // meets m
-            {"mb", "b"},
-            {"mc", "b"},
-            {"mo", "b"},
-            {"mm", "b"},
-            {"ms", "m"},
-            {"mf", "b"},
-            {"me", "m"},
-            // starts s
-            {"sb", "b"},
-            {"sc", "bcfmo"},
-            {"so", "bmo"},
-            {"sm", "b"},
-            {"ss", "s"},
-            {"sf", "bmo"},
-            {"se", "s"},
-            // finished by
-            {"fb", "b"},
-            {"fc", "c"},
-            {"fo", "o"},
-            {"fm", "m"},
-            {"fs", "o"},
-            {"ff", "f"},
-            {"fe", "f"}
-    };
-    //Trans table based of the vertTIRP article
-    trans_table = {
-            // before b
-            {"bb", "b"},
-            {"bc", "b"},
-            {"bo", "b"},
-            {"bm", "b"},
-            {"bs", "b"},
-            {"bf", "b"},
-            {"be", "b"},
-            // contains c
-            {"cb", "bcfmo"},
-            {"cc", "c"},
-            {"co", "cfo"},
-            {"cm", "cfo"},
-            {"cs", "cfo"},
-            {"cf", "cf"},
-            {"ce", "cf"},
-            // overlaps o
-            {"ob", "b"},
-            {"oc", "bcfmo"},
-            {"oo", "bmo"},
-            {"om", "bm"},
-            {"os", "mo"},
-            {"of", "bfmo"},
-            {"oe", "mo"},
-            // meets m
-            {"mb", "b"},
-            {"mc", "bm"},
-            {"mo", "bm"},
-            {"mm", "bm"},
-            {"ms", "bm"},
-            {"mf", "bm"},
-            {"me", "bm"},
-            // starts s
-            {"sb", "b"},
-            {"sc", "bcfmo"},
-            {"so", "bmo"},
-            {"sm", "bm"},
-            {"ss", "ms"},
-            {"sf", "bmo"},
-            {"se", "emos"},
-            // finished-by fi
-            {"fb", "bm"},
-            {"fc", "cf"},
-            {"fo", "fmo"},
-            {"fm", "bmo"},
-            {"fs", "fmo"},
-            {"ff", "cfmo"},
-            {"fe", "cflmo"},
-            // equal e
-            {"eb", "bm"},
-            {"ec", "cf"},
-            {"eo", "fmo"},
-            {"em", "bemo"},
-            {"es", "eos"},
-            {"ef", "cfm"},
-            {"ee", "cefo"},
-            // equal l
-            {"lb", "bcfmo"},
-            {"lc", "c"},
-            {"lo", "cfo"},
-            {"lm", "cmo"},
-            {"ls", "celo"},
-            {"lf", "cf"},
-            {"le", "cefl"}
-    };
-
-}
+map<string,string>
+Allen_relationsEPS::trans_table_0 = {
+        // before b
+        {"bb", "b"},
+        {"bc", "b"},
+        {"bo", "b"},
+        {"bm", "b"},
+        {"bs", "b"},
+        {"bf", "b"},
+        {"be", "b"},
+        // equal e
+        {"eb", "b"},
+        {"ec", "c"},
+        {"eo", "o"},
+        {"em", "m"},
+        {"es", "s"},
+        {"ef", "f"},
+        {"ee", "e"},
+        // contains c
+        {"cb", "bcfmo"},
+        {"cc", "c"},
+        {"co", "cfo"},
+        {"cm", "cfo"},
+        {"cs", "cfo"},
+        {"cf", "c"},
+        {"ce", "c"},
+        // overlaps o
+        {"ob", "b"},
+        {"oc", "bcfmo"},
+        {"oo", "bmo"},
+        {"om", "b"},
+        {"os", "o"},
+        {"of", "bmo"},
+        {"oe", "o"},
+        // meets m
+        {"mb", "b"},
+        {"mc", "b"},
+        {"mo", "b"},
+        {"mm", "b"},
+        {"ms", "m"},
+        {"mf", "b"},
+        {"me", "m"},
+        // starts s
+        {"sb", "b"},
+        {"sc", "bcfmo"},
+        {"so", "bmo"},
+        {"sm", "b"},
+        {"ss", "s"},
+        {"sf", "bmo"},
+        {"se", "s"},
+        // finished by
+        {"fb", "b"},
+        {"fc", "c"},
+        {"fo", "o"},
+        {"fm", "m"},
+        {"fs", "o"},
+        {"ff", "f"},
+        {"fe", "f"}
+};
+//Trans table based of the vertTIRP article
+map<string,string>
+Allen_relationsEPS::trans_table = {
+        // before b
+        {"bb", "b"},
+        {"bc", "b"},
+        {"bo", "b"},
+        {"bm", "b"},
+        {"bs", "b"},
+        {"bf", "b"},
+        {"be", "b"},
+        // contains c
+        {"cb", "bcfmo"},
+        {"cc", "c"},
+        {"co", "cfo"},
+        {"cm", "cfo"},
+        {"cs", "cfo"},
+        {"cf", "cf"},
+        {"ce", "cf"},
+        // overlaps o
+        {"ob", "b"},
+        {"oc", "bcfmo"},
+        {"oo", "bmo"},
+        {"om", "bm"},
+        {"os", "mo"},
+        {"of", "bfmo"},
+        {"oe", "mo"},
+        // meets m
+        {"mb", "b"},
+        {"mc", "bm"},
+        {"mo", "bm"},
+        {"mm", "bm"},
+        {"ms", "bm"},
+        {"mf", "bm"},
+        {"me", "bm"},
+        // starts s
+        {"sb", "b"},
+        {"sc", "bcfmo"},
+        {"so", "bmo"},
+        {"sm", "bm"},
+        {"ss", "ms"},
+        {"sf", "bmo"},
+        {"se", "emos"},
+        // finished-by fi
+        {"fb", "bm"},
+        {"fc", "cf"},
+        {"fo", "fmo"},
+        {"fm", "bmo"},
+        {"fs", "fmo"},
+        {"ff", "cfmo"},
+        {"fe", "cflmo"},
+        // equal e
+        {"eb", "bm"},
+        {"ec", "cf"},
+        {"eo", "fmo"},
+        {"em", "bemo"},
+        {"es", "eos"},
+        {"ef", "cfm"},
+        {"ee", "cefo"},
+        // equal l
+        {"lb", "bcfmo"},
+        {"lc", "c"},
+        {"lo", "cfo"},
+        {"lm", "cmo"},
+        {"ls", "celo"},
+        {"lf", "cf"},
+        {"le", "cefl"}
+};
 
 pair<PairingStrategy,vector<string>> Allen_relationsEPS::get_pairing_strategy(string str_rels){ //TODO arreglar
     PairingStrategy rels_arr = PairingStrategy();

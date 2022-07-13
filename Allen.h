@@ -13,7 +13,7 @@ using namespace std;
 class Allen {
 public:
     Allen();
-    Allen(bool dummy_calc, bool trans = true, float eps = 0, string calc_sort="bselfmoc", const Allen_relationsEPS& supClass = Allen_relationsEPS() );  //TODO passar supClass per ref?
+    Allen(bool dummy_calc, bool trans = true, float eps = 0, string calc_sort="bselfmoc" );  //TODO passar supClass per ref?
     string sort_rels(string reducted_group);
     pair<char,int> calc_rel(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap, PairingStrategy rels_arr = PairingStrategy(), vector<string> gr_arr = vector<string>() )const;   //TODO hauria de passar per ref
     pair<char,int> assign_rel(const TI &a, const TI &b, const Relation &possible_rels, float eps, long long min_gap, long long max_gap )const;
@@ -25,7 +25,6 @@ private:
     bool trans;
     float eps;
 
-    Allen_relationsEPS supClass;
     //For non dummy
     PairingStrategy rels_arr;
     vector<string> gr_arr;

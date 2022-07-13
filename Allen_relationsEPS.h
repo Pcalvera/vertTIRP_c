@@ -20,14 +20,13 @@ const string NONE = "N";
 
 class Allen_relationsEPS {
 public:
-    Allen_relationsEPS();
     static pair<PairingStrategy,vector<string>> get_pairing_strategy(string str_rels);
 
     // Trans table based on Mantaining Knowledge about Temporal Intervals
     // by James F.Allen
-    map<string,string> trans_table_0;
+    static map<string,string> trans_table_0;
     //Trans table based of the vertTIRP article
-    map<string,string> trans_table;
+    static map<string,string> trans_table;
 
     //TODO potser hi ha maneres mes eficients d'implementar-ho
     static map<char,function<pair<char,int>(const TI&,const TI&,float, long long, long long)>> ind_func_dict;

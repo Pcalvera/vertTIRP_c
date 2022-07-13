@@ -53,7 +53,7 @@ int VertTIRP::mine_patterns(list<list<TI>> const &list_of_ti_seqs, list<string> 
     return this->tirp_count;
 }
 
-void VertTIRP::print_patterns(bool b) { //TODO
+void VertTIRP::print_patterns(bool dfs) { //TODO
     cout<<"Patrons printed"<<endl;
 }
 

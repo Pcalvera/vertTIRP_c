@@ -101,7 +101,7 @@ TIRP::extend_with(const TI &s_ti, float eps, long long int min_gap, long long in
 
     int r_idx = 1;
     int temp = size_sym - r_idx;
-    int first_pos = int(((pow(temp,2))/2)-1);
+    int first_pos = int(((pow(temp,2)-temp)/2)-1);
     while ( first_pos >= 0 ){
         int second_pos = size_rel - r_idx;
         int pos_to_assign = second_pos - 1;

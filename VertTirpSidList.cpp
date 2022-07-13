@@ -73,7 +73,7 @@ map<string, TIRPstatistics> VertTirpSidList::get_definitive_discovered_tirp_dict
 }
 
 VertTirpSidList VertTirpSidList::join(const VertTirpSidList &f,const Allen &ps, float eps, long long  min_gap, long long  max_gap,
-                                      long long int max_duration, float min_ver_sup, int min_confidence) const {
+                                      long long int max_duration, float min_ver_sup, int min_confidence) {
     //TODO comentaris
     VertTirpSidList new_sidlist = VertTirpSidList();   //TODO potser millor fer un constructor amb tots els paràmetres
     new_sidlist.seq_str = vector<string>(this->seq_str);
@@ -142,7 +142,7 @@ VertTirpSidList VertTirpSidList::join(const VertTirpSidList &f,const Allen &ps, 
             }
         }
     }
-    //TODO del temps_idscovered_tirp_dict
+    this->temp_discovered_tirp_dict = map<string,TIRPstatistics>();
     return new_sidlist;
 }
 

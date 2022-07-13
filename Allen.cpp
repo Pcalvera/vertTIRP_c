@@ -10,13 +10,11 @@ Allen::Allen() {
     this->dummy_calc = true;
     this->trans = true;
     this->eps = 0;
-    this->supClass = Allen_relationsEPS();
 }
-Allen::Allen(bool dummy_calc, bool trans, float eps, string calc_sort, const Allen_relationsEPS& supClass) {
+Allen::Allen(bool dummy_calc, bool trans, float eps, string calc_sort) {
     this->dummy_calc = dummy_calc;
     this->trans = trans;
     this->eps = eps;
-    this->supClass = supClass;   //TODO treure subClass de arguments?
     if ( !dummy_calc ) {
         this->calc_sort = std::move(calc_sort);
         pair<PairingStrategy,vector<string>> aux_pair = Allen_relationsEPS::get_pairing_strategy(this->calc_sort);
@@ -26,22 +24,22 @@ Allen::Allen(bool dummy_calc, bool trans, float eps, string calc_sort, const All
         this->sorted_trans_table = map<string,Relation>();
 
         if ( this->eps > 0 ){
-            for ( auto &it : this->supClass.trans_table ){
+            for ( auto &it : Allen_relationsEPS::trans_table ){
                 if ( it.second.size() == 1){
                     this->sorted_trans_table.insert(pair<string,Relation>(it.first,Relation(it.second)));
                 }
                 else {
-                    this->sorted_trans_table.insert(pair<string,Relation>(it.first,Relation( supClass.get_pairing_strategy(sort_rels(it.second)) )));
+                    this->sorted_trans_table.insert(pair<string,Relation>(it.first,Relation( Allen_relationsEPS::get_pairing_strategy(sort_rels(it.second)) )));
                 }
             }
         }
         else{
-            for ( auto &it : this->supClass.trans_table_0 ){
+            for ( auto &it : Allen_relationsEPS::trans_table_0 ){
                 if ( it.second.size() == 1){
                     this->sorted_trans_table.insert(pair<string,string>(it.first,it.second));
                 }
                 else {
-                    this->sorted_trans_table.insert(pair<string,Relation>(it.first,Relation(supClass.get_pairing_strategy(sort_rels(it.second)))));
+                    this->sorted_trans_table.insert(pair<string,Relation>(it.first,Relation(Allen_relationsEPS::get_pairing_strategy(sort_rels(it.second)))));
                 }
             }
         }
@@ -63,20 +61,23 @@ string Allen::sort_rels(string reducted_group) {
 Relation Allen::get_possible_rels(char a, char b) const{
     if ( this->dummy_calc ) {
         if ( this->eps > 0 ){
-            auto it = this->supClass.trans_table.find(to_string(a) + to_string(b));
-            if ( it == this->supClass.trans_table.end() ) throw(""); //TODO missatge error
-            return it->second;
+            //auto it = Allen_relationsEPS::trans_table.find(string({a,b}));
+            //if ( it == Allen_relationsEPS::trans_table.end() ) throw(""); //TODO missatge error
+            //return it->second;
+            return Allen_relationsEPS::trans_table.at(string({a,b}));
         }
         else{
-            auto it = this->supClass.trans_table_0.find(to_string(a) + to_string(b));
-            if ( it == this->supClass.trans_table_0.end() ) throw(""); //TODO missatge error
-            return it->second;
+            //auto it = Allen_relationsEPS::trans_table_0.find(string({a,b}));
+            //if ( it == Allen_relationsEPS::trans_table_0.end() ) throw(""); //TODO missatge error
+            //return it->second;
+            return Allen_relationsEPS::trans_table_0.at(string({a,b}));
         }
     }
     else {
-        auto it = this->sorted_trans_table.find(to_string(a) + to_string(b));
-        if ( it == this->sorted_trans_table.end() ) throw(""); //TODO missatge error
-        return it->second;
+        //auto it = this->sorted_trans_table.find(string({a,b}) );
+        //if ( it == this->sorted_trans_table.end() ) throw(""); //TODO missatge error
+        //return it->second;
+        return this->sorted_trans_table.at(string({a,b}));
     }
 }
 
@@ -89,7 +90,7 @@ Allen::calc_rel(const TI &a,const TI &b, float eps, long long int min_gap, long 
     if ( this->dummy_calc ){
         pair<char,int> final_rel = make_pair('1',1);
         for ( char r : {'l','f','s','o','b','c','m','e'} ){
-            pair<char,int> rel = supClass.rel_func_dict.at(r)(a,b,eps,min_gap,max_gap);
+            pair<char,int> rel = Allen_relationsEPS::rel_func_dict.at(r)(a,b,eps,min_gap,max_gap);
             if ( rel.second != -2)
                 final_rel = rel;
         }
@@ -106,17 +107,17 @@ Allen::calc_rel(const TI &a,const TI &b, float eps, long long int min_gap, long 
         pair<char,int> rel;
         for ( const auto &sentence : rels_arr.get_ps() ){
             if ( gr_arr[i] != NONE ){
-                if ( supClass.cond_dict.at(gr_arr[i])(a,b,eps,min_gap,max_gap) ){
+                if ( Allen_relationsEPS::cond_dict.at(gr_arr[i])(a,b,eps,min_gap,max_gap) ){
                     for ( const Node &words : sentence ){
                         if ( words.dif == 1 ){
                             for ( const char &w : words.l ){
-                                rel = supClass.ind_func_dict.at(w)(a,b,eps,min_gap,max_gap);
+                                rel = Allen_relationsEPS::ind_func_dict.at(w)(a,b,eps,min_gap,max_gap);
                                 if ( rel.second > -2 )
                                     return rel;
                             }
                         }
                         else{
-                            rel = supClass.ind_func_dict.at(words.cont)(a,b,eps,min_gap,max_gap);
+                            rel = Allen_relationsEPS::ind_func_dict.at(words.cont)(a,b,eps,min_gap,max_gap);
                             if ( rel.second > -2 )
                                 return rel;
                         }
@@ -124,7 +125,7 @@ Allen::calc_rel(const TI &a,const TI &b, float eps, long long int min_gap, long 
                 }
             }
             else{
-                rel = supClass.ind_func_dict.at('b')(a,b,eps,min_gap,max_gap);
+                rel = Allen_relationsEPS::ind_func_dict.at('b')(a,b,eps,min_gap,max_gap);
                 if ( rel.second > -2)
                     return rel;
             }
@@ -145,7 +146,7 @@ Allen::assign_rel(const TI &a, const TI &b, const Relation &possible_rels, float
         if ( possible_rels.size() == 1){  //TODO aquest if es el mateix codi que en el !dummy
             char first_r = possible_rels.getString().front();
             if ( first_r == 'b' ){ // Special case with gap
-                pair<char,int> calculated = supClass.ind_func_dict.at('b')(a,b,eps,min_gap,max_gap);
+                pair<char,int> calculated = Allen_relationsEPS::ind_func_dict.at('b')(a,b,eps,min_gap,max_gap);
 
                 if ( calculated.second != -2)
                     return calculated;
@@ -156,7 +157,7 @@ Allen::assign_rel(const TI &a, const TI &b, const Relation &possible_rels, float
         }
         else{
             for ( char r : possible_rels.getString() ){
-                pair<char,int> rel_status = supClass.rel_func_dict.at(r)(a,b,eps,min_gap,max_gap);
+                pair<char,int> rel_status = Allen_relationsEPS::rel_func_dict.at(r)(a,b,eps,min_gap,max_gap);
                 if ( rel_status.second != -2 )
                     return rel_status;
             }
@@ -168,7 +169,7 @@ Allen::assign_rel(const TI &a, const TI &b, const Relation &possible_rels, float
         if ( possible_rels.isString() ){
             char first_r = possible_rels.getString().front();
             if ( first_r == 'b' ){ // Special case with gap
-                pair<char,int> calculated = supClass.ind_func_dict.at('b')(a,b,eps,min_gap,max_gap);
+                pair<char,int> calculated = Allen_relationsEPS::ind_func_dict.at('b')(a,b,eps,min_gap,max_gap);
 
                 if ( calculated.second != -2)
                     return calculated;
