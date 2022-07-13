@@ -60,20 +60,20 @@ vector<TI> TIRP::get_ti() const {
     return this->ti;
 }
 
-pair<pair<bool, TIRP&>, unsigned>
+pair<pair<bool, TIRP>, unsigned>
 TIRP::extend_with(const TI &s_ti, float eps, long long int min_gap, long long int max_gap, long long int max_duration,
                   bool mine_last_equal, const Allen &allen) const {
-    TIRP nullRef;
+    TIRP nullTirp;
     // calc and assign the last relation
-    pair<char,int> rel = allen.calc_rel(this->ti.back(), s_ti, eps, min_gap,max_gap );
+    pair<char,int> rel = allen.calc_rel(this->ti.back(), s_ti, eps, min_gap,max_gap ); //TODO
 
     // the s-extension case
     if ( !mine_last_equal && rel.first == 'e' )
-        return make_pair<pair<bool, TIRP&>, unsigned>(make_pair<bool, TIRP&>(false,nullRef),1);
+        return make_pair(make_pair(false,nullTirp),1);
 
     if ( rel.second < 3 )
         // max gap o min gaps exceded
-        return make_pair<pair<bool, TIRP&>, unsigned>(make_pair<bool, TIRP&>(false,nullRef),rel.second);
+        return make_pair(make_pair(false,nullTirp),rel.second);
 
     // ini new relation
     vector<char> new_rel = vector<char>(this->r);
@@ -93,26 +93,40 @@ TIRP::extend_with(const TI &s_ti, float eps, long long int min_gap, long long in
         new_max_last = this->max_last;
 
     // max duration constraint
-    if ( new_max_last-this-first > max_duration )
-        return make_pair<pair<bool, TIRP&>, unsigned>(make_pair<bool, TIRP&>(false,nullRef),1);
+    if ( (new_max_last-this->first) > max_duration )
+        return make_pair(make_pair(false,nullTirp),1);
 
-    unsigned size_rel = new_rel.size();
-    unsigned size_sym = new_ti.size();
+    int size_rel = new_rel.size();
+    int size_sym = new_ti.size();
 
-    unsigned r_idx = 1;
-    int temp = (int)size_sym - (int)r_idx;
+    int r_idx = 1;
+    int temp = size_sym - r_idx;
     int first_pos = int(((pow(temp,2))/2)-1);
     while ( first_pos >= 0 ){
-        int second_pos = (int)size_rel - (int)r_idx;
+        int second_pos = size_rel - r_idx;
         int pos_to_assign = second_pos - 1;
         TI existent_node = new_ti[temp-2];
         if ( allen.get_trans() ){
             Relation possible_rels = allen.get_possible_rels(new_rel[first_pos], new_rel[second_pos] );
-            rel = allen.assign_rel();
+            rel = allen.assign_rel(existent_node,s_ti,possible_rels,eps, min_gap, max_gap);
         }
+        else
+            // calc and assign the last relation
+            rel = allen.calc_rel(existent_node, s_ti, eps, min_gap, max_gap );
+
+        if ( rel.second < 3 )
+            // max gap or min gaps exceeded
+            return make_pair(make_pair(false,nullTirp),rel.second);
+
+        //  assigns the relation to the position
+        new_rel[pos_to_assign] = rel.first;
+
+        r_idx++;
+        temp = size_sym - r_idx;
+        first_pos = int(((pow(temp,2) - temp) / 2) - 1);
     }
 
-    return make_pair<pair<bool, TIRP&>, unsigned>(make_pair<bool, TIRP&>(true,TIRP(new_ti,new_ti[0].get_start(),new_max_last,new_rel)),3);
+    return make_pair(make_pair(true,TIRP(new_ti,new_ti[0].get_start(),new_max_last,new_rel)),3);
 }
 
 long long TIRP::get_max_last() const {

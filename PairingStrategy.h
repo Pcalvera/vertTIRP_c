@@ -5,9 +5,17 @@
 #ifndef VERTTIRP_C_PAIRINGSTRATEGY_H
 #define VERTTIRP_C_PAIRINGSTRATEGY_H
 #include <iostream>
-#include "list"
+#include "vector"
 
 using namespace std;
+
+struct Node {
+    char cont;
+    vector<char> l;
+
+    int dif;  //0-valor    1-llista valors   TODO passar a bool?
+    Node(char c, int i);
+};
 
 class PairingStrategy {
 public:
@@ -18,22 +26,18 @@ public:
     void add(char c);
     void add2(char c);
     bool empty()const;
+    vector<Node> &operator[](int i);
+    vector<vector<Node>> & get_ps();
+    //Node * appendSub(Node * n, char c);
     //void appendSubLast(char c);
     //void appendSub2Last(char c);
     //bool isEmpty() const;
-private:
-    struct Node {
-        char cont;
-        list<char> l;
 
-        int dif;  //0-valor    1-llista valors
-        Node(char c,int i);
-    };
+private:
     // inv: arrel és un punter a una jerarquia disjunta de nodes (o és NULL)
-    list<list<Node>> ps; // representació de l’arbre
+    vector<vector<Node>> ps; // representació de l’arbre
 
     //bool isEmpty(Node * n) const;
-    //Node * appendSub(Node * n, char c);
 };
 //TODO no es memory efficient
 

@@ -1,5 +1,34 @@
 #include "Allen_relationsEPS.h"
 
+map<char,function<pair<char,int>(const TI&,const TI&,float, long long, long long)>>
+Allen_relationsEPS::ind_func_dict = {
+        {'b', Allen_relationsEPS::before_ind},
+        {'m', Allen_relationsEPS::meets_ind},
+        {'o', Allen_relationsEPS::Allen_relationsEPS::overlaps_ind},
+        {'c', Allen_relationsEPS::contains_ind},
+        {'f', Allen_relationsEPS::finish_by_ind},
+        {'e', Allen_relationsEPS::equal_ind},
+        {'s', Allen_relationsEPS::starts_ind},
+        {'l', Allen_relationsEPS::left_contains_ind}
+};
+map<string,function<bool(const TI&,const TI&,float, long long, long long)>>
+Allen_relationsEPS::cond_dict = {
+        {"sel", Allen_relationsEPS::sel_cond},
+        {"cfmo", Allen_relationsEPS::cfmo_cond},
+        {"mo", Allen_relationsEPS::mo_cond}
+};
+map<char,function<pair<char,int>(const TI&,const TI&,float, long long, long long)>>
+Allen_relationsEPS::rel_func_dict = {
+        {'b', Allen_relationsEPS::before},
+        {'m', Allen_relationsEPS::meets},
+        {'o', Allen_relationsEPS::overlaps},
+        {'c', Allen_relationsEPS::contains},
+        {'f', Allen_relationsEPS::finish_by},
+        {'e', Allen_relationsEPS::equal},
+        {'s', Allen_relationsEPS::starts},
+        {'l', Allen_relationsEPS::left_contains}
+};
+
 Allen_relationsEPS::Allen_relationsEPS(){
     trans_table_0 = {
             // before b
@@ -126,26 +155,12 @@ Allen_relationsEPS::Allen_relationsEPS(){
             {"lf", "cf"},
             {"le", "cefl"}
     };
-    ind_func_dict = {
-            {"b", before_ind},
-            {"m", meets_ind},
-            {"o", overlaps_ind},
-            {"c", contains_ind},
-            {"f", finish_by_ind},
-            {"e", equal_ind},
-            {"s", starts_ind},
-            {"l", left_contains_ind}
-    };
-    cond_dict = {
-            {"sel", sel_cond},
-            {"cfmo", cfmo_cond},
-            {"mo", mo_cond}
-    };
+
 }
 
-pair<PairingStrategy,list<string>> Allen_relationsEPS::get_pairing_strategy(string str_rels){ //TODO arreglar
+pair<PairingStrategy,vector<string>> Allen_relationsEPS::get_pairing_strategy(string str_rels){ //TODO arreglar
     PairingStrategy rels_arr = PairingStrategy();
-    list<string> gr_arr = list<string>();
+    vector<string> gr_arr = vector<string>();
 
     int i = 0,j = 0,k = 0;
     char c;
@@ -156,11 +171,11 @@ pair<PairingStrategy,list<string>> Allen_relationsEPS::get_pairing_strategy(stri
         c_in_added = added.find(c) != added.end();
         if ( !c_in_added && c == 'b') {   //TODO millor al reves?
             rels_arr.add(c);
-            gr_arr.push_back(NONE);
+            gr_arr.emplace_back(NONE);
             update_added(added,c,true);
         }
         else if ( !c_in_added && (c=='c' || c=='f' || c=='m' || c=='o') ){
-            gr_arr.push_back("cfmo");
+            gr_arr.emplace_back("cfmo");
             if ( c == 'm' || c == 'o' ){
                 rels_arr.add2(c);
                 update_added(added,c,true);
@@ -221,7 +236,7 @@ pair<PairingStrategy,list<string>> Allen_relationsEPS::get_pairing_strategy(stri
             if ( !c_in_added ) {
                 rels_arr.add(c);
                 update_added(added, c, true);
-                gr_arr.push_back("sel");
+                gr_arr.emplace_back("sel");
                 j = i + 1;
                 while (j < str_rels.size()) {
                     c = str_rels.at(j);
@@ -238,7 +253,7 @@ pair<PairingStrategy,list<string>> Allen_relationsEPS::get_pairing_strategy(stri
         }
         i++;
     }
-    return pair<PairingStrategy,list<string>>(rels_arr,gr_arr);
+    return make_pair(rels_arr,gr_arr);
 }
 
 void Allen_relationsEPS::update_added(map<char,bool> &added,char c, bool b){
@@ -246,84 +261,138 @@ void Allen_relationsEPS::update_added(map<char,bool> &added,char c, bool b){
     if (!added_it.second) added_it.first->second = true;
 }
 //TODO canviar els return pair per return make_pair
-pair<string,int> Allen_relationsEPS::before_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+pair<char,int> Allen_relationsEPS::before_ind(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap){
     long long b_s_a_e = b.get_start()-a.get_end();
     if ( b_s_a_e > eps ){
         if ( min_gap != 0 && b_s_a_e < min_gap )
-            return pair<string,int>("1",1);
+            return make_pair('1',1);
         else if ( max_gap != MAXGAP && b_s_a_e > max_gap )
-            return pair<string,int>("2",2);
+            return make_pair('2',2);
         else
-            return pair<string,int>("b",3);
+            return make_pair('b',3);
     }
     else
-        return pair<string,int>("-2",-2);
+        return make_pair('\0',-2); //TODO en teoria retorna "-2",-2
 }
-pair<string,int> Allen_relationsEPS::meets_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+pair<char,int> Allen_relationsEPS::meets_ind(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap){
     long long b_s_a_e = b.get_start()-a.get_end();
     if ( abs(b_s_a_e) <= eps )
-        return pair<string,int>("m",3);
+        return make_pair('m',3);
     else
-        return pair<string,int>("-2",-2);
+        return make_pair('\0',-2);
 }
-pair<string,int> Allen_relationsEPS::overlaps_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+pair<char,int> Allen_relationsEPS::overlaps_ind(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap){
     long long b_s_a_e = b.get_start()-a.get_end();
     if ( b_s_a_e < (-eps) )
-        return pair<string,int>("o",3);
+        return make_pair('o',3);
     else
-        return pair<string,int>("-2",-2);
+        return make_pair('\0',-2);
 }
-pair<string,int> Allen_relationsEPS::contains_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+pair<char,int> Allen_relationsEPS::contains_ind(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap){
     long long b_s_a_e = b.get_end()-a.get_end();
     if ( b_s_a_e < (-eps) )
-        return pair<string,int>("c",3);
+        return make_pair('c',3);
     else
-        return pair<string,int>("-2",-2);
+        return make_pair('\0',-2);
 }
-pair<string,int> Allen_relationsEPS::finish_by_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+pair<char,int> Allen_relationsEPS::finish_by_ind(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap){
     long long b_s_a_e = b.get_end()-a.get_end();
     if ( abs(b_s_a_e) <= eps )
-        return pair<string,int>("f",3);
+        return make_pair('f',3);
     else
-        return pair<string,int>("-2",-2);
+        return make_pair('\0',-2);
 }
-pair<string,int> Allen_relationsEPS::equal_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+pair<char,int> Allen_relationsEPS::equal_ind(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap){
     long long b_s_a_e = b.get_end()-a.get_end();
     if ( abs(b_s_a_e) <= eps )
-        return pair<string,int>("e",3);
+        return make_pair('e',3);
     else
-        return pair<string,int>("-2",-2);
+        return make_pair('\0',-2);
 }
-pair<string,int> Allen_relationsEPS::starts_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+pair<char,int> Allen_relationsEPS::starts_ind(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap){
     long long b_s_a_e = b.get_end()-a.get_end();
     if ( b_s_a_e > eps )
-        return pair<string,int>("s",3);
+        return make_pair('s',3);
     else
-        return pair<string,int>("-2",-2);
+        return make_pair('\0',-2);
 }
-pair<string,int> Allen_relationsEPS::left_contains_ind(TI a, TI b, float eps, long long min_gap, long long max_gap){
+pair<char,int> Allen_relationsEPS::left_contains_ind(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap){
     if ( eps == 0 )
-    return pair<string,int>("-2",2);
+    return make_pair('\0',2);
     long long b_s_a_e = b.get_end()-a.get_end();
     if ( b_s_a_e < (-eps) )
-        return pair<string,int>("l",3);
+        return make_pair('l',3);
     else
-        return pair<string,int>("-2",-2);
+        return make_pair('\0',-2);
 }
-bool Allen_relationsEPS::sel_cond(TI a, TI b, float eps, long long min_gap, long long max_gap){
+bool Allen_relationsEPS::sel_cond(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap){
     long long b_s_a_s = b.get_start()-a.get_start();
     return abs(b_s_a_s) <= eps;
 }
-bool Allen_relationsEPS::cfmo_cond(TI a, TI b, float eps, long long min_gap, long long max_gap){
+bool Allen_relationsEPS::cfmo_cond(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap){
     long long b_s_a_s = b.get_start()-a.get_start();
     return b_s_a_s > eps;
 }
-bool Allen_relationsEPS::mo_cond(TI a, TI b, float eps, long long min_gap, long long max_gap){
+bool Allen_relationsEPS::mo_cond(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap){
     long long b_s_a_e = b.get_end()-a.get_end();
     return b_s_a_e > eps;
 }
-bool Allen_relationsEPS::true_cond(TI a, TI b, float eps, long long min_gap, long long max_gap){
+bool Allen_relationsEPS::true_cond(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap){
     return true;
+}
+
+pair<char, int> Allen_relationsEPS::before(const TI &a, const TI &b, float eps, long long int min_gap, long long int max_gap) {
+    return ind_func_dict.at('b')(a,b,eps,min_gap,max_gap);
+}
+
+pair<char, int> Allen_relationsEPS::meets(const TI &a, const TI &b, float eps, long long int min_gap, long long int max_gap) {
+    if ( abs( b.get_start() - a.get_end()) <= eps && (b.get_start()-a.get_start()) > eps && (b.get_end() - a.get_end()) > eps )
+        return make_pair('m',3);
+    else
+        return make_pair('\0',-2);
+}
+
+pair<char, int> Allen_relationsEPS::overlaps(const TI &a, const TI &b, float eps, long long int min_gap, long long int max_gap) {
+    if ( (b.get_start()-a.get_start()) > eps && (b.get_end()-a.get_end()) > eps && (a.get_end()-b.get_start()) > eps )
+        return make_pair('o',3);
+    else
+        return make_pair('\0',-2);
+}
+
+pair<char, int> Allen_relationsEPS::contains(const TI &a, const TI &b, float eps, long long int min_gap, long long int max_gap) {
+    if ( (b.get_start() - a.get_start()) > eps && (a.get_end() - b.get_end()) > eps )
+        return make_pair('c',3);
+    else
+        return make_pair('\0',-2);
+}
+
+pair<char, int> Allen_relationsEPS::finish_by(const TI &a, const TI &b, float eps, long long int min_gap, long long int max_gap) {
+    if ( (b.get_start() - a.get_start()) > eps && abs(b.get_end() - a.get_end()) <= eps )
+        return make_pair('f',3);
+    else
+        return make_pair('\0',-2);
+}
+
+pair<char, int> Allen_relationsEPS::equal(const TI &a, const TI &b, float eps, long long int min_gap, long long int max_gap) {
+    if ( ( b.get_start() - a.get_start()) <= eps && abs(b.get_end() - a.get_end()) <= eps )
+        return make_pair('e',3);
+    else
+        return make_pair('\0',-2);
+}
+
+pair<char, int> Allen_relationsEPS::starts(const TI &a, const TI &b, float eps, long long int min_gap, long long int max_gap) {
+    if ( abs(b.get_start() - a.get_start()) <= eps && (b.get_end() - a.get_end()) > eps )
+        return make_pair('s',3);
+    else
+        return make_pair('\0',-2);
+}
+
+pair<char, int>
+Allen_relationsEPS::left_contains(const TI &a, const TI &b, float eps, long long int min_gap, long long int max_gap) {
+    if ( eps > 0 && abs(b.get_start() - a.get_start()) <= eps && (b.get_end() - a.get_end()) < (-eps) )
+        return make_pair('l',3);
+    else
+        return make_pair('\0',-2);
 }
 
 

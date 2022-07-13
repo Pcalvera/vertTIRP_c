@@ -34,7 +34,7 @@ using namespace std;
 
 class VertTIRP {
 public:
-    VertTIRP(int time_mode,string out_file,float min_sup_rel,float eps,int min_gap,long long max_gap,int min_duration,long long max_duration,bool dummy_calc,string ps,bool trans, int min_confidence = -1,int max_length=-1,int min_length=1);
+    VertTIRP(int time_mode,string &out_file,float min_sup_rel,float eps,int min_gap,long long max_gap,int min_duration,long long max_duration,bool dummy_calc,string &ps,bool trans, int min_confidence = -1,int max_length=-1,int min_length=1);
     int mine_patterns(list<list<TI>> const &list_of_ti_seqs, list<string> const &list_of_seqs, bool avoid_same_var_states = true);
     void print_patterns(bool dfs);
 private:

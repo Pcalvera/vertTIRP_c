@@ -72,7 +72,7 @@ map<string, TIRPstatistics> VertTirpSidList::get_definitive_discovered_tirp_dict
     return this->definitive_discovered_tirp_dict;
 }
 
-VertTirpSidList VertTirpSidList::join(VertTirpSidList f, Allen ps, float eps, long long  min_gap, long long  max_gap,
+VertTirpSidList VertTirpSidList::join(const VertTirpSidList &f,const Allen &ps, float eps, long long  min_gap, long long  max_gap,
                                       long long int max_duration, float min_ver_sup, int min_confidence) const {
     //TODO comentaris
     VertTirpSidList new_sidlist = VertTirpSidList();   //TODO potser millor fer un constructor amb tots els paràmetres
@@ -118,8 +118,8 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList f, Allen ps, float eps, lo
                             me_second = me_first + max_gap;
                             me_second_init = true;
                         }
-                        if  ( max_gap == MAXGAP || ( me_second_init && first_f_first <= me_second ) ){
-                             for ( const auto &item3 : f.definitive_ones_indices_dict[seq_id] ){
+                        if ( max_gap == MAXGAP || ( me_second_init && first_f_first <= me_second ) ){
+                             for ( const auto &item3 : f.definitive_ones_indices_dict.at(seq_id) ){
                                  unsigned f_pos = item3.first;
                                  vector<TIRP> f_tirps = item3.second;
 

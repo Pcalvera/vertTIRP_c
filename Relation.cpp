@@ -8,7 +8,7 @@ Relation::Relation(string s) {
     this->s = s;
     this->isS = true;
 }
-Relation::Relation(pair<PairingStrategy,list<string>> p) {
+Relation::Relation(pair<PairingStrategy,vector<string>> p) {
     this->p = p;
     this->isS = false;
 }
@@ -23,7 +23,14 @@ string Relation::getString() const {
     return this->s;
 }
 //Pre: this->isS == false
-pair<PairingStrategy,list<string>> Relation::getPairingStrategy() const {
+pair<PairingStrategy,vector<string>> Relation::getPairingStrategy() const {
     //TODO comprovar? if ( isString() ) throw("");
-    return this->p;
+    return this->p;   //TODO retornar ref?
+}
+
+unsigned Relation::size() const {
+    if ( !isS )
+        return p.second.size();
+    else
+        return s.size();
 }

@@ -6,7 +6,7 @@
 
 
 PairingStrategy::PairingStrategy() {
-    this->ps = list<list<Node>>();
+    this->ps = vector<vector<Node>>();
 }
 
 void PairingStrategy::append(char c) {
@@ -16,7 +16,7 @@ void PairingStrategy::append(char c) {
 
 void PairingStrategy::append2(char c) {
     if ( this->ps.empty() ) throw("La llista és buida"); //TODO missatge error
-    list<Node> back = this->ps.back();
+    vector<Node> back = this->ps.back();
     if ( back.empty() ) throw("La llsita és buida");
     Node back2 = back.back();
     if ( back2.dif == 0 ) throw("");  //TODO missatge error
@@ -29,62 +29,32 @@ void PairingStrategy::appendAdd(char c) {
 }
 
 void PairingStrategy::add(char c) {
-    this->ps.push_back(list<Node>(1,Node(c,0)));
+    this->ps.emplace_back(vector<Node>(1,Node(c,0)));
 }
 
 void PairingStrategy::add2(char c) {
-    this->ps.push_back(list<Node>(1,Node(c,1)));
+    this->ps.emplace_back(vector<Node>(1,Node(c,1)));
 }
 
 bool PairingStrategy::empty() const {
     return ps.empty();
 }
 
-//void PairingStrategy::appendSubLast(char c) {
-//    if (isEmpty()) //TODO missatge error
-//        throw(" ");
-//    last_sub1 = appendSub(last_sub1,c);
-//}
-//
-//void PairingStrategy::appendSub2Last(char c){
-//    if (isEmpty()) //TODO missatge error
-//        throw(" ");
-//    int mida_aux = last_sub1->n_values;
-//    last_sub2 = appendSub(last_sub1->values[mida_aux],c);
-//}
-//
-PairingStrategy::Node::Node(char c,int i) {
+vector<Node> &PairingStrategy::operator[](int i) { //TODO
+    return ps[i];
+}
+
+vector<vector<Node>> &PairingStrategy::get_ps() {
+    return ps;
+}
+
+Node::Node(char c,int i) {
     dif = i;
     if ( dif == 0 )
         cont = c;
     else
         l.push_back(c);
 }
-//
-//
-//bool PairingStrategy::isEmpty() const {
-//    return arrel->n_values == 0;
-//}
-//
-//bool PairingStrategy::isEmpty(PairingStrategy::Node *n) const {
-//    return n->n_values == 0;
-//}
-//
-//PairingStrategy::Node *PairingStrategy::appendSub(PairingStrategy::Node *n, char c) {
-//
-//    Node * ret = new Node(c,size);
-//    if ( n->n_values == 0 ) {
-//        n->values[0] = new Node(n->cont,size);
-//        n->values[1] = ret;
-//        n->n_values = 2;
-//    }
-//    else {
-//        if (n->n_values == size-1) throw("");   //TODO missatge error
-//        n->values[n->n_values++] = ret;
-//    }
-//
-//    return ret;
-//}
 
 
 
