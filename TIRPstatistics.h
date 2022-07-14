@@ -21,7 +21,7 @@ public:
     unsigned append_tirp(string seq_id, unsigned eid, TIRP &tirp );
 
     float get_sum_ver_supp() const;
-    float get_mean_hor_support(map<string, unsigned int> &events_per_sequence) const; //TODO float o double
+    float get_mean_hor_support(const map<string, unsigned int> &events_per_sequence) const; //TODO float o double
     float get_ver_support(unsigned n_sequences) const;
     vector<long long> get_mean_duration();
     string get_mean_of_means_duration(unsigned units=2);

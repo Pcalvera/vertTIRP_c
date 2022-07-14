@@ -39,7 +39,7 @@ public:
     void print_patterns(bool dfs);
 private:
     string out_file;  // output file
-    map<string,int> events_per_sequence;   // necessary for relative horizontal support TODO map?
+    map<string,unsigned> events_per_sequence;   // necessary for relative horizontal support TODO map?
     float min_sup_rel;  // relative minimum vertical support
     int min_confidence; //TODO int?
     int min_gap;  // minimum gap in seconds that is the gap between before consecutive elements

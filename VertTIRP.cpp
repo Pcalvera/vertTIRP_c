@@ -8,7 +8,7 @@ VertTIRP::VertTIRP(int time_mode, string &out_file, float min_sup_rel, float eps
                    int min_duration, long long max_duration, bool dummy_calc, string &ps, bool trans, int min_confidence ,int max_length, int min_length) {
 
     this->out_file = out_file;
-    events_per_sequence = map<string,int>();
+    events_per_sequence = map<string,unsigned>();
     this->min_sup_rel = min_sup_rel;
     this->min_confidence = min_confidence;  //todo passar parametre
     this->min_gap = min_gap;
@@ -46,7 +46,7 @@ int VertTIRP::mine_patterns(list<list<TI>> const &list_of_ti_seqs, list<string> 
 
     for (auto & i : this->f1){
         vector<string> seq_str_strings = this->vertical_db[i].get_seq_str();
-        string seq_str_string = accumulate(seq_str_strings.begin(),seq_str_strings.end(),string(""));
+        string seq_str_string = unifyStrings(seq_str_strings);
         VertTirpNode s_node = VertTirpNode(seq_str_string,1,this->vertical_db[i],this->tree);
         this->dfs_pruning(this->vertical_db[i],this->f1,s_node,this->tree,avoid_same_var_states);  //TODO fer pruning
     }
@@ -54,7 +54,7 @@ int VertTIRP::mine_patterns(list<list<TI>> const &list_of_ti_seqs, list<string> 
 }
 
 void VertTIRP::print_patterns(bool dfs) { //TODO
-    cout<<"Patrons printed"<<endl;
+    this->tree.print_tree(this->min_length, this->out_file, this->events_per_sequence,dfs);
 }
 
 bool VertTIRP::same_variable(string s1, string s2, bool avoid_same_var_states) {
@@ -87,7 +87,7 @@ void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, Ve
         for ( auto it : s_temp ){
             // TODO
             vector<string> seq_str_strings = it.second.get_seq_str();
-            string seq_str_string = accumulate(seq_str_strings.begin(),seq_str_strings.end(),string(""));
+            string seq_str_string = unifyStrings(seq_str_strings);
             VertTirpNode s_node = VertTirpNode(seq_str_string,it.second.get_seq_length(),it.second,node);
             this->dfs_pruning(it.second,s_syms,s_node,node, avoid_same_var_states );
         }
@@ -110,7 +110,7 @@ void VertTIRP::to_vertical(list<list<TI>> const &list_of_ti_seqs, list<string> c
     list<list<TI>>::const_iterator ti_seqs_it = list_of_ti_seqs.begin();
     map<string,VertTirpSidList>::iterator sym_it;
     for (seqs_it = list_of_seqs.begin() ; seqs_it != list_of_seqs.end() ; seqs_it++ ){
-        this->events_per_sequence.insert(pair<string,int>(*seqs_it,(*ti_seqs_it).size()));
+        this->events_per_sequence.insert(make_pair(*seqs_it,(*ti_seqs_it).size()));
         for (auto its: *ti_seqs_it) {
             // duration constraints
             long long duration = its.get_end() - its.get_start();

@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <ctime>
+#include <bits/stdc++.h>
 #include "TI.h"
 #include "list"
 #include "vector"
@@ -37,6 +38,7 @@ ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &da
 TI utils_vectToTi(vector<string> &v);
 tm utils_splitDate(string &s);
 long long utils_mean(vector<long long> &l);
+string unifyStrings( vector<string> &seq_str_strings);
 template <typename T,typename V> vector<T> utils_getKeys(map<T,V> m);
 
 #endif //VERTTIRP_C_UTILS_H

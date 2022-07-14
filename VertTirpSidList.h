@@ -21,13 +21,13 @@ public:
     VertTirpSidList();
     void append_item(TI ti, string sid, unsigned eid);
     void set_n_sequences(int n_sequences);
-    float get_mean_hor_support(map<string,unsigned> &events_per_sequence,TIRPstatistics &tirp_stat) const;   //TODO float o double?
-    float get_ver_support(TIRPstatistics &tirp) const;                            //TODO float o double?
+    float get_mean_hor_support(const map<string,unsigned> &events_per_sequence,const TIRPstatistics &tirp_stat) const;   //TODO float o double?
+    float get_ver_support(const TIRPstatistics &tirp) const;                            //TODO float o double?
     unsigned get_support() const;                                                 //TODO comprovar que sigui unsigned
-    vector<string> get_seq_str()const;      //TODO retornar ref?
+    vector<string> get_seq_str() const;      //TODO retornar ref?
     unsigned get_seq_length()const;
-    map<string,map<unsigned,vector<TIRP>>> get_definitive_ones_indices_dict()const;
-    map<string,TIRPstatistics> get_definitive_discovered_tirp_dict()const;
+    map<string,map<unsigned,vector<TIRP>>> get_definitive_ones_indices_dict()const;  //TODO retornar ref?
+    map<string,TIRPstatistics> get_definitive_discovered_tirp_dict()const;   //TODO retornar ref?
     VertTirpSidList join(const VertTirpSidList &f,const Allen &ps, float eps, long long min_gap = 0, long long max_gap = MAXGAP, long long max_duration = MAXDURATION, float min_ver_sup = 0, int min_confidence = 0.9);  //TODO min_confidence es int pero li dona valor 0.9
     unsigned update_tirp_attrs(const string &seq_id, unsigned f_eid, const VertTirpSidList &f_sidlist, bool mine_last_equal, const Allen &ps, const vector<TIRP> &tirps_to_extend, float eps, long long  min_gap, long long  max_gap, long long int max_duration, float min_ver_sup, const map<string,TIRPstatistics> &father_discovered_tirp_dict, int min_confidence);
     void first_sorted_extend(const string &sid, unsigned eid, const vector<TIRP> &new_tirps);

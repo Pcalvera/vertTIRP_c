@@ -41,12 +41,12 @@ void VertTirpSidList::set_n_sequences(int n_sequences) {
     this->n_sequences = n_sequences;
 }
 
-float VertTirpSidList::get_mean_hor_support(map<string, unsigned int> &events_per_sequence, TIRPstatistics &tirp_stat) const {
+float VertTirpSidList::get_mean_hor_support(const map<string, unsigned int> &events_per_sequence,const TIRPstatistics &tirp_stat) const {
     //TODO comentaris
     return tirp_stat.get_mean_hor_support(events_per_sequence);
 }
 
-float VertTirpSidList::get_ver_support(TIRPstatistics &tirp) const{
+float VertTirpSidList::get_ver_support(const TIRPstatistics &tirp) const{
     //TODO comentaris
     return tirp.get_ver_support(this->n_sequences);
 }
@@ -56,7 +56,7 @@ unsigned VertTirpSidList::get_support() const {
     return this->definitive_discovered_tirp_dict.find("")->second.get_sum_ver_supp();
 }
 
-vector<string> VertTirpSidList::get_seq_str() const {
+vector<string> VertTirpSidList::get_seq_str() const{
     return this->seq_str;
 }
 

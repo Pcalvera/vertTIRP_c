@@ -98,6 +98,13 @@ long long utils_mean(vector<long long> &l) {
     return sum / (unsigned) l.size();
 }
 
+string unifyStrings( vector<string> &seq_str_strings){
+    return "['" + accumulate(seq_str_strings.begin(),seq_str_strings.end(),string(""),[](string &ss, string &s)
+    {
+        return ss.empty() ? s : ss + "', '" + s;
+    }) + "']";
+}
+
 template<typename T, typename V>
 vector<T> utils_getKkeys(map<T, V> m) {
     vector<T> res =  vector<T>();
