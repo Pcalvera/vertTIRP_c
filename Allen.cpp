@@ -60,25 +60,14 @@ string Allen::sort_rels(string reducted_group) {
 
 Relation Allen::get_possible_rels(char a, char b) const{
     if ( this->dummy_calc ) {
-        if ( this->eps > 0 ){
-            //auto it = Allen_relationsEPS::trans_table.find(string({a,b}));
-            //if ( it == Allen_relationsEPS::trans_table.end() ) throw(""); //TODO missatge error
-            //return it->second;
+        if ( this->eps > 0 )
             return Allen_relationsEPS::trans_table.at(string({a,b}));
-        }
-        else{
-            //auto it = Allen_relationsEPS::trans_table_0.find(string({a,b}));
-            //if ( it == Allen_relationsEPS::trans_table_0.end() ) throw(""); //TODO missatge error
-            //return it->second;
+        else
             return Allen_relationsEPS::trans_table_0.at(string({a,b}));
-        }
     }
-    else {
-        //auto it = this->sorted_trans_table.find(string({a,b}) );
-        //if ( it == this->sorted_trans_table.end() ) throw(""); //TODO missatge error
-        //return it->second;
+    else
         return this->sorted_trans_table.at(string({a,b}));
-    }
+
 }
 
 pair<char, int>
@@ -176,7 +165,7 @@ Allen::assign_rel(const TI &a, const TI &b, const Relation &possible_rels, float
                 return this->calc_rel(a,b,eps,min_gap,max_gap);
             }
             else
-                return make_pair(first_r,3); //TODO first_r.at(0) hauria de ser first_r
+                return make_pair(first_r,3);
         }
         else
             return this->calc_rel(a,b,eps,min_gap,max_gap, possible_rels.getPairingStrategy().first, possible_rels.getPairingStrategy().second );

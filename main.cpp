@@ -24,7 +24,6 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 */
 using namespace std;
 
-int timestamp_mode = 1;                    //TODO nomes pot ser mode 1
 float ver_sup = 0.01;  // vertical support TODO float o dobule
 float hor_sup = 0;  // horizontal support
 float eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids crisp borders in relations
@@ -32,8 +31,8 @@ bool dummy = false;  // whether to execute relations without a pairing strategie
 bool trans = true;  // whether to use transitivity properties when assign a relation
 //string result_file_name = "my_result_file.csv";  // an output file
 string result_file_name = "";  // an output file
-string filepath = R"(C:\Users\pauca\Documents\TFG\vertTIRP_c\toy.csv)";  // a path to time interval data. Any valid string path is acceptable.
-//string filepath = "/mnt/c/Users/pauca/Documents/TFG/vertTIRP_c/toy.csv";  // a path to time interval data. Any valid string path is acceptable.
+string filepath = R"(D:\COLE\TFG\toy.csv)";  // a path to time interval data. Any valid string path is acceptable.
+//string filepath = "/mnt/d/COLE/TFG/toy.csv";  // a path to time interval data. Any valid string path is acceptable.
 char sep = ';';  // delimiter to use with the scv file
 string sid_column = "sid";   // sequence column name
 string date_column_name_start = "start_time";  // start time column name
@@ -50,13 +49,12 @@ long long maxd = 3155695200;   // each tirp should have a duration of at most mi
 string ps = "mocfbes";
 
 int main () {
-
-    ReadTi filePatterns = utils_tiRead(filepath, sep, sid_column, date_column_name_start, date_column_name_end, date_format, value_column_name, true, timestamp_mode);
+    ReadTi filePatterns = utils_tiRead(filepath, sep, sid_column, date_column_name_start, date_column_name_end, date_format, value_column_name, true);
     list<list<TI>> list_of_ti_users = filePatterns.list_of_ti_users;
     list<string> list_of_users = filePatterns.list_of_users;
     int ti_count = filePatterns.ti_count;
 
-    VertTIRP co = VertTIRP(timestamp_mode,result_file_name,ver_sup,eps,ming,maxg,mind,maxd,dummy,ps,trans);
+    VertTIRP co = VertTIRP(result_file_name,ver_sup,eps,ming,maxg,mind,maxd,dummy,ps,trans);
     int tirp_count = co.mine_patterns(list_of_ti_users,list_of_users,avoid_same_var_states);
     co.print_patterns(true);
     cout << "Algorithm finished" << endl;

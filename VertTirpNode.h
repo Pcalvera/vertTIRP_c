@@ -25,7 +25,6 @@ private:
 
     struct Node {
         //TODO de moment prescideixo de l'atribut parent
-        shared_ptr<Node> parent;
         vector<shared_ptr<Node>> child_nodes;
         string patt;
         unsigned pat_len;

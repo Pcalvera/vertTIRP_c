@@ -25,7 +25,7 @@ bool TI::operator!=(const TI &rhs) const {
     return !(rhs == *this);
 }
 
-bool TI::operator<(const TI &rhs) const { //TODO comprovar que funcioni
+bool TI::operator<(const TI &rhs) const {
     if (start < rhs.start)
         return true;
     if ( start == rhs.start) {

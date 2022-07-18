@@ -43,7 +43,7 @@ ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &da
 
     for (auto &i: df.content) {
         //TI ti = TI(i[3].at(0),1,2);
-        TI ti = utils_vectToTi(i); //TODO tractar date_format
+        TI ti = utils_vectToTi(i);
 
         if (grouped_by_uid.count(i[0]) == 0) {
             list<TI> aux = list<TI>();
