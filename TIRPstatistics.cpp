@@ -54,7 +54,6 @@ unsigned TIRPstatistics::append_tirp(string seq_id, unsigned int eid, TIRP &tirp
         this->sum_mean_duration.push_back(tirp.get_duration());
         this->n_instances_per_seq.push_back(1);
 
-        //TODO no se segur si aixo funcionara
         this->sequence_events_tirps_dict[seq_id][eid] = vector<TIRP>(1,tirp);
         this->sum_ver_supp += 1;
 

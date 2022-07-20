@@ -34,12 +34,12 @@ using namespace std;
 
 class VertTIRP {
 public:
-    VertTIRP(int time_mode,string &out_file,float min_sup_rel,float eps,int min_gap,long long max_gap,int min_duration,long long max_duration,bool dummy_calc,string &ps,bool trans, int min_confidence = -1,int max_length=-1,int min_length=1);
+    VertTIRP(string &out_file,float min_sup_rel,float eps,int min_gap,long long max_gap,int min_duration,long long max_duration,bool dummy_calc,string &ps,bool trans, int min_confidence = -1,int max_length=-1,int min_length=1);
     int mine_patterns(list<list<TI>> const &list_of_ti_seqs, list<string> const &list_of_seqs, bool avoid_same_var_states = true);
     void print_patterns(bool dfs);
 private:
     string out_file;  // output file
-    map<string,unsigned> events_per_sequence;   // necessary for relative horizontal support TODO map?
+    map<string,unsigned> events_per_sequence;   // necessary for relative horizontal support
     float min_sup_rel;  // relative minimum vertical support
     int min_confidence; //TODO int?
     int min_gap;  // minimum gap in seconds that is the gap between before consecutive elements
@@ -51,9 +51,9 @@ private:
     float eps;  // karma lego epsilon in nanoseconds
     int tirp_count; //TODO int?
     float min_sup;  // absolute support //TODO int?
-    vector<string> f1;  // holds frequent 1-size items //TODO tipus?
-    map<string,VertTirpSidList> vertical_db;  // holds database represented vertically //TODO map?
-    VertTirpNode tree;  // we will save the patterns in a tree structure  //TODO estructura arbre
+    vector<string> f1;  // holds frequent 1-size items
+    map<string,VertTirpSidList> vertical_db;  // holds database represented vertically
+    VertTirpNode tree;  // we will save the patterns in a tree structure
     int time_mode;  //  1- timestamp mode, 2- datetime mode 3- number mode(e.g. number of frame)
 
     Allen allen;

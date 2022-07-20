@@ -4,13 +4,13 @@
 
 #include "VertTIRP.h"
 
-VertTIRP::VertTIRP(int time_mode, string &out_file, float min_sup_rel, float eps, int min_gap, long long max_gap,
+VertTIRP::VertTIRP(string &out_file, float min_sup_rel, float eps, int min_gap, long long max_gap,
                    int min_duration, long long max_duration, bool dummy_calc, string &ps, bool trans, int min_confidence ,int max_length, int min_length) {
 
     this->out_file = out_file;
     events_per_sequence = map<string,unsigned>();
     this->min_sup_rel = min_sup_rel;
-    this->min_confidence = min_confidence;  //todo passar parametre
+    this->min_confidence = min_confidence;
     this->min_gap = min_gap;
     this->max_gap = max_gap;
     this->min_duration = min_duration;
@@ -22,7 +22,7 @@ VertTIRP::VertTIRP(int time_mode, string &out_file, float min_sup_rel, float eps
     tirp_count = 0;
     min_sup = 0;
 
-    this->f1 = vector<string>(); //TODO
+    this->f1 = vector<string>();
     this->vertical_db = map<string,VertTirpSidList>();
     this->tree = VertTirpNode();
     time_mode = time_mode;
@@ -53,7 +53,7 @@ int VertTIRP::mine_patterns(list<list<TI>> const &list_of_ti_seqs, list<string> 
     return this->tirp_count;
 }
 
-void VertTIRP::print_patterns(bool dfs) { //TODO
+void VertTIRP::print_patterns(bool dfs) {
     this->tree.print_tree(this->min_length, this->out_file, this->events_per_sequence,dfs);
 }
 
@@ -85,7 +85,6 @@ void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, Ve
         //TODO fi
 
         for ( auto it : s_temp ){
-            // TODO
             vector<string> seq_str_strings = it.second.get_seq_str();
             string seq_str_string = unifyStrings(seq_str_strings);
             VertTirpNode s_node = VertTirpNode(seq_str_string,it.second.get_seq_length(),it.second,node);
@@ -114,7 +113,7 @@ void VertTIRP::to_vertical(list<list<TI>> const &list_of_ti_seqs, list<string> c
         for (auto its: *ti_seqs_it) {
             // duration constraints
             long long duration = its.get_end() - its.get_start();
-            if (duration >= this->min_duration && duration <= this->max_duration) {  //TODO condicio if
+            if (duration >= this->min_duration && duration <= this->max_duration) {
                 sym_it = this->vertical_db.find(its.get_sym());
                 if (sym_it == this->vertical_db.end())
                     sym_it = this->vertical_db.insert(pair<string, VertTirpSidList>(its.get_sym(),VertTirpSidList())).first;    //Adds the VertTirpSidList to the map

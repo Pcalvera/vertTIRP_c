@@ -258,7 +258,6 @@ void Allen_relationsEPS::update_added(map<char,bool> &added,char c, bool b){
     auto added_it = added.insert(pair<char,bool>(c,true));
     if (!added_it.second) added_it.first->second = true;
 }
-//TODO canviar els return pair per return make_pair
 pair<char,int> Allen_relationsEPS::before_ind(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap){
     long long b_s_a_e = b.get_start()-a.get_end();
     if ( b_s_a_e > eps ){
@@ -270,7 +269,7 @@ pair<char,int> Allen_relationsEPS::before_ind(const TI &a, const TI &b, float ep
             return make_pair('b',3);
     }
     else
-        return make_pair('\0',-2); //TODO en teoria retorna "-2",-2
+        return make_pair('\0',-2);
 }
 pair<char,int> Allen_relationsEPS::meets_ind(const TI &a, const TI &b, float eps, long long min_gap, long long max_gap){
     long long b_s_a_e = b.get_start()-a.get_end();

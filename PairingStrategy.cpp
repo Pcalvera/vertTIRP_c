@@ -10,21 +10,21 @@ PairingStrategy::PairingStrategy() {
 }
 
 void PairingStrategy::append(char c) {
-    if ( this->ps.empty() ) throw("La llista és buida"); //TODO missatge error
+    if ( this->ps.empty() ) throw("\"PairingStrategy->ps\" is empty");
     this->ps.back().push_back(Node(c,0));
 }
 
 void PairingStrategy::append2(char c) {
-    if ( this->ps.empty() ) throw("La llista és buida"); //TODO missatge error
+    if ( this->ps.empty() ) throw("\"PairingStrategy->ps\" is empty");
     vector<Node> back = this->ps.back();
-    if ( back.empty() ) throw("La llsita és buida");
+    if ( back.empty() ) throw("La llsita és buida");  //TODO missatge error
     Node back2 = back.back();
     if ( back2.dif == 0 ) throw("");  //TODO missatge error
     this->ps.back().back().l.push_back(c);
 }
 
 void PairingStrategy::appendAdd(char c) {
-    if ( this->ps.empty() ) throw("La llista és buida"); //TODO missatge error
+    if ( this->ps.empty() ) throw("\"PairingStrategy->ps\" is empty");
         this->ps.back().push_back( Node(c,1) );
 }
 

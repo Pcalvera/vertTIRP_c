@@ -31,7 +31,7 @@ private:
     unsigned sum_ver_supp;
     map<string,unsigned> sum_hor_per_seq;   //TODO unsigned?
     string last_modified;
-    vector<long long> sum_mean_duration;  //TODO long long pq TI utilitza aquest tipus pel temps
+    vector<long long> sum_mean_duration;
     vector<unsigned> n_instances_per_seq;
     vector<long long> mean_duration;
 };

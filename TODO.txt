@@ -1,10 +1,3 @@
-TIRP.h - extend_with()
-VertTirpSidList.h - join() update_tirp_attrs() first_sorted_extend()
-Allen.h(dummy and nonDummy) - sort_rels() calc_rel(guardar funcions en map) assign_rel()
-VertTIRP.h - to_vertical() - dfs_pruning() - same_variable() - mine_patterns() - print_patterns()
-VertTirpNode.h - print_tree_dfs() - analyze_patterns_rec() - analyze_patterns - print_tree_bfs
-
-
 Canviar lists per vectors!!!!!!
 Comprovar zips mateixa mida
 adaptar comentaris a c++
@@ -19,5 +12,4 @@ comprovar for( : ) que no iteren, fan copies
 canviar accessos [] a mapes per at(), revisar tots els accessos del projecte
 comprovar tots els gets si han de retornar referència
 
-timemode
 analitzar millores de temps podant o no l'arbre

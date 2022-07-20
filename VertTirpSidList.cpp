@@ -5,7 +5,6 @@
 #include "VertTirpSidList.h"
 
 VertTirpSidList::VertTirpSidList() {
-    //TODO comentaris
     this->seq_str = vector<string>();
     this->definitive_ones_indices_dict = map<string,map<unsigned,vector<TIRP>>>();
     this->definitive_discovered_tirp_dict = map<string,TIRPstatistics>();
@@ -15,7 +14,6 @@ VertTirpSidList::VertTirpSidList() {
 }
 
 void VertTirpSidList::append_item(TI ti, string sid, unsigned eid) {
-    //TODO comentaris
     TIRP new_tirp =  TIRP(vector<TI>(1,ti), ti.get_start(), ti.get_end() );  //TODO inicialitzar amb 1?
 
     if ( this->definitive_discovered_tirp_dict.empty() ){
@@ -37,22 +35,18 @@ void VertTirpSidList::append_item(TI ti, string sid, unsigned eid) {
 }
 
 void VertTirpSidList::set_n_sequences(int n_sequences) {
-    //TODO comentaris
     this->n_sequences = n_sequences;
 }
 
 float VertTirpSidList::get_mean_hor_support(const map<string, unsigned int> &events_per_sequence,const TIRPstatistics &tirp_stat) const {
-    //TODO comentaris
     return tirp_stat.get_mean_hor_support(events_per_sequence);
 }
 
 float VertTirpSidList::get_ver_support(const TIRPstatistics &tirp) const{
-    //TODO comentaris
     return tirp.get_ver_support(this->n_sequences);
 }
 
 unsigned VertTirpSidList::get_support() const {
-    //TODO comentaris
     return this->definitive_discovered_tirp_dict.find("")->second.get_sum_ver_supp();
 }
 
@@ -74,7 +68,6 @@ map<string, TIRPstatistics> VertTirpSidList::get_definitive_discovered_tirp_dict
 
 VertTirpSidList VertTirpSidList::join(const VertTirpSidList &f,const Allen &ps, float eps, long long  min_gap, long long  max_gap,
                                       long long int max_duration, float min_ver_sup, int min_confidence) {
-    //TODO comentaris
     VertTirpSidList new_sidlist = VertTirpSidList();   //TODO potser millor fer un constructor amb tots els paràmetres
     new_sidlist.seq_str = vector<string>(this->seq_str);
     new_sidlist.seq_str.push_back(f.seq_str[0]);

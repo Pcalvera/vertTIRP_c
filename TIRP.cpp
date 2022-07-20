@@ -9,14 +9,14 @@ TIRP::TIRP() {
     this->first = 0;
     this->max_last = 0;
 }
-TIRP::TIRP(vector<TI> ti, long long first, long long max_last, vector<char> r) { //TODO comprovar que funcioni correctament
+TIRP::TIRP(vector<TI> ti, long long first, long long max_last, vector<char> r) {
     this->ti = ti;
     this->r = r;
     this->first = first;
     this->max_last = max_last;
 }
 
-bool TIRP::operator<(const TIRP &rhs) const {   //TODO comprovar que funcioni correctament
+bool TIRP::operator<(const TIRP &rhs) const {
     if ( this->first < rhs.first)
         return true;
     if ( this->first == rhs.first)
@@ -24,7 +24,7 @@ bool TIRP::operator<(const TIRP &rhs) const {   //TODO comprovar que funcioni co
     return false;
 }
 
-bool TIRP::operator>(const TIRP &rhs) const {    //TODO comprovar que funcioni correctament
+bool TIRP::operator>(const TIRP &rhs) const {   //TODO comprovar que funcioni correctament
     return rhs < *this;
 }
 
@@ -83,7 +83,7 @@ TIRP::extend_with(const TI &s_ti, float eps, long long int min_gap, long long in
     new_rel.back() = rel.first;
 
     // copy if this->ti
-    vector<TI> new_ti = vector<TI>(ti);  //TODO no estic segur si es fa copia dels objectes TI
+    vector<TI> new_ti = vector<TI>(ti);
     // append s_ti
     new_ti.emplace_back(s_ti);
 
@@ -132,12 +132,5 @@ TIRP::extend_with(const TI &s_ti, float eps, long long int min_gap, long long in
 long long TIRP::get_max_last() const {
     return this->max_last;
 }
-
-
-//pair<bool, pair<TIRP, unsigned>>
-//TIRP::extend_with(TI s_ti, float eps, long long int min_gap, long long int max_gap, long long int max_duration,
-//                  bool mine_last_equal, Allen &allen) {
-//    //TODO
-//}
 
 //TODO funcio copy???
