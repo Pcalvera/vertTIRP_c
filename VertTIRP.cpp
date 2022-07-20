@@ -38,7 +38,7 @@ VertTIRP::VertTIRP(string &out_file, float min_sup_rel, float eps, int min_gap, 
         this->allen = Allen(dummy_calc,trans,eps);
 }
 
-int VertTIRP::mine_patterns(list<list<TI>> const &list_of_ti_seqs, list<string> const &list_of_seqs, bool avoid_same_var_states) {
+int VertTIRP::mine_patterns(vector<vector<TI>> const &list_of_ti_seqs, vector<string> const &list_of_seqs, bool avoid_same_var_states) {
     if ( list_of_ti_seqs.size() != list_of_seqs.size() ) throw invalid_argument("list_of_ti_seqs and list_of_seqs must have the same size");
 
     this->to_vertical(list_of_ti_seqs,list_of_seqs);
@@ -46,7 +46,7 @@ int VertTIRP::mine_patterns(list<list<TI>> const &list_of_ti_seqs, list<string> 
 
     for (auto & i : this->f1){
         vector<string> seq_str_strings = this->vertical_db[i].get_seq_str();
-        string seq_str_string = unifyStrings(seq_str_strings);
+        string seq_str_string = utils_unifyStrings(seq_str_strings);
         VertTirpNode s_node = VertTirpNode(seq_str_string,1,this->vertical_db[i],this->tree);
         this->dfs_pruning(this->vertical_db[i],this->f1,s_node,this->tree,avoid_same_var_states);  //TODO fer pruning
     }
@@ -86,14 +86,14 @@ void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, Ve
 
         for ( auto it : s_temp ){
             vector<string> seq_str_strings = it.second.get_seq_str();
-            string seq_str_string = unifyStrings(seq_str_strings);
+            string seq_str_string = utils_unifyStrings(seq_str_strings);
             VertTirpNode s_node = VertTirpNode(seq_str_string,it.second.get_seq_length(),it.second,node);
             this->dfs_pruning(it.second,s_syms,s_node,node, avoid_same_var_states );
         }
     }
 }
 
-void VertTIRP::to_vertical(list<list<TI>> const &list_of_ti_seqs, list<string> const &list_of_seqs) {
+void VertTIRP::to_vertical(vector<vector<TI>> const &list_of_ti_seqs, vector<string> const &list_of_seqs) {
     /*
     Constructs the vertical database representation.
     For each frequent item there are an sidlist representation of that item, which is stored in the
@@ -106,24 +106,23 @@ void VertTIRP::to_vertical(list<list<TI>> const &list_of_ti_seqs, list<string> c
     */
     unsigned eid = 0;
     list<string>::const_iterator seqs_it;
-    list<list<TI>>::const_iterator ti_seqs_it = list_of_ti_seqs.begin();
+    //list<list<TI>>::const_iterator ti_seqs_it = list_of_ti_seqs.begin();
     map<string,VertTirpSidList>::iterator sym_it;
-    for (seqs_it = list_of_seqs.begin() ; seqs_it != list_of_seqs.end() ; seqs_it++ ){
-        this->events_per_sequence.insert(make_pair(*seqs_it,(*ti_seqs_it).size()));
-        for (auto its: *ti_seqs_it) {
+    for (int i = 0; i < list_of_ti_seqs.size() ; i++ ){
+        this->events_per_sequence.insert(make_pair(list_of_seqs[i],list_of_ti_seqs[i].size()));
+        for (auto its: list_of_ti_seqs[i]) {
             // duration constraints
             long long duration = its.get_end() - its.get_start();
             if (duration >= this->min_duration && duration <= this->max_duration) {
                 sym_it = this->vertical_db.find(its.get_sym());
                 if (sym_it == this->vertical_db.end())
                     sym_it = this->vertical_db.insert(pair<string, VertTirpSidList>(its.get_sym(),VertTirpSidList())).first;    //Adds the VertTirpSidList to the map
-                sym_it->second.append_item(its, *seqs_it, eid);
+                sym_it->second.append_item(its, list_of_seqs[i], eid);
 
                 eid++;
             }
         }
         eid = 0;
-        ti_seqs_it++;
     }
 
     // calculate the absolute support based on number of sequences

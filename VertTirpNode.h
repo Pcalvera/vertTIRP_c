@@ -6,23 +6,19 @@
 #define VERTTIRP_C_VERTTIRPNODE_H
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <fstream>
 #include <memory>
 #include "VertTirpSidList.h"
 #include "VertTirpSidList.h"
+#include "Global.h"
 
 using namespace std;
 
+
+
 class VertTirpNode {
 public:
-    VertTirpNode();
-    VertTirpNode(string &patt, unsigned pat_len, VertTirpSidList &sidList, VertTirpNode &parent, bool is_root=false);
-    void add_child(VertTirpNode &ch);
-    void print_tree( unsigned int min_len, string &o_file,const map<string, unsigned int> &events_per_sequence,bool dfs = true);
-    static void print_tree_dfs(const shared_ptr<Node> &node, unsigned min_len, string &o_file, const map<string,unsigned> &events_per_sequence);
-    static void print_tree_bfs(const shared_ptr<Node> &node, unsigned min_len, string &o_file, const map<string,unsigned> &events_per_sequence);
-private:
-
     struct Node {
         //TODO de moment prescideixo de l'atribut parent
         vector<shared_ptr<Node>> child_nodes;
@@ -31,6 +27,15 @@ private:
         VertTirpSidList sidlist;
         bool is_root;
     };
+    VertTirpNode();
+    VertTirpNode(string &patt, unsigned pat_len, VertTirpSidList &sidList, VertTirpNode &parent, bool is_root=false);
+    void add_child(VertTirpNode &ch);
+    void print_tree( unsigned int min_len, string &o_file,const map<string, unsigned int> &events_per_sequence,bool dfs = true);
+    static void print_tree_dfs(const shared_ptr<Node> &node, unsigned min_len, ostream &stream, const map<string,unsigned> &events_per_sequence);
+    static void print_tree_bfs(const shared_ptr<Node> &root, unsigned min_len, ostream &stream, const map<string,unsigned> &events_per_sequence);
+
+private:
+
     shared_ptr<Node> node;
     //bool is_root;
     //TODO gestionar is_root
@@ -43,13 +48,6 @@ private:
     //unsigned pat_len;
     //VertTirpSidList sidlist;
     //bool is_root;
-    void print_tree_dfs(const shared_ptr<Node> &node, unsigned int min_len, string &o_file,
-                        const map<string, unsigned int> &events_per_sequence);
-
-    void print_tree_bfs(const shared_ptr<Node> &node, unsigned int min_len, string &o_file,
-                        const map<string, unsigned int> &events_per_sequence);
-
-    void print_tree(unsigned int min_len, string &o_file, const map<string, unsigned int> &events_per_sequencebool);
 };
 
 

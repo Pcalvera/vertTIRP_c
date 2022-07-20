@@ -6,7 +6,7 @@
 #define VERTTIRP_C_TIRPSTATISTICS_H
 #include <iostream>
 #include "TIRP.h"
-#include "Utils.h"
+#include "Global.h"
 #include "map"
 #include "vector"
 const string EMPTY = "";

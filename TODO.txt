@@ -13,3 +13,6 @@ canviar accessos [] a mapes per at(), revisar tots els accessos del projecte
 comprovar tots els gets si han de retornar referència
 
 analitzar millores de temps podant o no l'arbre
+
+
+[A-Z]+\[( |)(.*)\]  accessos per []

@@ -62,7 +62,7 @@ unsigned TIRPstatistics::append_tirp(string seq_id, unsigned int eid, TIRP &tirp
     }
 
     this->last_modified = seq_id;
-    this->sum_hor_per_seq[seq_id] += 1;
+    this->sum_hor_per_seq.at(seq_id) += 1;
     return this->sum_ver_supp;
 }
 

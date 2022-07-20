@@ -11,7 +11,7 @@ Allen::Allen() {
     this->trans = true;
     this->eps = 0;
 }
-Allen::Allen(bool dummy_calc, bool trans, float eps, string calc_sort) {
+Allen::Allen(bool dummy_calc, bool trans, eps_type eps, string calc_sort) {
     this->dummy_calc = dummy_calc;
     this->trans = trans;
     this->eps = eps;
@@ -71,7 +71,7 @@ Relation Allen::get_possible_rels(char a, char b) const{
 }
 
 pair<char, int>
-Allen::calc_rel(const TI &a,const TI &b, float eps, long long int min_gap, long long int max_gap, PairingStrategy rels_arr, vector<string> gr_arr)const {
+Allen::calc_rel(const TI &a,const TI &b, eps_type eps, long long int min_gap, long long int max_gap, PairingStrategy rels_arr, vector<string> gr_arr)const {
     // if b is less than a
     if ( b.get_start() < a.get_start() || ( b.get_start()==a.get_start() && b.get_end()<a.get_end() ) )
         return make_pair('1',1);
@@ -127,7 +127,7 @@ Allen::calc_rel(const TI &a,const TI &b, float eps, long long int min_gap, long 
 }
 
 pair<char, int>
-Allen::assign_rel(const TI &a, const TI &b, const Relation &possible_rels, float eps, long long int min_gap, long long int max_gap) const {
+Allen::assign_rel(const TI &a, const TI &b, const Relation &possible_rels, eps_type eps, long long int min_gap, long long int max_gap) const {
     //TODO comentaris
     if ( this->dummy_calc ) {
         if ( !possible_rels.isString() )

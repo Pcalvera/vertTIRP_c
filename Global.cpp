@@ -1,4 +1,4 @@
-#include "Utils.h"
+#include "Global.h"
 
 
 Csv_df utils_csvRead(string &filename) {
@@ -39,16 +39,16 @@ ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &da
     //TODO is_null
     ReadTi result;
     Csv_df df = utils_csvRead(filepath);
-    map<string, list<TI>> grouped_by_uid = df.groupbyUid();
+    map<string, vector<TI>> grouped_by_uid = df.groupbyUid();
 
     for (auto &i: df.content) {
         //TI ti = TI(i[3].at(0),1,2);
         TI ti = utils_vectToTi(i);
 
         if (grouped_by_uid.count(i[0]) == 0) {
-            list<TI> aux = list<TI>();
+            vector<TI> aux = vector<TI>();
             aux.push_back(ti);
-            grouped_by_uid.insert(pair<string, list<TI>>(i[0], aux));
+            grouped_by_uid.insert(pair<string, vector<TI>>(i[0], aux));
         } else {
             auto it = grouped_by_uid.find(i[0]);
             it->second.push_back(ti);
@@ -98,10 +98,17 @@ long long utils_mean(vector<long long> &l) {
     return sum / (unsigned) l.size();
 }
 
-string unifyStrings( vector<string> &seq_str_strings){
+string utils_unifyStrings(vector<string> &seq_str_strings){
     return "['" + accumulate(seq_str_strings.begin(),seq_str_strings.end(),string(""),[](string &ss, string &s)
     {
         return ss.empty() ? s : ss + "', '" + s;
+    }) + "']";
+}
+string utils_unifyChars (string &seq_chars ){
+    if ( seq_chars.empty() ) return "[' ']";
+    return "['" + accumulate(seq_chars.begin(),seq_chars.end(),string(""),[](string ss, char &s)
+    {
+        return ss.empty() ? string(1,s) : ss + "', '" + s;
     }) + "']";
 }
 
