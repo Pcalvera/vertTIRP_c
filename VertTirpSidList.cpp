@@ -13,7 +13,7 @@ VertTirpSidList::VertTirpSidList() {
     this->support = 0;
 }
 
-void VertTirpSidList::append_item(TI ti, string sid, unsigned eid) {
+void VertTirpSidList::append_item(const TI &ti, string sid, unsigned eid) {
     TIRP new_tirp =  TIRP(vector<TI>(1,ti), ti.get_start(), ti.get_end() );  //TODO inicialitzar amb 1?
 
     if ( this->definitive_discovered_tirp_dict.empty() ){
@@ -85,7 +85,7 @@ VertTirpSidList VertTirpSidList::join(const VertTirpSidList &f, const Allen &ps,
         if ( f.definitive_ones_indices_dict.find(seq_id) != f.definitive_ones_indices_dict.end() ) {
             //vector<int> f_eids = utils_getKeys(f.definitive_ones_indices_dict[seq_id]);   //TODO fer funcionar la funcio
             vector<unsigned> f_eids = vector<unsigned>();
-            for (auto it: f.definitive_ones_indices_dict.at(seq_id))
+            for (const auto &it: f.definitive_ones_indices_dict.at(seq_id))
                 f_eids.push_back(it.first);
             //TODO fi
 

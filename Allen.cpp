@@ -24,7 +24,7 @@ Allen::Allen(bool dummy_calc, bool trans, eps_type eps, string calc_sort) {
         this->sorted_trans_table = map<string,Relation>();
 
         if ( this->eps > 0 ){
-            for ( auto &it : Allen_relationsEPS::trans_table ){
+            for ( const auto &it : Allen_relationsEPS::trans_table ){
                 if ( it.second.size() == 1){
                     this->sorted_trans_table.insert(pair<string,Relation>(it.first,Relation(it.second)));
                 }
@@ -34,7 +34,7 @@ Allen::Allen(bool dummy_calc, bool trans, eps_type eps, string calc_sort) {
             }
         }
         else{
-            for ( auto &it : Allen_relationsEPS::trans_table_0 ){
+            for ( const auto &it : Allen_relationsEPS::trans_table_0 ){
                 if ( it.second.size() == 1){
                     this->sorted_trans_table.insert(pair<string,string>(it.first,it.second));
                 }
@@ -145,7 +145,7 @@ Allen::assign_rel(const TI &a, const TI &b, const Relation &possible_rels, eps_t
                 return make_pair(first_r,3);
         }
         else{
-            for ( char r : possible_rels.getString() ){
+            for ( const char &r : possible_rels.getString() ){
                 pair<char,int> rel_status = Allen_relationsEPS::rel_func_dict.at(r)(a,b,eps,min_gap,max_gap);
                 if ( rel_status.second != -2 )
                     return rel_status;

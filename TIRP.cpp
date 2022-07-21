@@ -43,7 +43,7 @@ bool TIRP::operator>=(const TIRP &rhs) const {   //TODO comprovar que funcioni c
 
 string TIRP::get_rel_as_str() const {   //TODO comprovar que funcioni correctament
     string s = EMPTY;
-    for (auto i : this->r)
+    for (char i : this->r)
         s += i;
     return s;
 }

@@ -77,7 +77,7 @@ support_type TIRPstatistics::get_mean_hor_support(const map<string, unsigned int
     :return: returns the horizontal support that is self.sum_hor_per_seq / self.sum_ver_supp
     */
     support_type rel_sum = 0;
-    for ( auto it : this->sum_hor_per_seq )
+    for ( const auto &it : this->sum_hor_per_seq )
         rel_sum += (float)it.second/(float)events_per_sequence.at(it.first);
 
     return rel_sum/(float)this->sum_ver_supp;
@@ -100,7 +100,7 @@ vector<time_type> TIRPstatistics::get_mean_duration() {
     // append the last mean_duration that have not been added yet
     if ( this->last_modified != EMPTY){
         auto n_inst = this->n_instances_per_seq.begin();
-        for ( auto sum : this->sum_mean_duration ){
+        for ( const auto &sum : this->sum_mean_duration ){
             // we can calculate the mean duration of the previous one
             this->mean_duration.push_back(sum/(*n_inst));
             n_inst++;

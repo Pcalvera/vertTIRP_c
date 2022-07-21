@@ -19,7 +19,7 @@ const time_type MAXDURATION = 3155695200;
 class VertTirpSidList {
 public:
     VertTirpSidList();
-    void append_item(TI ti, string sid, unsigned eid);
+    void append_item(const TI &ti, string sid, unsigned eid);
     void set_n_sequences(int n_sequences);
     support_type get_mean_hor_support(const map<string,unsigned> &events_per_sequence,const TIRPstatistics &tirp_stat) const;   //TODO float o double?
     support_type get_ver_support(const TIRPstatistics &tirp) const;                            //TODO float o double?

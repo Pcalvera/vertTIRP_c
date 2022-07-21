@@ -44,7 +44,7 @@ ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &da
     Csv_df df = utils_csvRead(filepath);
     map<string, vector<TI>> grouped_by_uid = df.groupbyUid();
 
-    for (auto &i: df.content) {
+    for (const auto &i: df.content) {
         //TI ti = TI(i[3].at(0),1,2);
         TI ti = utils_vectToTi(i);
 
@@ -58,7 +58,7 @@ ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &da
         }
         result.ti_count++;
     }
-    for (auto &j: grouped_by_uid) {
+    for (const auto &j: grouped_by_uid) {
         result.list_of_users.push_back(j.first);
         result.list_of_ti_users.push_back(j.second);
     }
@@ -66,14 +66,14 @@ ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &da
     return result;
 }
 
-TI utils_vectToTi(vector<string> &v) {
+TI utils_vectToTi(const vector<string> &v) {
     tm start = utils_splitDate(v[1]);
     tm finish = utils_splitDate(v[2]);
     string value = "value_";
     return TI(value + v[3].at(0), mktime(&start), mktime(&finish));
 }
 
-tm utils_splitDate(string &s) {
+tm utils_splitDate(const string &s) {
     string date = s.substr(0, s.find(" "));
     string hourMinute = s.substr(s.find(" ") + 1);
     unsigned long long first = date.find("/");
@@ -94,9 +94,9 @@ tm utils_splitDate(string &s) {
     return t;
 }
 
-long long utils_mean(vector<long long> &l) {
+long long utils_mean(vector<time_type> &l) {
     long long sum = 0;
-    for (long long i: l)
+    for (const long long &i: l)
         sum += i;
     return sum / (unsigned) l.size();
 }
@@ -118,7 +118,7 @@ string utils_unifyChars (string &seq_chars ){
 template<typename T, typename V>
 vector<T> utils_getKkeys(map<T, V> m) {
     vector<T> res =  vector<T>();
-    for ( auto it : m)
+    for ( const auto &it : m)
         res.push_back( it.first );
     return res;
 }

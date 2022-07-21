@@ -35,9 +35,9 @@ struct Csv_df {
 Csv_df utils_csvRead(string &filename);
 ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &date_column_name_start, string &date_column_name_end, string &date_format, vector<string> &val_column_names,
                     bool is_null_f= true, int time_mode= 1);
-TI utils_vectToTi(vector<string> &v);
-tm utils_splitDate(string &s);
-long long utils_mean(vector<long long> &l);
+TI utils_vectToTi(const vector<string> &v);
+tm utils_splitDate(const string &s);
+long long utils_mean(vector<time_type> &l);
 string utils_unifyStrings(vector<string> &seq_str_strings);
 string utils_unifyChars (string &seq_chars );
 template <typename T,typename V> vector<T> utils_getKeys(map<T,V> m);

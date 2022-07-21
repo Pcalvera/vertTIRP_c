@@ -13,7 +13,7 @@ VertTirpNode::VertTirpNode() {
     this->node->child_nodes = vector<shared_ptr<Node>>();
 }
 
-VertTirpNode::VertTirpNode(string &patt, unsigned int pat_len,  VertTirpSidList &sidList,VertTirpNode &parent, bool is_root) {
+VertTirpNode::VertTirpNode(string &patt, unsigned pat_len,  const VertTirpSidList &sidList,VertTirpNode &parent, bool is_root) {
     this->node = shared_ptr<Node>(new Node);
     this->node->patt = patt;
     this->node->pat_len = pat_len;
@@ -50,7 +50,7 @@ void VertTirpNode::print_tree_dfs(const shared_ptr<Node> &node, unsigned int min
 
     if ( node->pat_len >= min_len ){
         stream<<node->patt<<endl;
-        for ( const auto relPair : node->sidlist.get_definitive_discovered_tirp_dict() ){
+        for ( const auto &relPair : node->sidlist.get_definitive_discovered_tirp_dict() ){
             string rel = relPair.first;
             TIRPstatistics tirp_stat = relPair.second;
             stream<< rel
@@ -80,7 +80,7 @@ void VertTirpNode::print_tree_bfs(const shared_ptr<Node> &root, unsigned int min
 
         // print node data
         if ( node->pat_len >= min_len ){
-            for ( const auto relPair : node->sidlist.get_definitive_discovered_tirp_dict() ){
+            for ( const auto &relPair : node->sidlist.get_definitive_discovered_tirp_dict() ){
                 string rel = relPair.first;
                 TIRPstatistics tirp_stat = relPair.second;
 

@@ -44,7 +44,7 @@ int VertTIRP::mine_patterns(vector<vector<TI>> const &list_of_ti_seqs, vector<st
     this->to_vertical(list_of_ti_seqs,list_of_seqs);
     //TODO taula procs
 
-    for (auto & i : this->f1){
+    for (const auto &i : this->f1){
         vector<string> seq_str_strings = this->vertical_db[i].get_seq_str();
         string seq_str_string = utils_unifyStrings(seq_str_strings);
         VertTirpNode s_node = VertTirpNode(seq_str_string,1,this->vertical_db[i],this->tree);
@@ -71,7 +71,7 @@ void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, Ve
 
     // to control the maximum length
     if ( this->max_length == -1 || (pat_sidlist.get_seq_length() + 1) <= this->max_length ){
-        for ( string s : f_l){
+        for ( const string &s : f_l){
             if ( !this->same_variable(s, pat_sidlist.get_seq_str().back(), avoid_same_var_states) ){
                 VertTirpSidList s_bm = pat_sidlist.join(this->vertical_db[s], this->allen, this->eps, this->min_gap, this->max_gap, this->max_duration, this->min_sup, this->min_confidence);
                 if ( !s_bm.get_definitive_ones_indices_dict().empty() )
@@ -80,11 +80,11 @@ void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, Ve
         }
         //vector<string> s_syms = utils_getKeys(s_temp);   //TODO fer funcionar la funcio
         vector<string> s_syms =  vector<string>();
-        for ( auto it : s_temp)
+        for ( const auto &it : s_temp)
             s_syms.push_back( it.first );
         //TODO fi
 
-        for ( auto it : s_temp ){
+        for ( auto &it : s_temp ){
             vector<string> seq_str_strings = it.second.get_seq_str();
             string seq_str_string = utils_unifyStrings(seq_str_strings);
             VertTirpNode s_node = VertTirpNode(seq_str_string,it.second.get_seq_length(),it.second,node);
@@ -110,7 +110,7 @@ void VertTIRP::to_vertical(vector<vector<TI>> const &list_of_ti_seqs, vector<str
     map<string,VertTirpSidList>::iterator sym_it;
     for (int i = 0; i < list_of_ti_seqs.size() ; i++ ){
         this->events_per_sequence.insert(make_pair(list_of_seqs[i],list_of_ti_seqs[i].size()));
-        for (auto its: list_of_ti_seqs[i]) {
+        for (const auto &its: list_of_ti_seqs[i]) {
             // duration constraints
             time_type duration = its.get_end() - its.get_start();
             if (duration >= this->min_duration && duration <= this->max_duration) {
@@ -132,14 +132,14 @@ void VertTIRP::to_vertical(vector<vector<TI>> const &list_of_ti_seqs, vector<str
         this->min_sup = 1;
 
     // save a set of frequent 1-sized items sorted lexicographically
-    for ( auto db_pos = this->vertical_db.begin() ; db_pos != this->vertical_db.end() ; db_pos++ ){
-        unsigned aux = db_pos->second.get_support();
-        if ( db_pos->second.get_support() >= this->min_sup ){
-            db_pos->second.set_n_sequences(n_sequences);
-            this->f1.push_back(db_pos->first);
+    for ( auto &db_pos : this->vertical_db ){
+        unsigned aux = db_pos.second.get_support();
+        if ( db_pos.second.get_support() >= this->min_sup ){
+            db_pos.second.set_n_sequences(n_sequences);
+            this->f1.push_back(db_pos.first);
         }
         else
-            this->vertical_db.erase(db_pos->first);
+            this->vertical_db.erase(db_pos.first);
     }
 
 
