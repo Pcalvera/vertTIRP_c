@@ -6,7 +6,7 @@
 
 VertTirpNode::VertTirpNode() {
     this->node = shared_ptr<Node>(new Node);
-    this->node->patt = "";
+    this->node->patt = EMPTY;
     this->node->pat_len = 0;
     //this->node->sidlist = sidList; //TODO no pot ser null de moment ho deixo sense inicialitzar
     this->node->is_root = true;

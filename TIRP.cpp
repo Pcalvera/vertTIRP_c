@@ -9,7 +9,7 @@ TIRP::TIRP() {
     this->first = 0;
     this->max_last = 0;
 }
-TIRP::TIRP(vector<TI> ti, long long first, long long max_last, vector<char> r) {
+TIRP::TIRP(vector<TI> ti, time_type first, time_type max_last, vector<char> r) {
     this->ti = ti;
     this->r = r;
     this->first = first;
@@ -42,17 +42,17 @@ bool TIRP::operator>=(const TIRP &rhs) const {   //TODO comprovar que funcioni c
 }
 
 string TIRP::get_rel_as_str() const {   //TODO comprovar que funcioni correctament
-    string s = "";
+    string s = EMPTY;
     for (auto i : this->r)
         s += i;
     return s;
 }
 
-long long TIRP::get_duration() const {   //TODO comprovar que funcioni correctament
+time_type TIRP::get_duration() const {   //TODO comprovar que funcioni correctament
     return this->max_last - this->first;
 }
 
-long long TIRP::get_first() const {
+time_type TIRP::get_first() const {
     return this->first;
 }
 
@@ -61,7 +61,7 @@ vector<TI> TIRP::get_ti() const {
 }
 
 pair<pair<bool, TIRP>, unsigned>
-TIRP::extend_with(const TI &s_ti, float eps, long long int min_gap, long long int max_gap, long long int max_duration,
+TIRP::extend_with(const TI &s_ti, eps_type eps, time_type min_gap, time_type max_gap, time_type max_duration,
                   bool mine_last_equal, const Allen &allen) const {
     TIRP nullTirp;
     // calc and assign the last relation
@@ -88,7 +88,7 @@ TIRP::extend_with(const TI &s_ti, float eps, long long int min_gap, long long in
     new_ti.emplace_back(s_ti);
 
     // determine the maximum end time
-    long long new_max_last = s_ti.get_end();
+    time_type new_max_last = s_ti.get_end();
     if ( new_max_last < this->max_last )
         new_max_last = this->max_last;
 
@@ -129,7 +129,7 @@ TIRP::extend_with(const TI &s_ti, float eps, long long int min_gap, long long in
     return make_pair(make_pair(true,TIRP(new_ti,new_ti[0].get_start(),new_max_last,new_rel)),3);
 }
 
-long long TIRP::get_max_last() const {
+time_type TIRP::get_max_last() const {
     return this->max_last;
 }
 

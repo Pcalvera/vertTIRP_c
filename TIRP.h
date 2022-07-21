@@ -16,23 +16,23 @@ using namespace std;
 class TIRP {
 public:
     TIRP();
-    TIRP(vector<TI> ti, long long first, long long max_last, vector<char> r = vector<char>() );
+    TIRP(vector<TI> ti, time_type first, time_type max_last, vector<char> r = vector<char>() );
     bool operator<(const TIRP &rhs) const;
     bool operator>(const TIRP &rhs) const;
     bool operator<=(const TIRP &rhs) const;
     bool operator>=(const TIRP &rhs) const;
     string get_rel_as_str()const;
-    long long get_duration()const;
-    long long get_first()const;
+    time_type get_duration()const;
+    time_type get_first()const;
     vector<TI> get_ti()const;
-    long long get_max_last()const;
-    pair<pair<bool,TIRP>,unsigned> extend_with(const TI &s_ti, float eps, long long min_gap, long long max_gap, long long max_duration, bool mine_last_equal,const Allen &allen)const;
+    time_type get_max_last()const;
+    pair<pair<bool,TIRP>,unsigned> extend_with(const TI &s_ti, eps_type eps, time_type min_gap, time_type max_gap, time_type max_duration, bool mine_last_equal, const Allen &allen)const;
 
 
 private:
     vector<TI> ti;
-    long long first;
-    long long max_last;
+    time_type first;
+    time_type max_last;
     vector<char> r;
 };
 

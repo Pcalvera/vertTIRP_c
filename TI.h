@@ -5,13 +5,15 @@
 #ifndef VERTTIRP_C_TI_H
 #define VERTTIRP_C_TI_H
 #include <iostream>
+#include "Global.h"
+
 using namespace std;
 
 class TI {
 public:
-    TI(string sym, long long start, long long end);
-    long long get_start()const;
-    long long get_end()const;
+    TI(string sym, time_type start, time_type end);
+    time_type get_start()const;
+    time_type get_end()const;
     string get_sym()const;
 
     friend ostream &operator<<(ostream &os, const TI &ti);
@@ -28,8 +30,8 @@ public:
 
 private:
     string sym;
-    long long start;
-    long long end;
+    time_type start;
+    time_type end;
 };
 
 

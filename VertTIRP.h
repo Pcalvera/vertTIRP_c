@@ -34,23 +34,23 @@ using namespace std;
 
 class VertTIRP {
 public:
-    VertTIRP(string &out_file,float min_sup_rel,float eps,int min_gap,long long max_gap,int min_duration,long long max_duration,bool dummy_calc,string &ps,bool trans, int min_confidence = -1,int max_length=-1,int min_length=1);
+    VertTIRP(string &out_file, support_type min_sup_rel, eps_type eps, time_type min_gap, time_type max_gap, int min_duration, time_type max_duration, bool dummy_calc, string &ps, bool trans, int min_confidence = -1, int max_length=-1, int min_length=1);
     int mine_patterns(vector<vector<TI>> const &list_of_ti_seqs, vector<string> const &list_of_seqs, bool avoid_same_var_states = true);
     void print_patterns(bool dfs);
 private:
     string out_file;  // output file
     map<string,unsigned> events_per_sequence;   // necessary for relative horizontal support
-    float min_sup_rel;  // relative minimum vertical support
+    support_type min_sup_rel;  // relative minimum vertical support
     int min_confidence; //TODO int?
     int min_gap;  // minimum gap in seconds that is the gap between before consecutive elements
-    long long max_gap;  // maximum gap in seconds that is the gap between before consecutive elements
+    time_type max_gap;  // maximum gap in seconds that is the gap between before consecutive elements
     int min_duration; // each event interval should have a duration of at least min_duration seconds
-    long long max_duration; // each tirp should have a duration of at most min_duration seconds
+    time_type max_duration; // each tirp should have a duration of at most min_duration seconds
     int max_length;  // maximum pattern length
     int min_length;  // minimum pattern length
-    float eps;  // karma lego epsilon in nanoseconds
+    eps_type eps;  // karma lego epsilon in nanoseconds
     int tirp_count; //TODO int?
-    float min_sup;  // absolute support //TODO int?
+    support_type min_sup;  // absolute support //TODO int?
     vector<string> f1;  // holds frequent 1-size items
     map<string,VertTirpSidList> vertical_db;  // holds database represented vertically
     VertTirpNode tree;  // we will save the patterns in a tree structure

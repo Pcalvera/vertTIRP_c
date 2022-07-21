@@ -1,7 +1,6 @@
 #include <iostream>
 #include "VertTIRP.h"
 #include "TI.h"
-#include "list"
 #include "Global.h"
 #include "PairingStrategy.h"
 /*
@@ -43,14 +42,15 @@ vector<string> value_column_name = vector<string>({"value"});  // the interestin
 
 
 bool avoid_same_var_states = false;
-gap_type ming = 0;  // minimum gap in seconds that is the gap between before consecutive elements
-gap_type maxg = 3155695200;  // maximum gap in seconds that is the gap between before consecutive elements
-gap_type mind = 0;  // each event interval should have a duration of at least min_duration seconds
-gap_type maxd = 3155695200;   // each tirp should have a duration of at most min_duration seconds
+time_type ming = 0;  // minimum gap in seconds that is the gap between before consecutive elements
+time_type maxg = 3155695200;  // maximum gap in seconds that is the gap between before consecutive elements
+time_type mind = 0;  // each event interval should have a duration of at least min_duration seconds
+time_type maxd = 3155695200;   // each tirp should have a duration of at most min_duration seconds
 string ps = "mocfbes";
 
 int main () {
-    ReadTi filePatterns = utils_tiRead(filepath, sep, sid_column, date_column_name_start, date_column_name_end, date_format, value_column_name, true);
+    ReadTi filePatterns = utils_tiRead(filepath, sep, sid_column, date_column_name_start, date_column_name_end,
+                                       date_format, value_column_name, true);
     vector<vector<TI>> list_of_ti_users = filePatterns.list_of_ti_users;
     vector<string> list_of_users = filePatterns.list_of_users;
     int ti_count = filePatterns.ti_count;

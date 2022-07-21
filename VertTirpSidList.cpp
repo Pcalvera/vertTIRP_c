@@ -17,7 +17,8 @@ void VertTirpSidList::append_item(TI ti, string sid, unsigned eid) {
     TIRP new_tirp =  TIRP(vector<TI>(1,ti), ti.get_start(), ti.get_end() );  //TODO inicialitzar amb 1?
 
     if ( this->definitive_discovered_tirp_dict.empty() ){
-        this->definitive_discovered_tirp_dict.insert(pair<string,TIRPstatistics>("",TIRPstatistics()));
+        //this->definitive_discovered_tirp_dict.insert(pair<string,TIRPstatistics>(EMPTY,TIRPstatistics()));    //TODO []
+        this->definitive_discovered_tirp_dict[EMPTY] = TIRPstatistics();
         this->seq_str.push_back(ti.get_sym());
     }
 
@@ -25,7 +26,8 @@ void VertTirpSidList::append_item(TI ti, string sid, unsigned eid) {
     if ( doid_it == definitive_ones_indices_dict.end() )
         doid_it = this->definitive_ones_indices_dict.insert(pair<string,map<unsigned,vector<TIRP>>>(sid,map<unsigned,vector<TIRP>>() ) ).first;
 
-    this->definitive_discovered_tirp_dict.find("")->second.append_tirp(sid,eid,new_tirp); //TODO potser es pot fer abans
+    //this->definitive_discovered_tirp_dict.find("")->second.append_tirp(sid,eid,new_tirp); //TODO potser es pot fer abans,    canviar per at()
+    this->definitive_discovered_tirp_dict.at(EMPTY).append_tirp(sid,eid,new_tirp);
 
     auto doid_it2 = doid_it->second.find(eid);
     if ( doid_it2 == doid_it->second.end() )
@@ -38,16 +40,16 @@ void VertTirpSidList::set_n_sequences(int n_sequences) {
     this->n_sequences = n_sequences;
 }
 
-float VertTirpSidList::get_mean_hor_support(const map<string, unsigned int> &events_per_sequence,const TIRPstatistics &tirp_stat) const {
+support_type VertTirpSidList::get_mean_hor_support(const map<string, unsigned int> &events_per_sequence,const TIRPstatistics &tirp_stat) const {
     return tirp_stat.get_mean_hor_support(events_per_sequence);
 }
 
-float VertTirpSidList::get_ver_support(const TIRPstatistics &tirp) const{
+support_type VertTirpSidList::get_ver_support(const TIRPstatistics &tirp) const{
     return tirp.get_ver_support(this->n_sequences);
 }
 
 unsigned VertTirpSidList::get_support() const {
-    return this->definitive_discovered_tirp_dict.find("")->second.get_sum_ver_supp();
+    return this->definitive_discovered_tirp_dict.find(EMPTY)->second.get_sum_ver_supp();
 }
 
 vector<string> VertTirpSidList::get_seq_str() const{
@@ -66,8 +68,8 @@ map<string, TIRPstatistics> VertTirpSidList::get_definitive_discovered_tirp_dict
     return this->definitive_discovered_tirp_dict;
 }
 
-VertTirpSidList VertTirpSidList::join(const VertTirpSidList &f,const Allen &ps, float eps, long long  min_gap, long long  max_gap,
-                                      long long int max_duration, float min_ver_sup, int min_confidence) {
+VertTirpSidList VertTirpSidList::join(const VertTirpSidList &f, const Allen &ps, eps_type eps, time_type min_gap, time_type  max_gap,
+                                      time_type max_duration, support_type min_ver_sup, int min_confidence) {
     VertTirpSidList new_sidlist = VertTirpSidList();   //TODO potser millor fer un constructor amb tots els paràmetres
     new_sidlist.seq_str = vector<string>(this->seq_str);
     new_sidlist.seq_str.push_back(f.seq_str[0]);
@@ -87,8 +89,8 @@ VertTirpSidList VertTirpSidList::join(const VertTirpSidList &f,const Allen &ps, 
                 f_eids.push_back(it.first);
             //TODO fi
 
-            long long last_f_first = f.definitive_ones_indices_dict.at(seq_id).at(f_eids.back())[0].get_first();
-            long long first_f_first = f.definitive_ones_indices_dict.at(seq_id).at(f_eids.front())[0].get_first();
+            time_type last_f_first = f.definitive_ones_indices_dict.at(seq_id).at(f_eids.back())[0].get_first();
+            time_type first_f_first = f.definitive_ones_indices_dict.at(seq_id).at(f_eids.front())[0].get_first();
             for (const auto &item2: dict_pos_tirps) {
                 unsigned self_first_eid = item2.first;
                 vector<TIRP> self_tirps = item2.second;
@@ -98,14 +100,14 @@ VertTirpSidList VertTirpSidList::join(const VertTirpSidList &f,const Allen &ps, 
                     // first tirp
                     TIRP first_one_me = self_tirps.front();
                     // first tirp's start time
-                    long long me_first = first_one_me.get_first();
+                    time_type me_first = first_one_me.get_first();
 
                     // determine from which point in time start to search
                     if ( min_gap > 0 )
                         me_first = first_one_me.get_first() + min_gap;
                     // if last element of f, sidlist matchs the min gap restriction
                     if ( last_f_first >= me_first ){
-                        long long me_second;
+                        time_type me_second;
                         bool me_second_init = false;
                         if ( max_gap != MAXGAP ) {
                             me_second = me_first + max_gap;
@@ -141,8 +143,8 @@ VertTirpSidList VertTirpSidList::join(const VertTirpSidList &f,const Allen &ps, 
 
 unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f_eid, const VertTirpSidList &f_sidlist,
                                             bool mine_last_equal, const Allen &ps, const vector<TIRP> &tirps_to_extend,
-                                            float eps, long long int min_gap, long long int max_gap,
-                                            long long int max_duration, float min_ver_sup,
+                                            eps_type eps, time_type min_gap, time_type  max_gap,
+                                            time_type max_duration, support_type min_ver_sup,
                                             const map<string, TIRPstatistics> &father_discovered_tirp_dict,
                                             int min_confidence) {
     vector<TI> f_ti = f_sidlist.definitive_ones_indices_dict.at(seq_id).at(f_eid)[0].get_ti();
@@ -171,11 +173,11 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
             // confidence calculation
             bool conf_constraint = true;
             if ( min_confidence != -1 ){
-                float father_supp;
-                if ( tirp_to_extend.get_rel_as_str() == "" )
-                    father_supp = father_discovered_tirp_dict.at("").get_sum_ver_supp();
+                support_type father_supp;
+                if ( tirp_to_extend.get_rel_as_str() == EMPTY )
+                    father_supp = father_discovered_tirp_dict.at(EMPTY).get_sum_ver_supp();  //TODO retorna unsigned
                 else
-                    father_supp = father_discovered_tirp_dict.at(tirp_to_extend.get_rel_as_str()).get_sum_ver_supp();
+                    father_supp = father_discovered_tirp_dict.at(tirp_to_extend.get_rel_as_str()).get_sum_ver_supp(); //TODO retorna unsigned
                 conf_constraint = ((float)vert_supp / father_supp) >= (float)min_confidence; // TODO comprovar conversio unsigned float
             }
 

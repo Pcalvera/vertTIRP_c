@@ -4,7 +4,7 @@
 
 #include "TI.h"
 
-TI::TI(string sym, long long start, long long end) {
+TI::TI(string sym, time_type start, time_type end) {
     this->sym = sym;
     this->start = start;
     this->end = end;
@@ -49,11 +49,11 @@ bool TI::operator>=(const TI &rhs) const {
     return !(*this < rhs);
 }
 
-long long TI::get_start()const {
+time_type TI::get_start()const {
     return this->start;
 }
 
-long long TI::get_end()const {
+time_type TI::get_end()const {
     return this->end;
 }
 

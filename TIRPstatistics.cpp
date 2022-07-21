@@ -21,10 +21,10 @@ TIRPstatistics::TIRPstatistics() {
     // necessary to know when we changed the sequence
     this->last_modified = EMPTY;
     // a vector of sums of mean durations of sequences
-    this->sum_mean_duration = vector<long long>();
+    this->sum_mean_duration = vector<time_type>();
     // a vector of number of instances by sequence
     this->n_instances_per_seq = vector<unsigned>();
-    this->mean_duration = vector<long long>();
+    this->mean_duration = vector<time_type>();
 }
 
 unsigned TIRPstatistics::append_tirp(string seq_id, unsigned int eid, TIRP &tirp) {
@@ -66,24 +66,24 @@ unsigned TIRPstatistics::append_tirp(string seq_id, unsigned int eid, TIRP &tirp
     return this->sum_ver_supp;
 }
 
-float TIRPstatistics::get_sum_ver_supp() const {
+unsigned TIRPstatistics::get_sum_ver_supp() const {
     return this->sum_ver_supp;
 }
 
-float TIRPstatistics::get_mean_hor_support(const map<string, unsigned int> &events_per_sequence) const {
+support_type TIRPstatistics::get_mean_hor_support(const map<string, unsigned int> &events_per_sequence) const {
     /*
     :param events_per_sequence: a dictionary where key is a sequence id and value is number of items in sequence
     returns the horizontal support that is self.sum_hor_per_seq / self.sum_ver_supp
     :return: returns the horizontal support that is self.sum_hor_per_seq / self.sum_ver_supp
     */
-    float rel_sum = 0;
+    support_type rel_sum = 0;
     for ( auto it : this->sum_hor_per_seq )
         rel_sum += (float)it.second/(float)events_per_sequence.at(it.first);
 
     return rel_sum/(float)this->sum_ver_supp;
 }
 
-float TIRPstatistics::get_ver_support(unsigned n_sequences) const {
+support_type TIRPstatistics::get_ver_support(unsigned n_sequences) const {
     /*
     returns the vertical relative support
     :param n_sequences: total number of sequences
@@ -92,7 +92,7 @@ float TIRPstatistics::get_ver_support(unsigned n_sequences) const {
     return (float)this-> sum_ver_supp / (float)n_sequences;
 }
 
-vector<long long> TIRPstatistics::get_mean_duration() {
+vector<time_type> TIRPstatistics::get_mean_duration() {
     /*
     Returns the mean duration vector, where each event id represents a sequence
     :return: returns the mean duration vector, where each event id represents a sequence
@@ -108,7 +108,7 @@ vector<long long> TIRPstatistics::get_mean_duration() {
         return this->mean_duration;
     }
     else // empty sequence
-        return vector<long long>(1,0);
+        return vector<time_type>(1,0);
 }
 
 string TIRPstatistics::get_mean_of_means_duration(unsigned units) {
@@ -117,9 +117,9 @@ string TIRPstatistics::get_mean_of_means_duration(unsigned units) {
     :param: units: 0-seconds, 1-minutes, 2-hours, 3-days, 4-weeks, 5-years
     :return: returns the overall mean
     */
-    vector<long long> l = this->get_mean_duration();
+    vector<time_type> l = this->get_mean_duration();
     //auto j = (aux/l.size())/switcher[units]);
-    return to_string((float)utils_mean(l)/(float)UNITS_NUMBER[units]) + " " + UNITS_STRING[units];
+    return to_string((float) utils_mean(l) / (float)UNITS_NUMBER[units]) + " " + UNITS_STRING[units];
 }
 
 map<string, map<unsigned, vector<TIRP>>> TIRPstatistics::get_sequence_events_tirps_dict() {

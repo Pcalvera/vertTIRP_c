@@ -1,5 +1,8 @@
-#include "Global.h"
+//
+// Created by pauca on 21/07/2022.
+//
 
+#include "Utils.h"
 
 Csv_df utils_csvRead(string &filename) {
     Csv_df result;
@@ -34,8 +37,8 @@ Csv_df utils_csvRead(string &filename) {
 }
 
 ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &date_column_name_start,
-                      string &date_column_name_end, string &date_format, vector<string> &val_column_names,
-                      bool is_null_f, int time_mode) {
+                    string &date_column_name_end, string &date_format, vector<string> &val_column_names,
+                    bool is_null_f, int time_mode) {
     //TODO is_null
     ReadTi result;
     Csv_df df = utils_csvRead(filepath);
@@ -119,5 +122,3 @@ vector<T> utils_getKkeys(map<T, V> m) {
         res.push_back( it.first );
     return res;
 }
-
-

@@ -4,8 +4,8 @@
 
 #include "VertTIRP.h"
 
-VertTIRP::VertTIRP(string &out_file, float min_sup_rel, float eps, int min_gap, long long max_gap,
-                   int min_duration, long long max_duration, bool dummy_calc, string &ps, bool trans, int min_confidence ,int max_length, int min_length) {
+VertTIRP::VertTIRP(string &out_file, support_type min_sup_rel, eps_type eps, time_type min_gap, time_type max_gap,
+                   int min_duration, time_type max_duration, bool dummy_calc, string &ps, bool trans, int min_confidence , int max_length, int min_length) {
 
     this->out_file = out_file;
     events_per_sequence = map<string,unsigned>();
@@ -19,8 +19,8 @@ VertTIRP::VertTIRP(string &out_file, float min_sup_rel, float eps, int min_gap, 
     this->min_length = min_length;
     this->eps = eps;
 
-    tirp_count = 0;
-    min_sup = 0;
+    this->tirp_count = 0;
+    this->min_sup = 0;
 
     this->f1 = vector<string>();
     this->vertical_db = map<string,VertTirpSidList>();
@@ -112,7 +112,7 @@ void VertTIRP::to_vertical(vector<vector<TI>> const &list_of_ti_seqs, vector<str
         this->events_per_sequence.insert(make_pair(list_of_seqs[i],list_of_ti_seqs[i].size()));
         for (auto its: list_of_ti_seqs[i]) {
             // duration constraints
-            long long duration = its.get_end() - its.get_start();
+            time_type duration = its.get_end() - its.get_start();
             if (duration >= this->min_duration && duration <= this->max_duration) {
                 sym_it = this->vertical_db.find(its.get_sym());
                 if (sym_it == this->vertical_db.end())
