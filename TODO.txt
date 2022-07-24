@@ -1,17 +1,10 @@
-Canviar lists per vectors!!!!!!
 Comprovar zips mateixa mida
 adaptar comentaris a c++
 Comentaris inici fitxers
 Missatges throws
 comprovar funcions constants
-comprovar insercions existents a map
 Allen_relationsEPS mapes amb funcions
 Comprovar parametres per referencia o no (a python tot es passa per ref)
-passar lists a vector (comprovar per list_of_ti_seqs)
-comprovar for( : ) que no iteren, fan copies
 comprovar tots els gets si han de retornar referència
 
 analitzar millores de temps podant o no l'arbre
-
-
-[A-Z]+\[( |)(.*)\]  accessos per []
