@@ -9,7 +9,7 @@
 #include <functional>
 #include "map"
 #include "list"
-#include "Global.h"
+#include "Global.cpp"
 #include "TI.h"
 #include "PairingStrategy.h"
 #include "Relation.h"

@@ -5,7 +5,7 @@
 #ifndef VERTTIRP_C_TI_H
 #define VERTTIRP_C_TI_H
 #include <iostream>
-#include "Global.h"
+#include "Global.cpp"
 
 using namespace std;
 

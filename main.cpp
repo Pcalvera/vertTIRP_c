@@ -1,7 +1,8 @@
 #include <iostream>
+#include <CL/cl.hpp>
 #include "VertTIRP.h"
 #include "TI.h"
-#include "Global.h"
+#include "Global.cpp"
 #include "PairingStrategy.h"
 /*
 author: Pau Calvera
@@ -60,4 +61,5 @@ int main () {
     co.print_patterns(false);
     cout << "Algorithm finished" << endl;
     return 0;
+
 }
