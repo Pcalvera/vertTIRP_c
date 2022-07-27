@@ -8,7 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <ctime>
-#include <bits/stdc++.h>
+#include <numeric>
 #include "TI.h"
 #include "list"
 #include "vector"
