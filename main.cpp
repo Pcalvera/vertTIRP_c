@@ -1,5 +1,4 @@
 #include <iostream>
-#include <CL/cl.hpp>
 #include "VertTIRP.h"
 #include "TI.h"
 #include "Global.cpp"
