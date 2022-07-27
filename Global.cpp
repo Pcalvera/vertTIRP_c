@@ -2,8 +2,8 @@
 // Created by pauca on 31/05/2022.
 //
 
-#ifndef VERTTIRP_C_GLOBAL_H
-#define VERTTIRP_C_GLOBAL_H
+#ifndef VERTTIRP_C_GLOBAL_CPP
+#define VERTTIRP_C_GLOBAL_CPP
 #include <iostream>
 
 typedef float support_type;
@@ -20,4 +20,4 @@ const string UNITS_STRING[6] = {"seconds", "minutes", "hours", "days", "weeks", 
 
 
 
-#endif //VERTTIRP_C_GLOBAL_H
+#endif //VERTTIRP_C_GLOBAL_CPP

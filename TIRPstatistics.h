@@ -6,7 +6,7 @@
 #define VERTTIRP_C_TIRPSTATISTICS_H
 #include <iostream>
 #include "TIRP.h"
-#include "Global.h"
+#include "Global.cpp"
 #include "Utils.h"
 #include "map"
 #include "vector"
