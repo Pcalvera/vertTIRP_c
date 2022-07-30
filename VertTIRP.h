@@ -21,6 +21,7 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 #define VERTTIRP_C_VERTTIRP_H
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 #include <vector>
 #include <map>
 #include "Global.cpp"

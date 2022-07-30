@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include "VertTIRP.h"
 #include "TI.h"
 #include "Global.cpp"
@@ -27,19 +28,28 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 support_type ver_sup = 0.01;  // vertical support TODO float o dobule
 support_type hor_sup = 0;  // horizontal support
 eps_type eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids crisp borders in relations
-bool dummy = true;  // whether to execute relations without a pairing strategies
+bool dummy = false;  // whether to execute relations without a pairing strategies
 bool trans = false;  // whether to use transitivity properties when assign a relation
 //string result_file_name = "my_result_file.csv";  // an output file
-string result_file_name = "my_result_file.csv";  // an output file
-string filepath = R"(C:\Users\pauca\CLionProjects\vertTIRP_c\toy.csv)";  // a path to time interval data. Any valid string path is acceptable.
 //string filepath = "/mnt/d/COLE/TFG/toy.csv";  // a path to time interval data. Any valid string path is acceptable.
 char sep = ';';  // delimiter to use with the scv file
+ //TOY.csv
+string result_file_name = "toy_result_file.csv";  // an output file
+string filepath = R"(D:\COLE\TFG_clion\toy.csv)";  // a path to time interval data. Any valid string path is acceptable.
 string sid_column = "sid";   // sequence column name
 string date_column_name_start = "start_time";  // start time column name
 string date_column_name_end = "end_time";  // end time column name
 string date_format = "%m/%d/%Y %H:%M";  // the format of the date, e.g. "3/1/2003 10:10" will be "%m/%d/%Y %H:%M"
 vector<string> value_column_name = vector<string>({"value"});  // the interesting attributes to be used in TIRPs discovering  //TODO taula?
-
+/* //ASL
+string result_file_name = "asl_result_file.csv";
+string filepath = R"(D:\COLE\TFG_clion\datasets\asl_ds.csv)";
+string sid_column = "Session_Scene";
+string date_column_name_start = "Start";
+string date_column_name_end = "End";
+string date_format = "%m/%d/%Y %H:%M";
+vector<string> value_column_name = vector<string>({"Main_New_Gloss","D_Start_HS","D_End_HS","Passive_Arm"});
+*/
 
 bool avoid_same_var_states = false;
 time_type ming = 0;  // minimum gap in seconds that is the gap between before consecutive elements
@@ -55,8 +65,11 @@ int main () {
     vector<string> list_of_users = filePatterns.list_of_users;
     int ti_count = filePatterns.ti_count;
 
+
     VertTIRP co = VertTIRP(result_file_name,ver_sup,eps,ming,maxg,mind,maxd,dummy,ps,trans);
+    time_t start_time = time(NULL);
     int tirp_count = co.mine_patterns(list_of_ti_users,list_of_users,avoid_same_var_states);
+    cout << "Execution time: " << time(NULL)-start_time << " seconds" << endl;
     co.print_patterns(false);
     cout << "Algorithm finished" << endl;
     return 0;

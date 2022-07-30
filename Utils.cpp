@@ -44,19 +44,18 @@ ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &da
     Csv_df df = utils_csvRead(filepath);
     map<string, vector<TI>> grouped_by_uid = df.groupbyUid();
 
-    for (const auto &i: df.content) {
-        //TI ti = TI(i[3].at(0),1,2);
-        TI ti = utils_vectToTi(i);
+    int sid_index = df.getIndex(seqid_column);
+    int start_index = df.getIndex(date_column_name_start);
+    int end_index = df.getIndex(date_column_name_end);
+    vector<int> values_index = df.getValIndex(val_column_names);
 
-        if (grouped_by_uid.count(i[0]) == 0) {
-            vector<TI> aux = vector<TI>();
-            aux.push_back(ti);
-            grouped_by_uid.insert(pair<string, vector<TI>>(i[0], aux));
-        } else {
-            auto it = grouped_by_uid.find(i[0]);
-            it->second.push_back(ti);
-        }
-        result.ti_count++;
+    for (const auto &i: df.content) {
+        vector<string> vals;
+        for (int j: values_index) vals.push_back(i[j]);
+        string val_string = utils_unifyStrings2(vals);
+
+        TI ti = utils_stringsToTi(i[start_index], i[end_index], val_string);
+        grouped_by_uid[i[sid_index]].push_back(ti);
     }
     for (const auto &j: grouped_by_uid) {
         result.list_of_users.push_back(j.first);
@@ -66,11 +65,11 @@ ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &da
     return result;
 }
 
-TI utils_vectToTi(const vector<string> &v) {
-    tm start = utils_splitDate(v[1]);
-    tm finish = utils_splitDate(v[2]);
+TI utils_stringsToTi(string data_inici,string data_fi,string val) {
+    tm start = utils_splitDate(data_inici);
+    tm finish = utils_splitDate(data_fi);
     string value = "value_";
-    return TI(value + v[3].at(0), mktime(&start), mktime(&finish));
+    return TI(value + val, mktime(&start), mktime(&finish));
 }
 
 tm utils_splitDate(const string &s) {
@@ -106,6 +105,12 @@ string utils_unifyStrings(vector<string> &seq_str_strings){
     {
         return ss.empty() ? s : ss + "', '" + s;
     }) + "']";
+}
+string utils_unifyStrings2(vector<string> &seq_str_strings){
+    return accumulate(seq_str_strings.begin(),seq_str_strings.end(),string(""),[](string &ss, string &s)
+    {
+        return ss.empty() ? s : ss + "_" + s;
+    });
 }
 string utils_unifyChars (string &seq_chars ){
     if ( seq_chars.empty() ) return "[' ']";

@@ -131,16 +131,20 @@ void VertTIRP::to_vertical(vector<vector<TI>> const &list_of_ti_seqs, vector<str
     if ( this->min_sup == 0 )
         this->min_sup = 1;
 
+
     // save a set of frequent 1-sized items sorted lexicographically
-    for ( auto &db_pos : this->vertical_db ){
+    vector<string> eraseKeys = vector<string>();
+    for ( auto db_pos : this->vertical_db ){
         unsigned aux = db_pos.second.get_support();
         if ( db_pos.second.get_support() >= this->min_sup ){
             db_pos.second.set_n_sequences(n_sequences);
             this->f1.push_back(db_pos.first);
         }
         else
-            this->vertical_db.erase(db_pos.first);
+            eraseKeys.push_back(db_pos.first);
     }
+    for ( string s : eraseKeys )
+        this->vertical_db.erase(s);
 
 
     sort(this->f1.begin(),this->f1.end());

@@ -78,19 +78,19 @@ VertTirpSidList VertTirpSidList::join(const VertTirpSidList &f, const Allen &ps,
 
     bool mine_last_equal = this->seq_str.back() < f.seq_str[0];
 
-
     for ( const auto& item : this->definitive_ones_indices_dict ){
         string seq_id = item.first;
         map<unsigned,vector<TIRP>> dict_pos_tirps = item.second;
-        if ( f.definitive_ones_indices_dict.find(seq_id) != f.definitive_ones_indices_dict.end() ) {
+        auto f_at_seq_id = f.definitive_ones_indices_dict.find(seq_id);
+        if ( f_at_seq_id != f.definitive_ones_indices_dict.end() ) {
             //vector<int> f_eids = utils_getKeys(f.definitive_ones_indices_dict[seq_id]);   //TODO fer funcionar la funcio
             vector<unsigned> f_eids = vector<unsigned>();
-            for (const auto &it: f.definitive_ones_indices_dict.at(seq_id))
+            for (const auto &it: f_at_seq_id->second)
                 f_eids.push_back(it.first);
             //TODO fi
 
-            time_type last_f_first = f.definitive_ones_indices_dict.at(seq_id).at(f_eids.back())[0].get_first();
-            time_type first_f_first = f.definitive_ones_indices_dict.at(seq_id).at(f_eids.front())[0].get_first();
+            time_type last_f_first = f_at_seq_id->second.at(f_eids.back())[0].get_first();
+            time_type first_f_first = f_at_seq_id->second.at(f_eids.front())[0].get_first();
             for (const auto &item2: dict_pos_tirps) {
                 unsigned self_first_eid = item2.first;
                 vector<TIRP> self_tirps = item2.second;

@@ -6,9 +6,16 @@
 #define VERTTIRP_C_GLOBAL_CPP
 #include <iostream>
 
+#define TIME_MODE_NUMBER TRUE   //1 timesrtamp, 2 number
+
+
+typedef long long int time_type;
+//#if TIME_MODE_NUMBER TRUE
+//typedef unsigned int time_type
+//#endif
 typedef float support_type;
 typedef float eps_type;
-typedef long long int time_type;
+
 
 using namespace std;
 
