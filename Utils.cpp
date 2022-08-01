@@ -49,14 +49,23 @@ ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &da
     int end_index = df.getIndex(date_column_name_end);
     vector<int> values_index = df.getValIndex(val_column_names);
 
-    for (const auto &i: df.content) {
+    /*for (const auto &i: df.content) {
         vector<string> vals;
         for (int j: values_index) vals.push_back(i[j]);
         string val_string = utils_unifyStrings2(vals);
 
-        TI ti = utils_stringsToTi(i[start_index], i[end_index], val_string);
+        TI ti = utils_stringsToTi(i[start_index], i[end_index], val_string,time_mode);
         grouped_by_uid[i[sid_index]].push_back(ti);
+    }*/
+    for (const auto &i: df.content) {
+        for (int j: values_index) {
+            string val_string = df.header[j]+"_"+i[j];
+
+            TI ti = utils_stringsToTi(i[start_index], i[end_index], val_string, time_mode);
+            grouped_by_uid[i[sid_index]].push_back(ti);
+        }
     }
+    cout<<grouped_by_uid.size()<<endl;
     for (const auto &j: grouped_by_uid) {
         result.list_of_users.push_back(j.first);
         result.list_of_ti_users.push_back(j.second);
@@ -65,11 +74,20 @@ ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &da
     return result;
 }
 
-TI utils_stringsToTi(string data_inici,string data_fi,string val) {
-    tm start = utils_splitDate(data_inici);
-    tm finish = utils_splitDate(data_fi);
-    string value = "value_";
-    return TI(value + val, mktime(&start), mktime(&finish));
+TI utils_stringsToTi(string data_inici,string data_fi,string val,bool timemode_number) {
+    time_type startTime;
+    time_type endTime;
+    if ( !timemode_number ) {
+        tm start = utils_splitDate(data_inici);
+        tm finish = utils_splitDate(data_fi);
+        startTime = mktime(&start);
+        endTime = mktime(&finish);
+    }
+    else {
+        startTime = stoll(data_inici);
+        endTime = stoll(data_fi);
+    }
+    return TI(val, startTime, endTime);
 }
 
 tm utils_splitDate(const string &s) {

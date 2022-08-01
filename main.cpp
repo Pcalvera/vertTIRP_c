@@ -24,8 +24,8 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 */
 
 
-
-support_type ver_sup = 0.01;  // vertical support TODO float o dobule
+bool timemode_number = true;
+support_type ver_sup = 0.8;  // vertical support TODO float o dobule
 support_type hor_sup = 0;  // horizontal support
 eps_type eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids crisp borders in relations
 bool dummy = false;  // whether to execute relations without a pairing strategies
@@ -33,7 +33,7 @@ bool trans = false;  // whether to use transitivity properties when assign a rel
 //string result_file_name = "my_result_file.csv";  // an output file
 //string filepath = "/mnt/d/COLE/TFG/toy.csv";  // a path to time interval data. Any valid string path is acceptable.
 char sep = ';';  // delimiter to use with the scv file
- //TOY.csv
+/* //TOY.csv
 string result_file_name = "toy_result_file.csv";  // an output file
 string filepath = R"(D:\COLE\TFG_clion\toy.csv)";  // a path to time interval data. Any valid string path is acceptable.
 string sid_column = "sid";   // sequence column name
@@ -41,7 +41,7 @@ string date_column_name_start = "start_time";  // start time column name
 string date_column_name_end = "end_time";  // end time column name
 string date_format = "%m/%d/%Y %H:%M";  // the format of the date, e.g. "3/1/2003 10:10" will be "%m/%d/%Y %H:%M"
 vector<string> value_column_name = vector<string>({"value"});  // the interesting attributes to be used in TIRPs discovering  //TODO taula?
-/* //ASL
+*/ //ASL
 string result_file_name = "asl_result_file.csv";
 string filepath = R"(D:\COLE\TFG_clion\datasets\asl_ds.csv)";
 string sid_column = "Session_Scene";
@@ -49,7 +49,7 @@ string date_column_name_start = "Start";
 string date_column_name_end = "End";
 string date_format = "%m/%d/%Y %H:%M";
 vector<string> value_column_name = vector<string>({"Main_New_Gloss","D_Start_HS","D_End_HS","Passive_Arm"});
-*/
+
 
 bool avoid_same_var_states = false;
 time_type ming = 0;  // minimum gap in seconds that is the gap between before consecutive elements
@@ -60,10 +60,32 @@ string ps = "mocfbes";
 
 int main () {
     ReadTi filePatterns = utils_tiRead(filepath, sep, sid_column, date_column_name_start, date_column_name_end,
-                                       date_format, value_column_name, true);
+                                       date_format, value_column_name, true,timemode_number);
     vector<vector<TI>> list_of_ti_users = filePatterns.list_of_ti_users;
     vector<string> list_of_users = filePatterns.list_of_users;
     int ti_count = filePatterns.ti_count;
+
+
+    vector<string> resultat = vector<string>();
+
+    for ( int i = 0 ; i < list_of_ti_users.size() ; i++){
+        if ( list_of_users[i] == "ASL_2011_07_22_Brady9"){
+            //cout<<i;
+        }
+        for ( int j = 0 ; j < list_of_ti_users[i].size() ; j++ ){
+            resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i][j].get_sym() );
+        }
+        //resultat.push_back(list_of_users[i]);
+    }
+    std::sort(resultat.begin(), resultat.end());
+    ofstream file;
+    file.open("lectura.txt");
+    for ( string s : resultat )
+        file<<s<<endl;
+    file.close();
+
+
+
 
 
     VertTIRP co = VertTIRP(result_file_name,ver_sup,eps,ming,maxg,mind,maxd,dummy,ps,trans);
