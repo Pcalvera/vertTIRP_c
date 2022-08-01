@@ -99,10 +99,12 @@ Allen::calc_rel(const TI &a,const TI &b, eps_type eps, time_type min_gap, time_t
                 if ( Allen_relationsEPS::cond_dict.at(gr_arr[i])(a,b,eps,min_gap,max_gap) ){
                     for ( const Node &words : sentence ){
                         if ( words.dif == 1 ){
-                            for ( const char &w : words.l ){
-                                rel = Allen_relationsEPS::ind_func_dict.at(w)(a,b,eps,min_gap,max_gap);
-                                if ( rel.second > -2 )
-                                    return rel;
+                            if ( Allen_relationsEPS::cond_dict.at("mo")(a,b,eps,min_gap, max_gap)) {
+                                for (const char &w: words.l) {
+                                    rel = Allen_relationsEPS::ind_func_dict.at(w)(a, b, eps, min_gap, max_gap);
+                                    if (rel.second > -2)
+                                        return rel;
+                                }
                             }
                         }
                         else{
