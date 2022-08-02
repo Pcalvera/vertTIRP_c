@@ -4,90 +4,106 @@
 
 #include "Utils.h"
 
-Csv_df utils_csvRead(string &filename) {
-    Csv_df result;
-    vector<vector<string>> content;
-    vector<string> header = vector<string>();
-    vector<string> row;
+map<string,vector<Csv_line>> read_csv(string &filename,string &seq_h,string &start_h, string &end_h, vector<string> &values) {
+    map<string,vector<Csv_line>> content = map<string,vector<Csv_line>>();
     string line, word;
+    int seq_index,start_index,end_index;
+    vector<string> row;
+    vector<int> values_index = vector<int>();
 
     ifstream file;
     file.open(filename);
     if (file.is_open()) {
         if (getline(file, line)) {
-            row.clear();
+            row.clear(); //TODO
             stringstream str(line);
-            while (getline(str, word, ';'))
-                header.push_back(word);
+            int i = 0;
+            while (getline(str, word, ';')) {
+                if ( word == seq_h )
+                    seq_index =  i;
+                else if ( word == start_h )
+                    start_index = i;
+                else if ( word == end_h )
+                    end_index = i;
+                else{
+                    for ( auto &s : values){
+                        if ( s == word ){
+                            values_index.push_back(i);
+                            break;
+                        }
+                    }
+                }
+                i++;
+            }
 
             while (getline(file, line)) {
-                row.clear();
+                row.clear();  //TODO
                 stringstream str(line);
                 while (getline(str, word, ';'))
                     row.push_back(word);
-                content.push_back(row);
+                if ( row.size() != i )
+                    throw(""); //TODO
+                Csv_line cl;
+                cl.start_time = row[start_index];
+                cl.end_time = row[end_index];
+                cl.values = vector<string>();
+                for ( int j : values_index)
+                    cl.values.push_back(row[j]);
+                content[row[seq_index]].push_back(cl);
             }
-            result.content = content;
-            result.header = header;
         }
     } else
-        cout << "Could not open the file\n";
-
-    return result;
+        throw("Could not open the file\n");
+    return content;
 }
+vector<TI> ti_to_list(const vector<Csv_line> &df, string &date_column_name_start, string &date_column_name_end, vector<string> &val_column_names, bool timemode_number){
+    vector<TI> list_of_ti = vector<TI>();
+    if ( df.size() < 2 )
+        return list_of_ti;
 
-ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &date_column_name_start,
-                    string &date_column_name_end, string &date_format, vector<string> &val_column_names,
-                    bool is_null_f, int time_mode) {
-    //TODO is_null
-    ReadTi result;
-    Csv_df df = utils_csvRead(filepath);
-    map<string, vector<TI>> grouped_by_uid = df.groupbyUid();
-
-    int sid_index = df.getIndex(seqid_column);
-    int start_index = df.getIndex(date_column_name_start);
-    int end_index = df.getIndex(date_column_name_end);
-    vector<int> values_index = df.getValIndex(val_column_names);
-
-    /*for (const auto &i: df.content) {
-        vector<string> vals;
-        for (int j: values_index) vals.push_back(i[j]);
-        string val_string = utils_unifyStrings2(vals);
-
-        TI ti = utils_stringsToTi(i[start_index], i[end_index], val_string,time_mode);
-        grouped_by_uid[i[sid_index]].push_back(ti);
-    }*/
-    for (const auto &i: df.content) {
-        for (int j: values_index) {
-            string val_string = df.header[j]+"_"+i[j];
-
-            TI ti = utils_stringsToTi(i[start_index], i[end_index], val_string, time_mode);
-            grouped_by_uid[i[sid_index]].push_back(ti);
-        }
-    }
-    cout<<grouped_by_uid.size()<<endl;
-    for (const auto &j: grouped_by_uid) {
-        result.list_of_users.push_back(j.first);
-        result.list_of_ti_users.push_back(j.second);
-    }
-
-    return result;
-}
-
-TI utils_stringsToTi(string data_inici,string data_fi,string val,bool timemode_number) {
     time_type startTime;
     time_type endTime;
-    if ( !timemode_number ) {
-        tm start = utils_splitDate(data_inici);
-        tm finish = utils_splitDate(data_fi);
-        startTime = mktime(&start);
-        endTime = mktime(&finish);
+
+
+    for ( int i = 0 ; i < val_column_names.size() ; i++ ){
+        string attr_name = val_column_names[i] + "_";
+        for ( const Csv_line &line : df ) {
+            if ( timemode_number ){
+                startTime = stoll(line.start_time);
+                endTime = stoll(line.end_time);
+            }
+            else { //timestramp
+                tm start = utils_splitDate(line.start_time);
+                tm finish = utils_splitDate(line.end_time);
+                startTime = mktime(&start);
+                endTime = mktime(&finish);
+            }
+            TI ti = TI(attr_name + line.values[i], startTime, endTime);
+            list_of_ti.push_back(ti);
+        }
     }
-    else {
-        startTime = stoll(data_inici);
-        endTime = stoll(data_fi);
+    std::sort(list_of_ti.begin(), list_of_ti.end());
+    return list_of_ti;
+
+}
+pair<vector<string>,vector<vector<TI>>> utils_tiRead(string &filepath, char sep, string &seqid_column, string &date_column_name_start,
+                    string &date_column_name_end, string &date_format, vector<string> &val_column_names,
+                    bool is_null_f, bool timemode_number) {
+    //TODO is_null
+    map<string,vector<Csv_line>> df = read_csv(filepath,seqid_column,date_column_name_start,date_column_name_end,val_column_names);
+    vector<vector<TI>> list_of_ti_sequences = vector<vector<TI>>();
+    vector<string> list_of_sequences = vector<string>();
+
+    vector<TI> ti;
+    for ( auto const &item : df ){
+        ti = ti_to_list(item.second,date_column_name_start,date_column_name_end,val_column_names,timemode_number);
+        if ( !ti.empty() ){
+            list_of_sequences.push_back(item.first);
+            list_of_ti_sequences.push_back(ti);
+        }
     }
-    return TI(val, startTime, endTime);
+    return make_pair(list_of_sequences,list_of_ti_sequences);
+
 }
 
 tm utils_splitDate(const string &s) {
@@ -145,3 +161,4 @@ vector<T> utils_getKkeys(map<T, V> m) {
         res.push_back( it.first );
     return res;
 }
+

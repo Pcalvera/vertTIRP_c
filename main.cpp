@@ -59,16 +59,15 @@ time_type maxd = 3155695200;   // each tirp should have a duration of at most mi
 string ps = "mocfbes";
 
 int main () {
-    ReadTi filePatterns = utils_tiRead(filepath, sep, sid_column, date_column_name_start, date_column_name_end,
+    auto filePatterns = utils_tiRead(filepath, sep, sid_column, date_column_name_start, date_column_name_end,
                                        date_format, value_column_name, true,timemode_number);
-    vector<vector<TI>> list_of_ti_users = filePatterns.list_of_ti_users;
-    vector<string> list_of_users = filePatterns.list_of_users;
-    int ti_count = filePatterns.ti_count;
+    vector<string> list_of_users = filePatterns.first;
+    vector<vector<TI>> list_of_ti_users = filePatterns.second;
 
 
     vector<string> resultat = vector<string>();
 
-    for ( int i = 0 ; i < list_of_ti_users.size() ; i++){
+    /*for ( int i = 0 ; i < list_of_ti_users.size() ; i++){
         if ( list_of_users[i] == "ASL_2011_07_22_Brady9"){
             //cout<<i;
         }
@@ -83,7 +82,7 @@ int main () {
     for ( string s : resultat )
         file<<s<<endl;
     file.close();
-
+*/
 
 
 

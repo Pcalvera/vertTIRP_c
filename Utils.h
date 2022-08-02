@@ -9,6 +9,7 @@
 #include <sstream>
 #include <ctime>
 #include <numeric>
+#include <algorithm>
 #include "TI.h"
 #include "list"
 #include "vector"
@@ -16,43 +17,16 @@
 
 using namespace std;
 
-
-struct ReadTi {
-    vector<vector<TI>> list_of_ti_users = vector<vector<TI>>();
-    vector<string> list_of_users = vector<string>();
-    int ti_count = 0;
-};
-struct Csv_df {
-    //map<string,vector<string>> csv_df;
-    vector<vector<string>> content;
-    vector<string> header;
-    int getIndex(string s){
-        for ( int  i = 0 ; i < header.size() ; i++ ){
-            if ( header.at(i) == s ) return i;
-        }
-        return -1;
-    }
-    vector<int> getValIndex(vector<string> s){
-        vector<int> res;
-        for ( int  i = 0 ; i < header.size() ; i++ ){
-            for ( const string& aux : s ){
-                if ( aux == header.at(i) ){
-                    res.push_back(i);
-                    break;
-                }
-            }
-        }
-        return res;
-    }
-    map<string,vector<TI>> groupbyUid(){
-        map<string,vector<TI>> aux = map<string,vector<TI>>();
-        return aux;
-    }
+struct Csv_line {
+    string start_time;
+    string end_time;
+    vector<string> values;
 };
 
-Csv_df utils_csvRead(string &filename);
-ReadTi utils_tiRead(string &filepath, char sep, string &seqid_column, string &date_column_name_start, string &date_column_name_end, string &date_format, vector<string> &val_column_names,
-                    bool is_null_f= true, int time_mode= 1);
+map<string,vector<Csv_line>> read_csv(string &filename,string &seq_h,string &start_h, string &end_h, vector<string> &values);
+vector<TI> ti_to_list(const vector<Csv_line> &df, string &date_column_name_start, string &date_column_name_end, vector<string> &val_column_names, bool timemode_number = true);
+pair<vector<string>,vector<vector<TI>>> utils_tiRead(string &filepath, char sep, string &seqid_column, string &date_column_name_start, string &date_column_name_end, string &date_format, vector<string> &val_column_names,
+                    bool is_null_f= true, bool timemode_number = true);
 TI utils_stringsToTi(string data_inici,string data_fi,string val,bool timemode_number);
 tm utils_splitDate(const string &s);
 long long utils_mean(vector<time_type> &l);
