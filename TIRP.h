@@ -18,6 +18,7 @@ using namespace std;
 class TIRP {
 public:
     TIRP();
+    TIRP(const shared_ptr<TIRP> &tirp);
     TIRP(vector<shared_ptr<TI>> ti, time_type first, time_type max_last);
     TIRP(vector<shared_ptr<TI>> &ti, time_type first, time_type max_last, vector<char> &r);
     bool operator<(const TIRP &rhs) const;
@@ -29,7 +30,7 @@ public:
     time_type get_first()const;
     vector<shared_ptr<TI>>& get_ti();
     time_type get_max_last()const;
-    pair<pair<bool,TIRP>,unsigned> extend_with(const shared_ptr<TI> &s_ti, eps_type eps, time_type min_gap, time_type max_gap, time_type max_duration, bool mine_last_equal, const Allen &allen, Chrono &chrono)const;
+    pair<shared_ptr<TIRP>,unsigned> extend_with(const shared_ptr<TI> &s_ti, eps_type eps, time_type min_gap, time_type max_gap, time_type max_duration, bool mine_last_equal, const Allen &allen, Chrono &chrono)const;
 
 
 private:

@@ -1,6 +1,4 @@
 //
-// Created by pauca on 10/04/2022.
-//
 
 #include "TIRP.h"
 TIRP::TIRP() {
@@ -8,6 +6,13 @@ TIRP::TIRP() {
     this->r = vector<char>();
     this->first = 0;
     this->max_last = 0;
+}
+
+TIRP::TIRP(const shared_ptr<TIRP> &tirp) {
+    this->ti = tirp->ti;
+    this->first = tirp->first;
+    this->max_last = tirp->max_last;
+    this->r = tirp->r;
 }
 
 TIRP::TIRP(vector<shared_ptr<TI>> ti, time_type first, time_type max_last) {
@@ -68,10 +73,9 @@ vector<shared_ptr<TI>>& TIRP::get_ti() {
     return this->ti;
 }
 
-pair<pair<bool, TIRP>, unsigned>
+pair<shared_ptr<TIRP>, unsigned>
 TIRP::extend_with(const shared_ptr<TI> &s_ti, eps_type eps, time_type min_gap, time_type max_gap, time_type max_duration,
                   bool mine_last_equal, const Allen &allen, Chrono &chrono) const {
-    TIRP nullTirp;
     // calc and assign the last relation
     chrono.start("extend_with_1");
     int* rel = allen.calc_rel(this->ti.back(), s_ti, eps, min_gap,max_gap ); //TODO
@@ -79,13 +83,13 @@ TIRP::extend_with(const shared_ptr<TI> &s_ti, eps_type eps, time_type min_gap, t
     // the s-extension case
     if ( !mine_last_equal && rel[0] == 'e' ) {
         chrono.start("extend_with_return");
-        return make_pair(make_pair(false, nullTirp), 1);
+        return make_pair(nullptr, 1);
     }
 
     if ( rel[1] < 3 ) {
         chrono.start("extend_with_return");
         // max gap o min gaps exceded
-        return make_pair(make_pair(false, nullTirp), rel[1]);
+        return make_pair(nullptr, rel[1]);
     }
     chrono.start("extend_with_2");
     // ini new relation
@@ -110,7 +114,7 @@ TIRP::extend_with(const shared_ptr<TI> &s_ti, eps_type eps, time_type min_gap, t
     // max duration constraint
     if ( (new_max_last-this->first) > max_duration ) {
         chrono.start("extend_with_return");
-        return make_pair(make_pair(false, nullTirp), 1);
+        return make_pair(nullptr, 1);
     }
 
     int size_rel = new_rel.size();
@@ -139,7 +143,7 @@ TIRP::extend_with(const shared_ptr<TI> &s_ti, eps_type eps, time_type min_gap, t
             chrono.stop("extend_with_3");
             chrono.start("extend_with_return");
             // max gap or min gaps exceeded
-            return make_pair(make_pair(false, nullTirp), rel[1]);
+            return make_pair(nullptr, rel[1]);
         }
 
         //  assigns the relation to the position
@@ -151,7 +155,7 @@ TIRP::extend_with(const shared_ptr<TI> &s_ti, eps_type eps, time_type min_gap, t
     }
     chrono.stop("extend_with_3");
     chrono.start("extend_with_return");
-    return make_pair(make_pair(true,TIRP(new_ti,new_ti[0]->get_start(),new_max_last,new_rel)),3);
+    return make_pair(std::make_shared<TIRP>(new_ti,new_ti[0]->get_start() ,new_max_last,new_rel),3);
 }
 
 time_type TIRP::get_max_last() const {

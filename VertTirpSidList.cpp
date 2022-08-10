@@ -8,7 +8,7 @@
 
 VertTirpSidList::VertTirpSidList() {
     this->seq_str = vector<string>();
-    this->definitive_ones_indices_dict = map<string,map<unsigned,vector<TIRP>>>();
+    this->definitive_ones_indices_dict = map<string,map<unsigned,vector<shared_ptr<TIRP>>>>();
     this->definitive_discovered_tirp_dict = map<string,shared_ptr<TIRPstatistics>>();
     this->temp_discovered_tirp_dict = map<string,shared_ptr<TIRPstatistics>>();
     this->n_sequences = 0;
@@ -17,7 +17,7 @@ VertTirpSidList::VertTirpSidList() {
 }
 
 void VertTirpSidList::append_item(const shared_ptr<TI> &ti, string sid, unsigned eid) {
-    TIRP new_tirp =  TIRP(vector<shared_ptr<TI>>(1,ti), ti->get_start(), ti->get_end() );  //TODO inicialitzar amb 1?
+    shared_ptr<TIRP> new_tirp =  make_shared<TIRP>(vector<shared_ptr<TI>>(1,ti), ti->get_start(), ti->get_end() );  //TODO inicialitzar amb 1?
     if ( ti->get_sym()=="Passive_Arm_N" && sid == "ASL_2008_05_29b6"){
         int dffs = 3;
     }
@@ -30,16 +30,16 @@ void VertTirpSidList::append_item(const shared_ptr<TI> &ti, string sid, unsigned
 
     auto doid_it = this->definitive_ones_indices_dict.find(sid);
     if ( doid_it == definitive_ones_indices_dict.end() )
-        doid_it = this->definitive_ones_indices_dict.insert(pair<string,map<unsigned,vector<TIRP>>>(sid,map<unsigned,vector<TIRP>>() ) ).first;
+        doid_it = this->definitive_ones_indices_dict.insert(pair<string,map<unsigned,vector<shared_ptr<TIRP>>>>(sid,map<unsigned,vector<shared_ptr<TIRP>>>() ) ).first;
 
     //this->definitive_discovered_tirp_dict.find("")->second.append_tirp(sid,eid,new_tirp); //TODO potser es pot fer abans,    canviar per at()
     this->definitive_discovered_tirp_dict.at(EMPTY)->append_tirp(sid,eid,new_tirp);
 
     auto doid_it2 = doid_it->second.find(eid);
     if ( doid_it2 == doid_it->second.end() )
-        doid_it->second.insert(pair<unsigned,vector<TIRP>>(eid,vector<TIRP>(1,new_tirp)));
+        doid_it->second.insert(pair<unsigned,vector<shared_ptr<TIRP>>>(eid,vector<shared_ptr<TIRP>>(1, make_shared<TIRP>(new_tirp)))); //TODO crear nou objecte?
     else
-        doid_it2->second.push_back(new_tirp);
+        doid_it2->second.emplace_back(new_tirp);
 }
 
 void VertTirpSidList::set_n_sequences(int n_sequences) {
@@ -66,7 +66,7 @@ unsigned VertTirpSidList::get_seq_length() const {
     return this->seq_str.size();
 }
 
-map<string, map<unsigned, vector<TIRP>>> VertTirpSidList::get_definitive_ones_indices_dict() const {
+map<string, map<unsigned, vector<shared_ptr<TIRP>>>> VertTirpSidList::get_definitive_ones_indices_dict() const {  //TODO ref
     return this->definitive_ones_indices_dict;
 }
 
@@ -90,7 +90,7 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f, const Allen &ps, eps_t
         double temps = 0;
 
         string seq_id = item.first;
-        map<unsigned,vector<TIRP>> dict_pos_tirps = item.second;
+        map<unsigned,vector<shared_ptr<TIRP>>> dict_pos_tirps = item.second;
         auto f_at_seq_id = f.definitive_ones_indices_dict.find(seq_id);
         if ( f_at_seq_id != f.definitive_ones_indices_dict.end() ) {
 
@@ -100,12 +100,12 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f, const Allen &ps, eps_t
                 f_eids.push_back(it.first);
             //TODO fi
 
-            time_type last_f_first = f_at_seq_id->second.at(f_eids.back())[0].get_first();
-            time_type first_f_first = f_at_seq_id->second.at(f_eids.front())[0].get_first();
+            time_type last_f_first = f_at_seq_id->second.at(f_eids.back())[0]->get_first();
+            time_type first_f_first = f_at_seq_id->second.at(f_eids.front())[0]->get_first();
             for (const auto &item2: dict_pos_tirps) {
 
                 unsigned self_first_eid = item2.first;
-                vector<TIRP> self_tirps = item2.second;
+                vector<shared_ptr<TIRP>> self_tirps = item2.second;
                 // if there exists eids in f greater than my first eid
                 if (self_first_eid < f_eids.back()) {
 
@@ -118,7 +118,7 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f, const Allen &ps, eps_t
                     if ( min_gap > 0 )
                         me_first = first_one_me.get_first() + min_gap;
 
-                    if ( self_first_eid == 18 && seq_id=="ASL_2008_05_29b6" && self_tirps.front().get_ti().front()->get_sym() == "Passive_Arm_N")
+                    if ( self_first_eid == 18 && seq_id=="ASL_2008_05_29b6" && self_tirps.front()->get_ti().front()->get_sym() == "Passive_Arm_N")
                         int dfsjklfdj = 3;
                     // if last element of f, sidlist matchs the min gap restriction
                     if ( last_f_first >= me_first ){
@@ -133,9 +133,9 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f, const Allen &ps, eps_t
                         if ( max_gap == MAXGAP || ( me_second_init && first_f_first <= me_second ) ){
                             for ( const auto &item3 : f.definitive_ones_indices_dict.at(seq_id) ){
                                 unsigned f_pos = item3.first;
-                                vector<TIRP> f_tirps = item3.second;
+                                vector<shared_ptr<TIRP>> f_tirps = item3.second;
 
-                                if ( me_second_init && f_tirps[0].get_first() > me_second )
+                                if ( me_second_init && f_tirps[0]->get_first() > me_second )
                                      break;
                                 else{
                                     if ( f_pos > self_first_eid ) {
@@ -172,47 +172,47 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f, const Allen &ps, eps_t
 }
 
 unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f_eid, VertTirpSidList &f_sidlist,
-                                            bool mine_last_equal, const Allen &ps, const vector<TIRP> &tirps_to_extend,
+                                            bool mine_last_equal, const Allen &ps, const vector<shared_ptr<TIRP>> &tirps_to_extend,
                                             eps_type eps, time_type min_gap, time_type  max_gap,
                                             time_type max_duration, support_type min_ver_sup,
                                             const map<string,shared_ptr<TIRPstatistics>> &father_discovered_tirp_dict,
                                             int min_confidence,
                                             double &temps) {
     this->chrono.start("1");
-    vector<shared_ptr<TI>> f_ti = f_sidlist.definitive_ones_indices_dict.at(seq_id).at(f_eid)[0].get_ti();
+    vector<shared_ptr<TI>> f_ti = f_sidlist.definitive_ones_indices_dict.at(seq_id).at(f_eid)[0]->get_ti();
     this->chrono.stop("1");
 
     bool all_max_gap_exceeded = true;
     bool at_least_one_tirp = false;
 
     int count = 0;
-    for ( const TIRP &tirp_to_extend : tirps_to_extend ){
+    for ( const shared_ptr<TIRP> &tirp_to_extend : tirps_to_extend ){
         // the extension will return a new tirp and a status
         // status is: if ok:3, fi max_gap:2, otherwise:1
         this->chrono.start("2");
-        pair<pair<bool,TIRP>,unsigned> extended_tirp = tirp_to_extend.extend_with(f_ti[0],eps,min_gap,max_gap,max_duration,mine_last_equal,ps,chrono);
+        pair<shared_ptr<TIRP>,unsigned> extended_tirp = tirp_to_extend->extend_with(f_ti[0],eps,min_gap,max_gap,max_duration,mine_last_equal,ps,chrono);
         chrono.stop("extend_with_return");
         this->chrono.stop("2");
 
-        if ( extended_tirp.first.first ){
+        if ( extended_tirp.first != nullptr ){
             count++;
             at_least_one_tirp = true;
 
-            string new_rel = extended_tirp.first.second.get_rel_as_str();
+            string new_rel = extended_tirp.first->get_rel_as_str();
             // append it to a temporal discovered
             auto temp_it = this->temp_discovered_tirp_dict.find(new_rel);
             if ( temp_it == this->temp_discovered_tirp_dict.end() )
                 temp_it = this->temp_discovered_tirp_dict.insert(make_pair(new_rel,std::make_shared<TIRPstatistics>())).first;
-            unsigned vert_supp = temp_it->second->append_tirp( seq_id,f_eid,extended_tirp.first.second );
+            unsigned vert_supp = temp_it->second->append_tirp( seq_id,f_eid,extended_tirp.first );
 
             // confidence calculation
             bool conf_constraint = true;
             if ( min_confidence != -1 ){
                 support_type father_supp;
-                if ( tirp_to_extend.get_rel_as_str() == EMPTY )
+                if ( tirp_to_extend->get_rel_as_str() == EMPTY )
                     father_supp = father_discovered_tirp_dict.at(EMPTY)->get_sum_ver_supp();  //TODO retorna unsigned
                 else
-                    father_supp = father_discovered_tirp_dict.at(tirp_to_extend.get_rel_as_str())->get_sum_ver_supp(); //TODO retorna unsigned
+                    father_supp = father_discovered_tirp_dict.at(tirp_to_extend->get_rel_as_str())->get_sum_ver_supp(); //TODO retorna unsigned
                 conf_constraint = ((float)vert_supp / father_supp) >= (float)min_confidence; // TODO comprovar conversio unsigned float
             }
 
@@ -229,9 +229,9 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
 
                     auto it = this->definitive_ones_indices_dict.find(seq_id);
                     if ( it == this->definitive_ones_indices_dict.end() )
-                        it->second[f_eid] = vector<TIRP>(1,extended_tirp.first.second);
+                        it->second[f_eid] = vector<shared_ptr<TIRP>>(1,std::make_shared<TIRP>(extended_tirp.first) );  //TODO comprovar si s'ha de copiar l'objecte
                     else
-                        this->first_sorted_extend(seq_id, f_eid, vector<TIRP>(1,extended_tirp.first.second));
+                        this->first_sorted_extend(seq_id, f_eid, vector<shared_ptr<TIRP>>(1,std::make_shared<TIRP>(extended_tirp.first)));  //TODO comprovar si s'ha de copiar l'objecte
                 }
                 else {
                     // If the new_rel does not exists in the self.definitive_discovered_tirp_dict
@@ -240,24 +240,27 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
 
                     // copy all the frequent tirps at the correspondent event ids of
                     // self.definitive_ones_indices_dict
-                    for ( const auto &sid_eidtirps : this->definitive_discovered_tirp_dict.at(new_rel)->get_sequence_events_tirps_dict()){
+                    for ( const auto &sid_eidtirps : this->definitive_discovered_tirp_dict.at(new_rel)->get_sequence_events_tirps_dict()){   //TODO retornar per ref
                         string sid = sid_eidtirps.first;
                         for ( const auto &eid_tirps : sid_eidtirps.second ){
                             unsigned eid = eid_tirps.first;
                             auto it2 = this->definitive_ones_indices_dict.find(sid);
                             if ( it2 == this->definitive_ones_indices_dict.end() ){
                                 this->support++;
-                                it2 = this->definitive_ones_indices_dict.insert(pair<string,map<unsigned,vector<TIRP>>>(
+                                it2 = this->definitive_ones_indices_dict.insert(pair<string,map<unsigned,vector<shared_ptr<TIRP>>>>(
                                         sid,
-                                        map<unsigned,vector<TIRP>>()
+                                        map<unsigned,vector<shared_ptr<TIRP>>>()
                                         )).first;
                             }
 
                             auto it3 = it2->second.find(eid);
-                            if ( it3 == it2->second.end() )
-                                it2->second.insert(pair<unsigned,vector<TIRP>>(
+                            if ( it3 == it2->second.end() ) {
+                                auto inserted = it2->second.insert(pair<unsigned, vector<shared_ptr<TIRP>>>(
                                         eid,
-                                        vector<TIRP>(eid_tirps.second)));
+                                        vector<shared_ptr<TIRP>>())).first;
+                                for ( auto &copyTirp : eid_tirps.second )    //TODO comprovar que funciona
+                                    inserted->second.emplace_back(make_shared<TIRP>(copyTirp));
+                            }
                             else
                                 this->first_sorted_extend(sid,eid, eid_tirps.second);
                         }
@@ -277,15 +280,15 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
         return 1;
 }
 
-void VertTirpSidList::first_sorted_extend(const string &sid, unsigned eid, const vector<TIRP> &new_tirps) {
+void VertTirpSidList::first_sorted_extend(const string &sid, unsigned eid, const vector<shared_ptr<TIRP>> &new_tirps) {
     //TODO comentaris
     this->chrono.start("first_sorted_extend");
-    vector<TIRP> &current_tirps = this->definitive_ones_indices_dict[sid][eid];
+    vector<shared_ptr<TIRP>> &current_tirps = this->definitive_ones_indices_dict[sid][eid];
     unsigned i = 0;
     unsigned j = new_tirps.size();
     while ( i < j ){
         //if ( new_tirps[i].get_max_last() > current_tirps.front().get_max_last() ) //TODO afegir al principi i mirar si definitive_ones_indices_dict ha de ser llista
-            current_tirps.push_back(new_tirps[i]);
+            current_tirps.emplace_back(new_tirps[i]);
             i++;
     }
     this->chrono.stop("first_sorted_extend");

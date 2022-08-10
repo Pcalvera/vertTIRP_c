@@ -8,7 +8,7 @@ TIRPstatistics::TIRPstatistics() {
     // USEFUL TO LOCALIZE A TIRP IN THE sidlist array in a faster manner
     // a dict where key is a sequence id
     // and value is a dict where key is event id and value is a TIRP array
-    this->sequence_events_tirps_dict = map<string,map<unsigned,vector<TIRP>>>();
+    this->sequence_events_tirps_dict = map<string,map<unsigned,vector<shared_ptr<TIRP>>>>();
 
     // vertical support, i.e. number of sequences having the pattern p
     this->sum_ver_supp = 0;
@@ -27,7 +27,7 @@ TIRPstatistics::TIRPstatistics() {
     this->mean_duration = vector<time_type>();
 }
 
-unsigned TIRPstatistics::append_tirp(string seq_id, unsigned int eid, TIRP &tirp) {
+unsigned TIRPstatistics::append_tirp(string seq_id, unsigned int eid, shared_ptr<TIRP> &tirp) {
     /*
     Appends a tirp, and
     modifies sum_ver_supp, sum_hor_per_seq, and the duration variables
@@ -40,10 +40,10 @@ unsigned TIRPstatistics::append_tirp(string seq_id, unsigned int eid, TIRP &tirp
     if ( it != this->sequence_events_tirps_dict.end() ){
         auto it2 = it->second.find(eid);
         if ( it2 == it->second.end() )
-            it2 = it->second.insert(pair<unsigned,vector<TIRP>>(eid,vector<TIRP>())).first;
+            it2 = it->second.insert(pair<unsigned,vector<shared_ptr<TIRP>>>(eid,vector<shared_ptr<TIRP>>())).first;
 
         it2->second.push_back(tirp);
-        this->sum_mean_duration.back() += tirp.get_duration();
+        this->sum_mean_duration.back() += tirp->get_duration();
         this->n_instances_per_seq.back() += 1;
     }
     else{
@@ -51,10 +51,10 @@ unsigned TIRPstatistics::append_tirp(string seq_id, unsigned int eid, TIRP &tirp
         //      we can calculate the mean duration of the previous one
         //      self.mean_duration.append(self.sum_mean_duration[-1]/self.n_instances_per_seq[-1])
 
-        this->sum_mean_duration.push_back(tirp.get_duration());
+        this->sum_mean_duration.push_back(tirp->get_duration());
         this->n_instances_per_seq.push_back(1);
 
-        this->sequence_events_tirps_dict[seq_id][eid] = vector<TIRP>(1,tirp);
+        this->sequence_events_tirps_dict[seq_id][eid] = vector<shared_ptr<TIRP>>(1,std::make_shared<TIRP>(tirp) );  //TODO comprovar si s'ha de copiar l'objecte
         this->sum_ver_supp += 1;
 
         // initialize hor support for sequence
@@ -122,6 +122,6 @@ string TIRPstatistics::get_mean_of_means_duration(unsigned units) {
     return to_string((float) utils_mean(l) / (float)UNITS_NUMBER[units]) + " " + UNITS_STRING[units];
 }
 
-map<string, map<unsigned, vector<TIRP>>> TIRPstatistics::get_sequence_events_tirps_dict() {
+map<string, map<unsigned, vector<shared_ptr<TIRP>>>> TIRPstatistics::get_sequence_events_tirps_dict() {
     return this->sequence_events_tirps_dict;
 }
