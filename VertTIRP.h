@@ -35,7 +35,7 @@ using namespace std;
 class VertTIRP {
 public:
     VertTIRP(string &out_file, support_type min_sup_rel, eps_type eps, time_type min_gap, time_type max_gap, int min_duration, time_type max_duration, bool dummy_calc, string &ps, bool trans, int min_confidence = -1, int max_length=-1, int min_length=1);
-    int mine_patterns(vector<vector<TI>> const &list_of_ti_seqs, vector<string> const &list_of_seqs, bool avoid_same_var_states = true);
+    int mine_patterns(vector<LinkedList> &list_of_ti_seqs, vector<string> const &list_of_seqs, bool avoid_same_var_states = true);
     void print_patterns(bool dfs);
 private:
     string out_file;  // output file
@@ -44,7 +44,7 @@ private:
     int min_confidence; //TODO int?
     int min_gap;  // minimum gap in seconds that is the gap between before consecutive elements
     time_type max_gap;  // maximum gap in seconds that is the gap between before consecutive elements
-    int min_duration; // each event interval should have a duration of at least min_duration seconds
+    time_type min_duration; // each event interval should have a duration of at least min_duration seconds
     time_type max_duration; // each tirp should have a duration of at most min_duration seconds
     int max_length;  // maximum pattern length
     int min_length;  // minimum pattern length
@@ -59,8 +59,8 @@ private:
     Allen allen;
 
     bool same_variable(string s1,string s2, bool avoid_same_var_states = true);
-    void dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, VertTirpNode &node,VertTirpNode &father, bool avoid_same_var_states = true );
-    void to_vertical(vector<vector<TI>> const &list_of_ti_seqs, vector<string> const &list_of_seqs);
+    void dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, VertTirpNode &node,VertTirpNode &father,int level, bool avoid_same_var_states = true );
+    void to_vertical(vector<LinkedList> &list_of_ti_seqs, vector<string> const &list_of_seqs);
 };
 
 

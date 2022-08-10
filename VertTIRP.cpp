@@ -38,7 +38,7 @@ VertTIRP::VertTIRP(string &out_file, support_type min_sup_rel, eps_type eps, tim
         this->allen = Allen(dummy_calc,trans,eps);
 }
 
-int VertTIRP::mine_patterns(vector<vector<TI>> const &list_of_ti_seqs, vector<string> const &list_of_seqs, bool avoid_same_var_states) {
+int VertTIRP::mine_patterns(vector<LinkedList> &list_of_ti_seqs, vector<string> const &list_of_seqs, bool avoid_same_var_states) {
     if ( list_of_ti_seqs.size() != list_of_seqs.size() ) throw invalid_argument("list_of_ti_seqs and list_of_seqs must have the same size");
 
     this->to_vertical(list_of_ti_seqs,list_of_seqs);
@@ -48,7 +48,7 @@ int VertTIRP::mine_patterns(vector<vector<TI>> const &list_of_ti_seqs, vector<st
         vector<string> seq_str_strings = this->vertical_db[i].get_seq_str();
         string seq_str_string = utils_unifyStrings(seq_str_strings);
         VertTirpNode s_node = VertTirpNode(seq_str_string,1,this->vertical_db[i],this->tree);
-        this->dfs_pruning(this->vertical_db[i],this->f1,s_node,this->tree,avoid_same_var_states);  //TODO fer pruning
+        this->dfs_pruning(this->vertical_db[i],this->f1,s_node,this->tree,avoid_same_var_states,0);  //TODO fer pruning
     }
     return this->tirp_count;
 }
@@ -61,23 +61,25 @@ bool VertTIRP::same_variable(string s1, string s2, bool avoid_same_var_states) {
     return avoid_same_var_states && s1 == s2;
 }
 
-void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, VertTirpNode &node,VertTirpNode &father, bool avoid_same_var_states ) {
+void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, VertTirpNode &node,VertTirpNode &father,int level , bool avoid_same_var_states  ) {
     father.add_child(node);
 
     if ( pat_sidlist.get_seq_length() >= this->min_length )
         this->tirp_count += pat_sidlist.get_definitive_discovered_tirp_dict().size();
 
     map<string,VertTirpSidList> s_temp;
-
+    for(int g = 0 ; g < level; g++) cout<<"    "; cout<<"Nivell: "<<level<<endl;
     // to control the maximum length
     if ( this->max_length == -1 || (pat_sidlist.get_seq_length() + 1) <= this->max_length ){
         for ( const string &s : f_l){
             if ( !this->same_variable(s, pat_sidlist.get_seq_str().back(), avoid_same_var_states) ){
+                for(int g = 0 ; g < level; g++) cout<<"    "; cout<<"join "<<endl;
                 VertTirpSidList s_bm = pat_sidlist.join(this->vertical_db[s], this->allen, this->eps, this->min_gap, this->max_gap, this->max_duration, this->min_sup, this->min_confidence);
                 if ( !s_bm.get_definitive_ones_indices_dict().empty() )
                     s_temp[s] = s_bm;
             }
         }
+        cout<<endl;
         //vector<string> s_syms = utils_getKeys(s_temp);   //TODO fer funcionar la funcio
         vector<string> s_syms =  vector<string>();
         for ( const auto &it : s_temp)
@@ -88,12 +90,13 @@ void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, Ve
             vector<string> seq_str_strings = it.second.get_seq_str();
             string seq_str_string = utils_unifyStrings(seq_str_strings);
             VertTirpNode s_node = VertTirpNode(seq_str_string,it.second.get_seq_length(),it.second,node);
-            this->dfs_pruning(it.second,s_syms,s_node,node, avoid_same_var_states );
+            this->dfs_pruning(it.second,s_syms,s_node,node, level+1, avoid_same_var_states  );
         }
+        for(int g = 0 ; g < level; g++) cout<<"    "; cout<<"Nivell: "<<level<<endl;
     }
 }
 
-void VertTIRP::to_vertical(vector<vector<TI>> const &list_of_ti_seqs, vector<string> const &list_of_seqs) {
+void VertTIRP::to_vertical(vector<LinkedList> &list_of_ti_seqs, vector<string> const &list_of_seqs) {
     /*
     Constructs the vertical database representation.
     For each frequent item there are an sidlist representation of that item, which is stored in the
@@ -104,6 +107,7 @@ void VertTIRP::to_vertical(vector<vector<TI>> const &list_of_ti_seqs, vector<str
     :param time_mode:  1- timestamp mode, 2- datetime mode 3- number mode(e.g. number of frame)
     :return:
     */
+    /*
     unsigned eid = 0;
     list<string>::const_iterator seqs_it;
     //list<list<TI>>::const_iterator ti_seqs_it = list_of_ti_seqs.begin();
@@ -123,6 +127,39 @@ void VertTIRP::to_vertical(vector<vector<TI>> const &list_of_ti_seqs, vector<str
             }
         }
         eid = 0;
+    }
+    */
+    time_type duration;
+    unsigned eid = 0;
+    int i = 0;
+    for ( const string &name : list_of_seqs ){
+        this->events_per_sequence[name] = list_of_ti_seqs[i].getSize();
+        list_of_ti_seqs[i].setFirst();
+        while ( !list_of_ti_seqs[i].isLast() ){
+            // duration constraints
+            duration = list_of_ti_seqs[i].getActual()->get_end() - list_of_ti_seqs[i].getActual()->get_start();
+            if (duration >= this->min_duration && duration <= this->max_duration) {
+                if ( list_of_ti_seqs[i].getActual()->get_sym()=="Passive_Arm_N" && name == "ASL_2008_05_29b6"){
+                    int dffs = 3;
+                }
+                this->vertical_db[list_of_ti_seqs[i].getActual()->get_sym()].append_item(list_of_ti_seqs[i].getActual(),name,eid);
+                eid++;
+            }
+            list_of_ti_seqs[i].next();
+        }
+        //for (const auto &its: list_of_ti_seqs[i]) {
+        //    // duration constraints
+        //    duration = its.get_end() - its.get_start();
+        //    if (duration >= this->min_duration && duration <= this->max_duration) {
+        //        if ( its.get_sym()=="Passive_Arm_N" && name == "ASL_2008_05_29b6"){
+        //            int dffs = 3;
+        //        }
+        //        this->vertical_db[its.get_sym()].append_item(its,name,eid);
+        //        eid++;
+        //    }
+        //}
+        eid = 0;
+        i++;
     }
 
     // calculate the absolute support based on number of sequences

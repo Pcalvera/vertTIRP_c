@@ -4,6 +4,14 @@
 
 #include "Utils.h"
 
+#include <memory>
+
+Ti_node::Ti_node(shared_ptr<TI> &ti){
+    this->ti = ti;
+    this->ant = nullptr;
+    this->next = nullptr;
+}
+
 map<string,vector<Csv_line>> read_csv(string &filename,string &seq_h,string &start_h, string &end_h, vector<string> &values) {
     map<string,vector<Csv_line>> content = map<string,vector<Csv_line>>();
     string line, word;
@@ -56,21 +64,25 @@ map<string,vector<Csv_line>> read_csv(string &filename,string &seq_h,string &sta
         throw("Could not open the file\n");
     return content;
 }
-vector<TI> ti_to_list(const vector<Csv_line> &df, string &date_column_name_start, string &date_column_name_end, vector<string> &val_column_names, bool timemode_number){
-    vector<TI> list_of_ti = vector<TI>();
+LinkedList ti_to_list(const vector<Csv_line> &df, string &date_column_name_start, string &date_column_name_end, vector<string> &val_column_names,bool timemode_number){
+    //vector<TI> list_of_ti = vector<TI>();
+    LinkedList list_of_ti = LinkedList();
     if ( df.size() < 2 )
         return list_of_ti;
+        //return list_of_ti;
 
     time_type startTime;
     time_type endTime;
 
-
+    shared_ptr<Ti_node> current_node = nullptr;
+    shared_ptr<Ti_node> last_node;
     for ( int i = 0 ; i < val_column_names.size() ; i++ ){
         string attr_name = val_column_names[i] + "_";
+        last_node = nullptr;
         for ( const Csv_line &line : df ) {
             if ( timemode_number ){
-                startTime = stoll(line.start_time);
-                endTime = stoll(line.end_time);
+                startTime = stoll(line.start_time); //*0.000000001
+                endTime = stoll(line.end_time); //*0.000000001
             }
             else { //timestramp
                 tm start = utils_splitDate(line.start_time);
@@ -78,32 +90,38 @@ vector<TI> ti_to_list(const vector<Csv_line> &df, string &date_column_name_start
                 startTime = mktime(&start);
                 endTime = mktime(&finish);
             }
-            TI ti = TI(attr_name + line.values[i], startTime, endTime);
-            list_of_ti.push_back(ti);
+            shared_ptr<TI> ti = make_shared<TI>(attr_name + line.values[i], startTime, endTime);
+            current_node = std::make_shared<Ti_node>(ti); //TODO hauria de ser new?
+            //list_of_ti.push_back(ti);
+            if ( list_of_ti.getSize() == 21 || ti->get_sym() == "Passive_Arm_N" && ti->get_start() == 3582 && ti->get_end() == 3633 )
+                int djskflfj = 3;
+            //cout<<list_of_ti.getSize()<<": "<<((last_node != nullptr)? last_node->ti.get_sym() : "null") <<endl;
+            list_of_ti.sortedInsert(current_node, last_node);
+            last_node = current_node;
         }
     }
-    std::sort(list_of_ti.begin(), list_of_ti.end());
+    //std::sort(list_of_ti.begin(), list_of_ti.end());
     return list_of_ti;
 
 }
-pair<vector<string>,vector<vector<TI>>> utils_tiRead(string &filepath, char sep, string &seqid_column, string &date_column_name_start,
+pair<vector<string>,vector<LinkedList>> utils_tiRead(string &filepath, char sep, string &seqid_column, string &date_column_name_start,
                     string &date_column_name_end, string &date_format, vector<string> &val_column_names,
                     bool is_null_f, bool timemode_number) {
     //TODO is_null
     map<string,vector<Csv_line>> df = read_csv(filepath,seqid_column,date_column_name_start,date_column_name_end,val_column_names);
-    vector<vector<TI>> list_of_ti_sequences = vector<vector<TI>>();
+    vector<LinkedList> list_of_ti_sequences = vector<LinkedList>();
     vector<string> list_of_sequences = vector<string>();
 
-    vector<TI> ti;
+    LinkedList ti = LinkedList();
     for ( auto const &item : df ){
-        ti = ti_to_list(item.second,date_column_name_start,date_column_name_end,val_column_names,timemode_number);
-        if ( !ti.empty() ){
+        ti = ti_to_list(item.second, date_column_name_start, date_column_name_end, val_column_names,
+                        timemode_number);
+        if (!ti.empty()) {
             list_of_sequences.push_back(item.first);
             list_of_ti_sequences.push_back(ti);
         }
     }
     return make_pair(list_of_sequences,list_of_ti_sequences);
-
 }
 
 tm utils_splitDate(const string &s) {
@@ -129,7 +147,7 @@ tm utils_splitDate(const string &s) {
 
 long long utils_mean(vector<time_type> &l) {
     long long sum = 0;
-    for (const long long &i: l)
+    for (const time_type &i: l)
         sum += i;
     return sum / (unsigned) l.size();
 }
@@ -161,4 +179,88 @@ vector<T> utils_getKkeys(map<T, V> m) {
         res.push_back( it.first );
     return res;
 }
+
+LinkedList::LinkedList() {
+    this->first = this->last = this->actual = nullptr;
+    this->size = 0;
+}
+
+//LinkedList::~LinkedList() {
+//    free();
+//}
+
+bool LinkedList::empty() {
+    return this->first == nullptr;
+}
+
+int LinkedList::getSize() const {
+    return this->size;
+}
+
+void LinkedList::insert(const TI &ti) {
+
+}
+
+void LinkedList::sortedInsert(shared_ptr<Ti_node> new_node, shared_ptr<Ti_node> last_inserted ) {
+    if ( this->first == nullptr ){
+        this->first = new_node;
+        this->last = new_node;
+        new_node->next = nullptr;
+        new_node->ant = nullptr;
+    }
+    else if ( *new_node->ti < *this->first->ti ){
+        new_node->next = this->first;
+        this->first->ant = new_node;
+        this->first = new_node;
+    }
+    else{
+        shared_ptr<Ti_node> present;
+        if ( last_inserted != nullptr && last_inserted->ant != nullptr)
+            present = last_inserted->ant;
+        else
+            present = this->first;
+
+        while ( present->next != nullptr && *present->next->ti < *new_node->ti )
+            present = present->next;
+
+        new_node->next = present->next;
+        if ( new_node->next == nullptr )
+            this->last = new_node;
+        else
+            present->next->ant = new_node;
+
+        present->next = new_node;
+        new_node->ant = present;
+    }
+    this->size++;
+}
+
+void LinkedList::setFirst() {
+    this->actual = first;
+}
+
+void LinkedList::next() {
+    if ( isLast() )
+        throw("Iterator pointer out of range");
+    actual = actual->next;
+}
+
+shared_ptr<TI>& LinkedList::getActual() {
+    if ( this->actual == nullptr)
+        throw("Iterator pointer is null");
+    return this->actual->ti;
+}
+
+bool LinkedList::isLast() {
+    return actual == nullptr;
+}
+
+//void LinkedList::free() {
+//    while ( this->first != nullptr ){
+//        Ti_node *p = this->first;
+//        this->first = this->first->next;
+//        delete p;
+//    }
+//    this->size = 0;
+//}
 

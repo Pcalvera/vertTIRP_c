@@ -14,7 +14,8 @@
 //typedef long long time_type;
 #endif
 */
-typedef long long time_type;
+typedef float time_type;
+typedef float dif_time_type;
 typedef float support_type;
 typedef float eps_type;
 
@@ -26,7 +27,6 @@ const string NONE = "N";
 const string EMPTY = "";
 const unsigned UNITS_NUMBER[6] = {1,60,60 * 60,60 * 60 * 24, 60 * 60 * 24 * 7, 60 * 60 * 24 * 365};
 const string UNITS_STRING[6] = {"seconds", "minutes", "hours", "days", "weeks", "years"};
-
 
 
 #endif //VERTTIRP_C_GLOBAL_CPP

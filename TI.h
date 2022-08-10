@@ -11,6 +11,7 @@ using namespace std;
 
 class TI {
 public:
+    TI();
     TI(string sym, time_type start, time_type end);
     time_type get_start()const;
     time_type get_end()const;

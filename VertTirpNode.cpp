@@ -52,11 +52,11 @@ void VertTirpNode::print_tree_dfs(const shared_ptr<Node> &node, unsigned int min
         stream<<node->patt<<endl;
         for ( const auto &relPair : node->sidlist.get_definitive_discovered_tirp_dict() ){
             string rel = relPair.first;
-            TIRPstatistics tirp_stat = relPair.second;
+            shared_ptr<TIRPstatistics> tirp_stat = relPair.second;
             stream<< rel
                   << " # ver: " << node->sidlist.get_ver_support(tirp_stat )   //TODO potser les funcions de support han de ser doubles
                   << " # hor: " << node->sidlist.get_mean_hor_support(events_per_sequence,tirp_stat)
-                  << " # duration: " << tirp_stat.get_mean_of_means_duration()
+                  << " # duration: " << tirp_stat->get_mean_of_means_duration()
                   << endl;
         }
     }
@@ -82,14 +82,14 @@ void VertTirpNode::print_tree_bfs(const shared_ptr<Node> &root, unsigned int min
         if ( node->pat_len >= min_len ){
             for ( const auto &relPair : node->sidlist.get_definitive_discovered_tirp_dict() ){
                 string rel = relPair.first;
-                TIRPstatistics tirp_stat = relPair.second;
+                shared_ptr<TIRPstatistics> tirp_stat = relPair.second;
 
                 stream << node->patt
                        << utils_unifyChars(rel)
                        << " # ver: "
                        << node->sidlist.get_ver_support(tirp_stat )   //TODO potser les funcions de support han de ser doubles
                        << " # hor: " << node->sidlist.get_mean_hor_support(events_per_sequence,tirp_stat)
-                       << " # duration: " << tirp_stat.get_mean_of_means_duration()
+                       << " # duration: " << tirp_stat->get_mean_of_means_duration()
                        << endl;
             }
         }

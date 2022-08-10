@@ -5,6 +5,7 @@
 #ifndef VERTTIRP_C_ALLEN_H
 #define VERTTIRP_C_ALLEN_H
 #include <iostream>
+#include <memory>
 #include "PairingStrategy.h"
 #include "Allen_relationsEPS.h"
 
@@ -15,8 +16,8 @@ public:
     Allen();
     Allen(bool dummy_calc, bool trans = true, eps_type eps = 0, string calc_sort="bselfmoc" );
     string sort_rels(string reducted_group);
-    pair<char,int> calc_rel(const TI &a, const TI &b, eps_type eps, time_type min_gap, time_type max_gap, PairingStrategy rels_arr = PairingStrategy(), vector<string> gr_arr = vector<string>() )const;//TODO hauria de passar per ref
-    pair<char,int> assign_rel(const TI &a, const TI &b, const Relation &possible_rels, eps_type eps, time_type min_gap, time_type max_gap )const;
+    int* calc_rel(const shared_ptr<TI> &a, const shared_ptr<TI> &b, eps_type eps, time_type min_gap, time_type max_gap, PairingStrategy rels_arr = PairingStrategy(), vector<string> gr_arr = vector<string>() )const;//TODO hauria de passar per ref
+    int* assign_rel(const shared_ptr<TI> &a, const shared_ptr<TI> &b, const Relation &possible_rels, eps_type eps, time_type min_gap, time_type max_gap )const;
     Relation get_possible_rels(char a, char b)const;
     bool get_trans()const;
 private:

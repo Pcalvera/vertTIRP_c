@@ -25,7 +25,7 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 
 
 bool timemode_number = true;
-support_type ver_sup = 0.8;  // vertical support TODO float o dobule
+support_type ver_sup = 0.9;  // vertical support TODO float o dobule
 support_type hor_sup = 0;  // horizontal support
 eps_type eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids crisp borders in relations
 bool dummy = false;  // whether to execute relations without a pairing strategies
@@ -62,27 +62,35 @@ int main () {
     auto filePatterns = utils_tiRead(filepath, sep, sid_column, date_column_name_start, date_column_name_end,
                                        date_format, value_column_name, true,timemode_number);
     vector<string> list_of_users = filePatterns.first;
-    vector<vector<TI>> list_of_ti_users = filePatterns.second;
+    vector<LinkedList> list_of_ti_users = filePatterns.second;
 
 
-    vector<string> resultat = vector<string>();
+    //vector<string> resultat = vector<string>();
+    //for ( int i = 0 ; i < list_of_ti_users.size() ; i++){
+    //    if ( list_of_users[i] == "ASL_2011_07_22_Brady9"){
+    //        //cout<<i;
+    //    }
+    //    list_of_ti_users[i].setFirst();
+    //    while( !list_of_ti_users[i].isLast() ){
+    //        resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i].getActual().get_sym() );
+    //        //resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i].getActual().get_sym() + " s: " +
+    //        //                                              to_string(list_of_ti_users[i].getActual().get_start()) +
+    //        //                                              " e: " + to_string(list_of_ti_users[i].getActual().get_end()));
+    //        list_of_ti_users[i].next();
+    //    }
+    //    resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i].getActual().get_sym() );
+    //    //resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i].getActual().get_sym() + " s: " +
+    //    //                    to_string(list_of_ti_users[i].getActual().get_start()) +
+    //    //                    " e: " + to_string(list_of_ti_users[i].getActual().get_end()));
+//
+    //}
+    ////std::sort(resultat.begin(), resultat.end());
+    //ofstream file;
+    //file.open("lectura.txt");
+    //for ( string s : resultat )
+    //    file<<s<<endl;
+    //file.close();
 
-    /*for ( int i = 0 ; i < list_of_ti_users.size() ; i++){
-        if ( list_of_users[i] == "ASL_2011_07_22_Brady9"){
-            //cout<<i;
-        }
-        for ( int j = 0 ; j < list_of_ti_users[i].size() ; j++ ){
-            resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i][j].get_sym() );
-        }
-        //resultat.push_back(list_of_users[i]);
-    }
-    std::sort(resultat.begin(), resultat.end());
-    ofstream file;
-    file.open("lectura.txt");
-    for ( string s : resultat )
-        file<<s<<endl;
-    file.close();
-*/
 
 
 
