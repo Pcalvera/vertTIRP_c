@@ -2,7 +2,7 @@
 #include <ctime>
 #include "VertTIRP.h"
 #include "TI.h"
-#include "Global.cpp"
+#include "Global.h"
 #include "PairingStrategy.h"
 /*
 author: Pau Calvera
@@ -29,7 +29,7 @@ support_type ver_sup = 0.9;  // vertical support TODO float o dobule
 support_type hor_sup = 0;  // horizontal support
 eps_type eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids crisp borders in relations
 bool dummy = false;  // whether to execute relations without a pairing strategies
-bool trans = false;  // whether to use transitivity properties when assign a relation
+bool trans = true;  // whether to use transitivity properties when assign a relation
 //string result_file_name = "my_result_file.csv";  // an output file
 //string filepath = "/mnt/d/COLE/TFG/toy.csv";  // a path to time interval data. Any valid string path is acceptable.
 char sep = ';';  // delimiter to use with the scv file
@@ -43,7 +43,8 @@ string date_format = "%m/%d/%Y %H:%M";  // the format of the date, e.g. "3/1/200
 vector<string> value_column_name = vector<string>({"value"});  // the interesting attributes to be used in TIRPs discovering  //TODO taula?
 */ //ASL
 string result_file_name = "asl_result_file.csv";
-string filepath = R"(D:\COLE\TFG_clion\datasets\asl_ds.csv)";
+//string filepath = R"(D:\COLE\TFG_clion\datasets\asl_ds.csv)";
+string filepath = R"(/mnt/d/COLE/TFG_clion/datasets/asl_ds.csv)";
 string sid_column = "Session_Scene";
 string date_column_name_start = "Start";
 string date_column_name_end = "End";
@@ -59,10 +60,10 @@ time_type maxd = 3155695200;   // each tirp should have a duration of at most mi
 string ps = "mocfbes";
 
 int main () {
-    auto filePatterns = utils_tiRead(filepath, sep, sid_column, date_column_name_start, date_column_name_end,
-                                       date_format, value_column_name, true,timemode_number);
-    vector<string> list_of_users = filePatterns.first;
-    vector<LinkedList> list_of_ti_users = filePatterns.second;
+    vector<LinkedList> list_of_ti_users = vector<LinkedList>();
+    vector<string> list_of_users = vector<string>();
+    utils_tiRead(filepath, sep, sid_column, date_column_name_start, date_column_name_end,
+                                       date_format, value_column_name, list_of_users,list_of_ti_users, true,timemode_number);
 
 
     //vector<string> resultat = vector<string>();
@@ -72,29 +73,29 @@ int main () {
     //    }
     //    list_of_ti_users[i].setFirst();
     //    while( !list_of_ti_users[i].isLast() ){
-    //        resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i].getActual().get_sym() );
+    //        resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i].getActual()->get_sym() );
     //        //resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i].getActual().get_sym() + " s: " +
     //        //                                              to_string(list_of_ti_users[i].getActual().get_start()) +
     //        //                                              " e: " + to_string(list_of_ti_users[i].getActual().get_end()));
     //        list_of_ti_users[i].next();
     //    }
-    //    resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i].getActual().get_sym() );
+    //    //resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i].getActual()->get_sym() );
     //    //resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i].getActual().get_sym() + " s: " +
     //    //                    to_string(list_of_ti_users[i].getActual().get_start()) +
     //    //                    " e: " + to_string(list_of_ti_users[i].getActual().get_end()));
-//
+
     //}
-    ////std::sort(resultat.begin(), resultat.end());
+    //std::sort(resultat.begin(), resultat.end());
     //ofstream file;
     //file.open("lectura.txt");
     //for ( string s : resultat )
-    //    file<<s<<endl;
+    //    cout<<s<<endl;
     //file.close();
 
 
 
-
-
+    //list_of_ti_users[0].printPointerCount();
+    //list_of_ti_users[0].free();
     VertTIRP co = VertTIRP(result_file_name,ver_sup,eps,ming,maxg,mind,maxd,dummy,ps,trans);
     time_t start_time = time(NULL);
     int tirp_count = co.mine_patterns(list_of_ti_users,list_of_users,avoid_same_var_states);

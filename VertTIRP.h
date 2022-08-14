@@ -24,7 +24,7 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 #include <algorithm>
 #include <vector>
 #include <map>
-#include "Global.cpp"
+#include "Global.h"
 #include "Allen.h"
 #include "TI.h"
 #include "VertTirpSidList.h"

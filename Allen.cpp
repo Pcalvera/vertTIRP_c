@@ -71,7 +71,7 @@ Relation Allen::get_possible_rels(char a, char b) const{
 }
 
 int*
-Allen::calc_rel(const shared_ptr<TI> &a,const shared_ptr<TI> &b, eps_type eps, time_type min_gap, time_type max_gap, PairingStrategy rels_arr, vector<string> gr_arr)const {
+Allen::calc_rel(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap, PairingStrategy rels_arr, vector<string> gr_arr)const {
     //TODO molt temps en aquesta funció
     // if b is less than a
     if ( b->get_start() < a->get_start() || ( b->get_start()==a->get_start() && b->get_end()<a->get_end() ) )
@@ -131,7 +131,7 @@ Allen::calc_rel(const shared_ptr<TI> &a,const shared_ptr<TI> &b, eps_type eps, t
 }
 
 int*
-Allen::assign_rel(const shared_ptr<TI> &a, const shared_ptr<TI> &b, const Relation &possible_rels, eps_type eps, time_type min_gap, time_type max_gap) const {
+Allen::assign_rel(const TI* a, const TI* b, const Relation &possible_rels, eps_type eps, time_type min_gap, time_type max_gap) const {
     //TODO comentaris
 
     if ( this->dummy_calc ) {

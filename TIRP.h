@@ -19,8 +19,8 @@ class TIRP {
 public:
     TIRP();
     TIRP(const shared_ptr<TIRP> &tirp);
-    TIRP(vector<shared_ptr<TI>> ti, time_type first, time_type max_last);
-    TIRP(vector<shared_ptr<TI>> &ti, time_type first, time_type max_last, vector<char> &r);
+    TIRP(vector<TI*> ti, time_type first, time_type max_last);
+    TIRP(vector<TI*> &ti, time_type first, time_type max_last, vector<char> &r);
     bool operator<(const TIRP &rhs) const;
     bool operator>(const TIRP &rhs) const;
     bool operator<=(const TIRP &rhs) const;
@@ -28,13 +28,13 @@ public:
     string get_rel_as_str()const;
     time_type get_duration()const;
     time_type get_first()const;
-    vector<shared_ptr<TI>>& get_ti();
+    vector<TI*>& get_ti();
     time_type get_max_last()const;
-    pair<shared_ptr<TIRP>,unsigned> extend_with(const shared_ptr<TI> &s_ti, eps_type eps, time_type min_gap, time_type max_gap, time_type max_duration, bool mine_last_equal, const Allen &allen, Chrono &chrono)const;
+    pair<shared_ptr<TIRP>,unsigned> extend_with(TI* s_ti, eps_type eps, time_type min_gap, time_type max_gap, time_type max_duration, bool mine_last_equal, const Allen &allen, Chrono &chrono)const;
 
 
 private:
-    vector<shared_ptr<TI>> ti;
+    vector<TI*> ti;
     time_type first;
     time_type max_last;
     vector<char> r;

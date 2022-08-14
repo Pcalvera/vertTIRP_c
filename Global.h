@@ -14,8 +14,8 @@
 //typedef long long time_type;
 #endif
 */
-typedef float time_type;
-typedef float dif_time_type;
+typedef double time_type;
+typedef double dif_time_type;
 typedef float support_type;
 typedef float eps_type;
 

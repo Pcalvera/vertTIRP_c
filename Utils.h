@@ -24,40 +24,45 @@ struct Csv_line {
     vector<string> values;
 };
 struct Ti_node {
-    Ti_node(shared_ptr<TI> &ti);
-    shared_ptr<TI> ti;
-    shared_ptr<Ti_node> next;
-    shared_ptr<Ti_node> ant;
+    Ti_node(TI *ti);
+    ~Ti_node();
+    TI *ti;
+    Ti_node *next;
+    Ti_node *ant;
 };
 
 class LinkedList {
 public:
     LinkedList();
-    //~LinkedList();
+    LinkedList(const LinkedList &o);
+    ~LinkedList();
 
     bool empty();
     int getSize() const;
 
     void setFirst();
     void next();
-    shared_ptr<TI>& getActual();
+    TI* getActual();
     bool isLast();
 
-    void insert(const TI &ti);
-    void sortedInsert(shared_ptr<Ti_node> new_node, shared_ptr<Ti_node> last_inserted = nullptr);
-    //void free();
+    LinkedList& operator=(const LinkedList &o);
+
+    void insert(TI *ti);
+    void sortedInsert(Ti_node* new_node, Ti_node* last_inserted);
+    //void printPointerCount();
+    void free();
+    void copy(const LinkedList &o);
 private:
 
-    shared_ptr<Ti_node> first;
-    shared_ptr<Ti_node> last;
-    shared_ptr<Ti_node> actual;
+    Ti_node *first;
+    Ti_node *last;
+    Ti_node *actual;
     int size;
 };
 
-map<string,vector<Csv_line>> read_csv(string &filename,string &seq_h,string &start_h, string &end_h, vector<string> &values);
-LinkedList ti_to_list(const vector<Csv_line> &df, string &date_column_name_start, string &date_column_name_end, vector<string> &val_column_names ,bool timemode_number = true);
-pair<vector<string>,vector<LinkedList>> utils_tiRead(string &filepath, char sep, string &seqid_column, string &date_column_name_start, string &date_column_name_end, string &date_format, vector<string> &val_column_names,
-                    bool is_null_f= true, bool timemode_number = true);
+void read_csv(string &filename,string &seq_h,string &start_h, string &end_h, vector<string> &values, map<string,vector<Csv_line>> &content );
+void ti_to_list(const vector<Csv_line> &df, string &date_column_name_start, string &date_column_name_end, vector<string> &val_column_names ,bool timemode_number, LinkedList &list_of_ti);
+void utils_tiRead(string &filepath, char sep, string &seqid_column, string &date_column_name_start, string &date_column_name_end, string &date_format, vector<string> &val_column_names, vector<string> &ret_list_of_sequences,vector<LinkedList> &ret_list_of_ti_sequences ,bool is_null_f= true, bool timemode_number = true);
 TI utils_stringsToTi(string data_inici,string data_fi,string val,bool timemode_number);
 tm utils_splitDate(const string &s);
 long long utils_mean(vector<time_type> &l);

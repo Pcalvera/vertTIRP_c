@@ -107,28 +107,6 @@ void VertTIRP::to_vertical(vector<LinkedList> &list_of_ti_seqs, vector<string> c
     :param time_mode:  1- timestamp mode, 2- datetime mode 3- number mode(e.g. number of frame)
     :return:
     */
-    /*
-    unsigned eid = 0;
-    list<string>::const_iterator seqs_it;
-    //list<list<TI>>::const_iterator ti_seqs_it = list_of_ti_seqs.begin();
-    map<string,VertTirpSidList>::iterator sym_it;
-    for (int i = 0; i < list_of_ti_seqs.size() ; i++ ){
-        this->events_per_sequence.insert(make_pair(list_of_seqs[i],list_of_ti_seqs[i].size()));
-        for (const auto &its: list_of_ti_seqs[i]) {
-            // duration constraints
-            time_type duration = its.get_end() - its.get_start();
-            if (duration >= this->min_duration && duration <= this->max_duration) {
-                sym_it = this->vertical_db.find(its.get_sym());
-                if (sym_it == this->vertical_db.end())
-                    sym_it = this->vertical_db.insert(pair<string, VertTirpSidList>(its.get_sym(),VertTirpSidList())).first;    //Adds the VertTirpSidList to the map
-                sym_it->second.append_item(its, list_of_seqs[i], eid);
-
-                eid++;
-            }
-        }
-        eid = 0;
-    }
-    */
     time_type duration;
     unsigned eid = 0;
     int i = 0;
@@ -147,17 +125,6 @@ void VertTIRP::to_vertical(vector<LinkedList> &list_of_ti_seqs, vector<string> c
             }
             list_of_ti_seqs[i].next();
         }
-        //for (const auto &its: list_of_ti_seqs[i]) {
-        //    // duration constraints
-        //    duration = its.get_end() - its.get_start();
-        //    if (duration >= this->min_duration && duration <= this->max_duration) {
-        //        if ( its.get_sym()=="Passive_Arm_N" && name == "ASL_2008_05_29b6"){
-        //            int dffs = 3;
-        //        }
-        //        this->vertical_db[its.get_sym()].append_item(its,name,eid);
-        //        eid++;
-        //    }
-        //}
         eid = 0;
         i++;
     }

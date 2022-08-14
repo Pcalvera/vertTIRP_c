@@ -9,7 +9,7 @@
 #include <queue>
 #include <fstream>
 #include <memory>
-#include "Global.cpp"
+#include "Global.h"
 #include "Utils.h"
 #include "VertTirpSidList.h"
 #include "VertTirpSidList.h"
