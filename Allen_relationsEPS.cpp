@@ -167,7 +167,7 @@ pair<PairingStrategy,vector<string>> Allen_relationsEPS::get_pairing_strategy(st
     while ( i < str_rels.size() ){
         c = str_rels.at(i);
         c_in_added = added.find(c) != added.end();
-        if ( !c_in_added && c == 'b') {   //TODO millor al reves?
+        if ( !c_in_added && c == 'b') {
             rels_arr.add(c);
             gr_arr.emplace_back(NONE);
             added[c] = true;

@@ -19,12 +19,10 @@ bool Relation::isString() const {
 
 //Pre: this->isS == true
 string Relation::getString() const {
-    //TODO comprovar? if ( !isString() ) throw("");
     return this->s;
 }
 //Pre: this->isS == false
 pair<PairingStrategy,vector<string>> Relation::getPairingStrategy() const {
-    //TODO comprovar? if ( isString() ) throw("");
     return this->p;   //TODO retornar ref?
 }
 

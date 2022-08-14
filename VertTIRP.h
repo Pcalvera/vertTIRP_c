@@ -41,7 +41,7 @@ private:
     string out_file;  // output file
     map<string,unsigned> events_per_sequence;   // necessary for relative horizontal support
     support_type min_sup_rel;  // relative minimum vertical support
-    int min_confidence; //TODO int?
+    int min_confidence;
     int min_gap;  // minimum gap in seconds that is the gap between before consecutive elements
     time_type max_gap;  // maximum gap in seconds that is the gap between before consecutive elements
     time_type min_duration; // each event interval should have a duration of at least min_duration seconds
@@ -49,8 +49,8 @@ private:
     int max_length;  // maximum pattern length
     int min_length;  // minimum pattern length
     eps_type eps;  // karma lego epsilon in nanoseconds
-    int tirp_count; //TODO int?
-    support_type min_sup;  // absolute support //TODO int?
+    int tirp_count;
+    support_type min_sup;  // absolute support
     vector<string> f1;  // holds frequent 1-size items
     map<string,VertTirpSidList> vertical_db;  // holds database represented vertically
     VertTirpNode tree;  // we will save the patterns in a tree structure

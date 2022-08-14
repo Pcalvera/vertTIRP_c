@@ -25,10 +25,10 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 
 
 bool timemode_number = true;
-support_type ver_sup = 0.9;  // vertical support TODO float o dobule
+support_type ver_sup = 0.9;  // vertical support
 support_type hor_sup = 0;  // horizontal support
 eps_type eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids crisp borders in relations
-bool dummy = false;  // whether to execute relations without a pairing strategies
+bool dummy = true;  // whether to execute relations without a pairing strategies
 bool trans = true;  // whether to use transitivity properties when assign a relation
 //string result_file_name = "my_result_file.csv";  // an output file
 //string filepath = "/mnt/d/COLE/TFG/toy.csv";  // a path to time interval data. Any valid string path is acceptable.
@@ -40,11 +40,11 @@ string sid_column = "sid";   // sequence column name
 string date_column_name_start = "start_time";  // start time column name
 string date_column_name_end = "end_time";  // end time column name
 string date_format = "%m/%d/%Y %H:%M";  // the format of the date, e.g. "3/1/2003 10:10" will be "%m/%d/%Y %H:%M"
-vector<string> value_column_name = vector<string>({"value"});  // the interesting attributes to be used in TIRPs discovering  //TODO taula?
+vector<string> value_column_name = vector<string>({"value"});  // the interesting attributes to be used in TIRPs discovering
 */ //ASL
 string result_file_name = "asl_result_file.csv";
-//string filepath = R"(D:\COLE\TFG_clion\datasets\asl_ds.csv)";
-string filepath = R"(/mnt/d/COLE/TFG_clion/datasets/asl_ds.csv)";
+string filepath = R"(D:\COLE\TFG_clion\datasets\asl_ds.csv)";
+//string filepath = R"(/mnt/d/COLE/TFG_clion/datasets/asl_ds.csv)";
 string sid_column = "Session_Scene";
 string date_column_name_start = "Start";
 string date_column_name_end = "End";
@@ -66,36 +66,6 @@ int main () {
                                        date_format, value_column_name, list_of_users,list_of_ti_users, true,timemode_number);
 
 
-    //vector<string> resultat = vector<string>();
-    //for ( int i = 0 ; i < list_of_ti_users.size() ; i++){
-    //    if ( list_of_users[i] == "ASL_2011_07_22_Brady9"){
-    //        //cout<<i;
-    //    }
-    //    list_of_ti_users[i].setFirst();
-    //    while( !list_of_ti_users[i].isLast() ){
-    //        resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i].getActual()->get_sym() );
-    //        //resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i].getActual().get_sym() + " s: " +
-    //        //                                              to_string(list_of_ti_users[i].getActual().get_start()) +
-    //        //                                              " e: " + to_string(list_of_ti_users[i].getActual().get_end()));
-    //        list_of_ti_users[i].next();
-    //    }
-    //    //resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i].getActual()->get_sym() );
-    //    //resultat.push_back( list_of_users[i] + ": " + list_of_ti_users[i].getActual().get_sym() + " s: " +
-    //    //                    to_string(list_of_ti_users[i].getActual().get_start()) +
-    //    //                    " e: " + to_string(list_of_ti_users[i].getActual().get_end()));
-
-    //}
-    //std::sort(resultat.begin(), resultat.end());
-    //ofstream file;
-    //file.open("lectura.txt");
-    //for ( string s : resultat )
-    //    cout<<s<<endl;
-    //file.close();
-
-
-
-    //list_of_ti_users[0].printPointerCount();
-    //list_of_ti_users[0].free();
     VertTIRP co = VertTIRP(result_file_name,ver_sup,eps,ming,maxg,mind,maxd,dummy,ps,trans);
     time_t start_time = time(NULL);
     int tirp_count = co.mine_patterns(list_of_ti_users,list_of_users,avoid_same_var_states);

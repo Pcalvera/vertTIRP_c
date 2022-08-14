@@ -22,9 +22,6 @@ public:
     TIRP(vector<TI*> ti, time_type first, time_type max_last);
     TIRP(vector<TI*> &ti, time_type first, time_type max_last, vector<char> &r);
     bool operator<(const TIRP &rhs) const;
-    bool operator>(const TIRP &rhs) const;
-    bool operator<=(const TIRP &rhs) const;
-    bool operator>=(const TIRP &rhs) const;
     string get_rel_as_str()const;
     time_type get_duration()const;
     time_type get_first()const;

@@ -20,7 +20,7 @@ public:
     unsigned size()const;
 private:
     bool isS; //True if contains a char, false if contaings a PairingStrategy
-    string s;   //TODO mirar si es un char
+    string s;
     pair<PairingStrategy,vector<string>> p;
 };
 

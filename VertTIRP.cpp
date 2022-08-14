@@ -42,7 +42,6 @@ int VertTIRP::mine_patterns(vector<LinkedList> &list_of_ti_seqs, vector<string> 
     if ( list_of_ti_seqs.size() != list_of_seqs.size() ) throw invalid_argument("list_of_ti_seqs and list_of_seqs must have the same size");
 
     this->to_vertical(list_of_ti_seqs,list_of_seqs);
-    //TODO taula procs
 
     for (const auto &i : this->f1){
         vector<string> seq_str_strings = this->vertical_db[i].get_seq_str();
@@ -117,9 +116,6 @@ void VertTIRP::to_vertical(vector<LinkedList> &list_of_ti_seqs, vector<string> c
             // duration constraints
             duration = list_of_ti_seqs[i].getActual()->get_end() - list_of_ti_seqs[i].getActual()->get_start();
             if (duration >= this->min_duration && duration <= this->max_duration) {
-                if ( list_of_ti_seqs[i].getActual()->get_sym()=="Passive_Arm_N" && name == "ASL_2008_05_29b6"){
-                    int dffs = 3;
-                }
                 this->vertical_db[list_of_ti_seqs[i].getActual()->get_sym()].append_item(list_of_ti_seqs[i].getActual(),name,eid);
                 eid++;
             }

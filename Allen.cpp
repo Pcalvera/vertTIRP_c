@@ -73,6 +73,7 @@ Relation Allen::get_possible_rels(char a, char b) const{
 int*
 Allen::calc_rel(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap, PairingStrategy rels_arr, vector<string> gr_arr)const {
     //TODO molt temps en aquesta funció
+
     // if b is less than a
     if ( b->get_start() < a->get_start() || ( b->get_start()==a->get_start() && b->get_end()<a->get_end() ) )
         return rel_11;
@@ -100,7 +101,7 @@ Allen::calc_rel(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_
             if ( gr_arr[i] != NONE ){
                 if ( Allen_relationsEPS::cond_dict.at(gr_arr[i])(a,b,eps,min_gap,max_gap) ){
                     for ( const Node &words : sentence ){
-                        if ( words.dif == 1 ){
+                        if ( words.dif ){
                             if ( Allen_relationsEPS::cond_dict.at("mo")(a,b,eps,min_gap, max_gap)) {
                                 for (const char &w: words.l) {
                                     rel = Allen_relationsEPS::ind_func_dict.at(w)(a, b, eps, min_gap, max_gap);
@@ -132,8 +133,6 @@ Allen::calc_rel(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_
 
 int*
 Allen::assign_rel(const TI* a, const TI* b, const Relation &possible_rels, eps_type eps, time_type min_gap, time_type max_gap) const {
-    //TODO comentaris
-
     if ( this->dummy_calc ) {
         if ( !possible_rels.isString() )
             throw(""); //TODO missatge throw

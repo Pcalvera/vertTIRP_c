@@ -37,23 +37,6 @@ bool TIRP::operator<(const TIRP &rhs) const {
     return false;
 }
 
-bool TIRP::operator>(const TIRP &rhs) const {   //TODO comprovar que funcioni correctament
-    return rhs < *this;
-}
-
-bool TIRP::operator<=(const TIRP &rhs) const {   //TODO comprovar que funcioni correctament
-    return !(rhs < *this);
-    //if ( this->first < rhs.first)       TODO fa falta posar aquest codi?
-    //    return true;
-    //if ( this->first == rhs.first)
-    //    return this->max_last < rhs.max_last;
-    //return false;
-}
-
-bool TIRP::operator>=(const TIRP &rhs) const {
-    return !(*this < rhs);
-}
-
 string TIRP::get_rel_as_str() const {
     string s = EMPTY;
     for (char i : this->r)
@@ -78,7 +61,7 @@ TIRP::extend_with(TI* s_ti, eps_type eps, time_type min_gap, time_type max_gap, 
                   bool mine_last_equal, const Allen &allen, Chrono &chrono) const {
     // calc and assign the last relation
     //chrono.start("extend_with_1");
-    int* rel = allen.calc_rel(this->ti.back(), s_ti, eps, min_gap,max_gap ); //TODO
+    int* rel = allen.calc_rel(this->ti.back(), s_ti, eps, min_gap,max_gap );
     //chrono.stop("extend_with_1");
     // the s-extension case
     if ( !mine_last_equal && rel[0] == 'e' ) {

@@ -13,8 +13,8 @@ struct Node {
     char cont;
     vector<char> l;
 
-    int dif;  //0-valor    1-llista valors   TODO passar a bool?
-    Node(char c, int i);
+    bool dif;  //FALSE-valor    TRUE-llista valors
+    Node(char c, bool i);
 };
 
 class PairingStrategy {
@@ -39,6 +39,6 @@ private:
 
     //bool isEmpty(Node * n) const;
 };
-//TODO no es memory efficient
+//TODO arreglar la classe
 
 #endif //VERTTIRP_C_PAIRINGSTRATEGY_H
