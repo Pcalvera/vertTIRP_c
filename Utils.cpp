@@ -113,8 +113,7 @@ void ti_to_list(const vector<Csv_line> &df, string &date_column_name_start, stri
     //std::sort(list_of_ti.begin(), list_of_ti.end());
 }
 void utils_tiRead(string &filepath, char sep, string &seqid_column, string &date_column_name_start,
-                    string &date_column_name_end, string &date_format, vector<string> &val_column_names, vector<string> &ret_list_of_sequences,vector<LinkedList> &ret_list_of_ti_sequences ,bool is_null_f, bool timemode_number) {
-    //TODO is_null
+                    string &date_column_name_end, string &date_format, vector<string> &val_column_names, vector<string> &ret_list_of_sequences,vector<LinkedList> &ret_list_of_ti_sequences, bool timemode_number) {
     map<string,vector<Csv_line>> df = map<string,vector<Csv_line>>();
     read_csv(filepath,seqid_column,date_column_name_start,date_column_name_end,val_column_names,df);
     ret_list_of_sequences.reserve(df.size()+1);
@@ -317,9 +316,6 @@ void LinkedList::free() {
     while ( this->first != nullptr ){
         Ti_node *p = this->first;
         this->first = this->first->next;
-        //delete p->ti;
-        if ( p->ti == nullptr)  //TODO borrar if
-            int ghhg=3;
         delete p;
     }
     this->size = 0;

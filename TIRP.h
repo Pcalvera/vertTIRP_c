@@ -27,7 +27,7 @@ public:
     time_type get_first()const;
     vector<TI*>& get_ti();
     time_type get_max_last()const;
-    pair<shared_ptr<TIRP>,unsigned> extend_with(TI* s_ti, eps_type eps, time_type min_gap, time_type max_gap, time_type max_duration, bool mine_last_equal, const Allen &allen, Chrono &chrono)const;
+    pair<shared_ptr<TIRP>,unsigned> extend_with(TI* s_ti, eps_type eps, time_type min_gap, time_type max_gap, time_type max_duration, bool mine_last_equal, Allen &allen, Chrono &chrono)const;
 
 
 private:

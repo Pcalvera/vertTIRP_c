@@ -10,6 +10,7 @@
 #include <functional>
 #include <memory>
 #include "map"
+#include "unordered_map"
 #include "list"
 #include "Global.h"
 #include "TI.h"
@@ -22,7 +23,7 @@ static int rel_11[2] = {'1',1};
 static int rel_22[2] = {'2',2};
 static int rel_b3[2] = {'b',3};
 static int rel_m3[2] = {'m',3};
-static int rel_o3[2] = {'0',3};
+static int rel_o3[2] = {'o',3};
 static int rel_c3[2] = {'c',3};
 static int rel_f3[2] = {'f',3};
 static int rel_e3[2] = {'e',3};
@@ -39,15 +40,16 @@ public:
 
     // Trans table based on Mantaining Knowledge about Temporal Intervals
     // by James F.Allen
-    static map<string,string> trans_table_0;
+    static unordered_map<string,Relation> trans_table_0;
     //Trans table based of the vertTIRP article
-    static map<string,string> trans_table;
+    static unordered_map<string,Relation> trans_table;
+    static unordered_map<char,int*> predefined_rels;
 
     //TODO potser hi ha maneres mes eficients d'implementar-ho
-    static map<char,function<int*(const TI*, const TI*, eps_type, time_type, time_type)>> ind_func_dict;
-    static map<string,function<bool(const TI*, const TI*, eps_type, time_type, time_type)>> cond_dict;
+    static unordered_map<char,function<int*(const TI*, const TI*, eps_type, time_type, time_type)>> ind_func_dict;
+    static unordered_map<string,function<bool(const TI*, const TI*, eps_type, time_type, time_type)>> cond_dict;
 
-    static map<char,function<int*(const TI*, const TI*, eps_type, time_type, time_type)>> rel_func_dict;
+    static unordered_map<char,function<int*(const TI*, const TI*, eps_type, time_type, time_type)>> rel_func_dict;
 
 
     private:

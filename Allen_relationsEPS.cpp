@@ -1,6 +1,6 @@
 #include "Allen_relationsEPS.h"
 
-map<char,function<int*(const TI*, const TI*, eps_type, time_type, time_type)>>
+unordered_map<char,function<int*(const TI*, const TI*, eps_type, time_type, time_type)>>
 Allen_relationsEPS::ind_func_dict = {
         {'b', Allen_relationsEPS::before_ind},
         {'m', Allen_relationsEPS::meets_ind},
@@ -11,13 +11,13 @@ Allen_relationsEPS::ind_func_dict = {
         {'s', Allen_relationsEPS::starts_ind},
         {'l', Allen_relationsEPS::left_contains_ind}
 };
-map<string,function<bool(const TI*, const TI*, eps_type, time_type, time_type)>>
+unordered_map<string,function<bool(const TI*, const TI*, eps_type, time_type, time_type)>>
 Allen_relationsEPS::cond_dict = {
         {"sel", Allen_relationsEPS::sel_cond},
         {"cfmo", Allen_relationsEPS::cfmo_cond},
         {"mo", Allen_relationsEPS::mo_cond}
 };
-map<char,function<int*(const TI*, const TI*, eps_type, time_type, time_type)>>
+unordered_map<char,function<int*(const TI*, const TI*, eps_type, time_type, time_type)>>
 Allen_relationsEPS::rel_func_dict = {
         {'b', Allen_relationsEPS::before},
         {'m', Allen_relationsEPS::meets},
@@ -28,132 +28,144 @@ Allen_relationsEPS::rel_func_dict = {
         {'s', Allen_relationsEPS::starts},
         {'l', Allen_relationsEPS::left_contains}
 };
-map<string,string>
+unordered_map<string,Relation>
 Allen_relationsEPS::trans_table_0 = {
         // before b
-        {"bb", "b"},
-        {"bc", "b"},
-        {"bo", "b"},
-        {"bm", "b"},
-        {"bs", "b"},
-        {"bf", "b"},
-        {"be", "b"},
+        {"bb", Relation("b")},
+        {"bc", Relation("b")},
+        {"bo", Relation("b")},
+        {"bm", Relation("b")},
+        {"bs", Relation("b")},
+        {"bf", Relation("b")},
+        {"be", Relation("b")},
         // equal e
-        {"eb", "b"},
-        {"ec", "c"},
-        {"eo", "o"},
-        {"em", "m"},
-        {"es", "s"},
-        {"ef", "f"},
-        {"ee", "e"},
+        {"eb", Relation("b")},
+        {"ec", Relation("c")},
+        {"eo", Relation("o")},
+        {"em", Relation("m")},
+        {"es", Relation("s")},
+        {"ef", Relation("f")},
+        {"ee", Relation("e")},
         // contains c
-        {"cb", "bcfmo"},
-        {"cc", "c"},
-        {"co", "cfo"},
-        {"cm", "cfo"},
-        {"cs", "cfo"},
-        {"cf", "c"},
-        {"ce", "c"},
+        {"cb", Relation("bcfmo")},
+        {"cc", Relation("c")},
+        {"co", Relation("cfo")},
+        {"cm", Relation("cfo")},
+        {"cs", Relation("cfo")},
+        {"cf", Relation("c")},
+        {"ce", Relation("c")},
         // overlaps o
-        {"ob", "b"},
-        {"oc", "bcfmo"},
-        {"oo", "bmo"},
-        {"om", "b"},
-        {"os", "o"},
-        {"of", "bmo"},
-        {"oe", "o"},
+        {"ob", Relation("b")},
+        {"oc", Relation("bcfmo")},
+        {"oo", Relation("bmo")},
+        {"om", Relation("b")},
+        {"os", Relation("o")},
+        {"of", Relation("bmo")},
+        {"oe", Relation("o")},
         // meets m
-        {"mb", "b"},
-        {"mc", "b"},
-        {"mo", "b"},
-        {"mm", "b"},
-        {"ms", "m"},
-        {"mf", "b"},
-        {"me", "m"},
+        {"mb", Relation("b")},
+        {"mc", Relation("b")},
+        {"mo", Relation("b")},
+        {"mm", Relation("b")},
+        {"ms", Relation("m")},
+        {"mf", Relation("b")},
+        {"me", Relation("m")},
         // starts s
-        {"sb", "b"},
-        {"sc", "bcfmo"},
-        {"so", "bmo"},
-        {"sm", "b"},
-        {"ss", "s"},
-        {"sf", "bmo"},
-        {"se", "s"},
+        {"sb", Relation("b")},
+        {"sc", Relation("bcfmo")},
+        {"so", Relation("bmo")},
+        {"sm", Relation("b")},
+        {"ss", Relation("s")},
+        {"sf", Relation("bmo")},
+        {"se", Relation("s")},
         // finished by
-        {"fb", "b"},
-        {"fc", "c"},
-        {"fo", "o"},
-        {"fm", "m"},
-        {"fs", "o"},
-        {"ff", "f"},
-        {"fe", "f"}
+        {"fb", Relation("b")},
+        {"fc", Relation("c")},
+        {"fo", Relation("o")},
+        {"fm", Relation("m")},
+        {"fs", Relation("o")},
+        {"ff", Relation("f")},
+        {"fe", Relation("f")}
 };
 //Trans table based of the vertTIRP article
-map<string,string>
+unordered_map<string,Relation>
 Allen_relationsEPS::trans_table = {
         // before b
-        {"bb", "b"},
-        {"bc", "b"},
-        {"bo", "b"},
-        {"bm", "b"},
-        {"bs", "b"},
-        {"bf", "b"},
-        {"be", "b"},
+        {"bb", Relation("b")},
+        {"bc", Relation("b")},
+        {"bo", Relation("b")},
+        {"bm", Relation("b")},
+        {"bs", Relation("b")},
+        {"bf", Relation("b")},
+        {"be", Relation("b")},
         // contains c
-        {"cb", "bcfmo"},
-        {"cc", "c"},
-        {"co", "cfo"},
-        {"cm", "cfo"},
-        {"cs", "cfo"},
-        {"cf", "cf"},
-        {"ce", "cf"},
+        {"cb", Relation("bcfmo")},
+        {"cc", Relation("c")},
+        {"co", Relation("cfo")},
+        {"cm", Relation("cfo")},
+        {"cs", Relation("cfo")},
+        {"cf", Relation("cf")},
+        {"ce", Relation("cf")},
         // overlaps o
-        {"ob", "b"},
-        {"oc", "bcfmo"},
-        {"oo", "bmo"},
-        {"om", "bm"},
-        {"os", "mo"},
-        {"of", "bfmo"},
-        {"oe", "mo"},
+        {"ob", Relation("b")},
+        {"oc", Relation("bcfmo")},
+        {"oo", Relation("bmo")},
+        {"om", Relation("bm")},
+        {"os", Relation("mo")},
+        {"of", Relation("bfmo")},
+        {"oe", Relation("mo")},
         // meets m
-        {"mb", "b"},
-        {"mc", "bm"},
-        {"mo", "bm"},
-        {"mm", "bm"},
-        {"ms", "bm"},
-        {"mf", "bm"},
-        {"me", "bm"},
+        {"mb", Relation("b")},
+        {"mc", Relation("bm")},
+        {"mo", Relation("bm")},
+        {"mm", Relation("bm")},
+        {"ms", Relation("bm")},
+        {"mf", Relation("bm")},
+        {"me", Relation("bm")},
         // starts s
-        {"sb", "b"},
-        {"sc", "bcfmo"},
-        {"so", "bmo"},
-        {"sm", "bm"},
-        {"ss", "ms"},
-        {"sf", "bmo"},
-        {"se", "emos"},
+        {"sb", Relation("b")},
+        {"sc", Relation("bcfmo")},
+        {"so", Relation("bmo")},
+        {"sm", Relation("bm")},
+        {"ss", Relation("ms")},
+        {"sf", Relation("bmo")},
+        {"se", Relation("emos")},
         // finished-by fi
-        {"fb", "bm"},
-        {"fc", "cf"},
-        {"fo", "fmo"},
-        {"fm", "bmo"},
-        {"fs", "fmo"},
-        {"ff", "cfmo"},
-        {"fe", "cflmo"},
+        {"fb", Relation("bm")},
+        {"fc", Relation("cf")},
+        {"fo", Relation("fmo")},
+        {"fm", Relation("bmo")},
+        {"fs", Relation("fmo")},
+        {"ff", Relation("cfmo")},
+        {"fe", Relation("cflmo")},
         // equal e
-        {"eb", "bm"},
-        {"ec", "cf"},
-        {"eo", "fmo"},
-        {"em", "bemo"},
-        {"es", "eos"},
-        {"ef", "cfm"},
-        {"ee", "cefo"},
+        {"eb", Relation("bm")},
+        {"ec", Relation("cf")},
+        {"eo", Relation("fmo")},
+        {"em", Relation("bemo")},
+        {"es", Relation("eos")},
+        {"ef", Relation("cfm")},
+        {"ee", Relation("cefo")},
         // equal l
-        {"lb", "bcfmo"},
-        {"lc", "c"},
-        {"lo", "cfo"},
-        {"lm", "cmo"},
-        {"ls", "celo"},
-        {"lf", "cf"},
-        {"le", "cefl"}
+        {"lb", Relation("bcfmo")},
+        {"lc", Relation("c")},
+        {"lo", Relation("cfo")},
+        {"lm", Relation("cmo")},
+        {"ls", Relation("celo")},
+        {"lf", Relation("cf")},
+        {"le", Relation("cefl")}
+};
+
+unordered_map<char,int*>
+Allen_relationsEPS::predefined_rels = {
+        { 'b',rel_b3 },
+        { 'm',rel_m3 },
+        { 'o',rel_o3 },
+        { 'c',rel_c3 },
+        { 'f',rel_f3 },
+        { 'e',rel_e3 },
+        { 's',rel_s3 },
+        { 'l',rel_l3 }
 };
 
 pair<PairingStrategy,vector<string>> Allen_relationsEPS::get_pairing_strategy(string str_rels){ //TODO arreglar

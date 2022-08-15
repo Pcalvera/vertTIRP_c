@@ -29,17 +29,17 @@ Allen::Allen(bool dummy_calc, bool trans, eps_type eps, string calc_sort) {
                     this->sorted_trans_table.insert(pair<string,Relation>(it.first,Relation(it.second)));
                 }
                 else {
-                    this->sorted_trans_table.insert(pair<string,Relation>(it.first,Relation( Allen_relationsEPS::get_pairing_strategy(sort_rels(it.second)) )));
+                    this->sorted_trans_table.insert(pair<string,Relation>(it.first,Relation( Allen_relationsEPS::get_pairing_strategy(sort_rels(it.second.getString())) )));
                 }
             }
         }
         else{
             for ( const auto &it : Allen_relationsEPS::trans_table_0 ){
                 if ( it.second.size() == 1){
-                    this->sorted_trans_table.insert(pair<string,string>(it.first,it.second));
+                    this->sorted_trans_table.insert(pair<string,Relation>(it.first,it.second));
                 }
                 else {
-                    this->sorted_trans_table.insert(pair<string,Relation>(it.first,Relation(Allen_relationsEPS::get_pairing_strategy(sort_rels(it.second)))));
+                    this->sorted_trans_table.insert(pair<string,Relation>(it.first,Relation(Allen_relationsEPS::get_pairing_strategy(sort_rels(it.second.getString())))));
                 }
             }
         }
@@ -58,7 +58,7 @@ string Allen::sort_rels(string reducted_group) {
     return reducted_group;  //TODO algoritme original retorna reducted_group
 }
 
-Relation Allen::get_possible_rels(char a, char b) const{
+Relation& Allen::get_possible_rels(char a, char b) {
     if ( this->dummy_calc ) {
         if ( this->eps > 0 )
             return Allen_relationsEPS::trans_table.at(string({a,b}));
@@ -132,7 +132,7 @@ Allen::calc_rel(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_
 }
 
 int*
-Allen::assign_rel(const TI* a, const TI* b, const Relation &possible_rels, eps_type eps, time_type min_gap, time_type max_gap) const {
+Allen::assign_rel(const TI* a, const TI* b, Relation &possible_rels, eps_type eps, time_type min_gap, time_type max_gap) const {
     if ( this->dummy_calc ) {
         if ( !possible_rels.isString() )
             throw(""); //TODO missatge throw
@@ -146,8 +146,7 @@ Allen::assign_rel(const TI* a, const TI* b, const Relation &possible_rels, eps_t
                 return this->calc_rel(a,b,eps,min_gap,max_gap);
             }
             else{
-                int ret[2] = {first_r,3};
-                return ret;
+                return Allen_relationsEPS::predefined_rels.at(first_r);
             }
         }
         else{
@@ -172,8 +171,7 @@ Allen::assign_rel(const TI* a, const TI* b, const Relation &possible_rels, eps_t
                 return this->calc_rel(a,b,eps,min_gap,max_gap);
             }
             else {
-                int ret[2] = {first_r,3};
-                return ret;
+                return Allen_relationsEPS::predefined_rels.at(first_r);
             }
         }
         else

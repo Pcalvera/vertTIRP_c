@@ -22,7 +22,7 @@ string Relation::getString() const {
     return this->s;
 }
 //Pre: this->isS == false
-pair<PairingStrategy,vector<string>> Relation::getPairingStrategy() const {
+pair<PairingStrategy,vector<string>>& Relation::getPairingStrategy()  {
     return this->p;   //TODO retornar ref?
 }
 

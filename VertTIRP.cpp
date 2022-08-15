@@ -67,18 +67,15 @@ void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, Ve
         this->tirp_count += pat_sidlist.get_definitive_discovered_tirp_dict().size();
 
     map<string,VertTirpSidList> s_temp;
-    for(int g = 0 ; g < level; g++) cout<<"    "; cout<<"Nivell: "<<level<<endl;
     // to control the maximum length
     if ( this->max_length == -1 || (pat_sidlist.get_seq_length() + 1) <= this->max_length ){
         for ( const string &s : f_l){
             if ( !this->same_variable(s, pat_sidlist.get_seq_str().back(), avoid_same_var_states) ){
-                for(int g = 0 ; g < level; g++) cout<<"    "; cout<<"join "<<endl;
                 VertTirpSidList s_bm = pat_sidlist.join(this->vertical_db[s], this->allen, this->eps, this->min_gap, this->max_gap, this->max_duration, this->min_sup, this->min_confidence);
                 if ( !s_bm.get_definitive_ones_indices_dict().empty() )
                     s_temp[s] = s_bm;
             }
         }
-        cout<<endl;
         //vector<string> s_syms = utils_getKeys(s_temp);   //TODO fer funcionar la funcio
         vector<string> s_syms =  vector<string>();
         for ( const auto &it : s_temp)
@@ -91,7 +88,6 @@ void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, Ve
             VertTirpNode s_node = VertTirpNode(seq_str_string,it.second.get_seq_length(),it.second,node);
             this->dfs_pruning(it.second,s_syms,s_node,node, level+1, avoid_same_var_states  );
         }
-        for(int g = 0 ; g < level; g++) cout<<"    "; cout<<"Nivell: "<<level<<endl;
     }
 }
 

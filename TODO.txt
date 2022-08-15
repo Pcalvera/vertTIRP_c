@@ -3,9 +3,8 @@ adaptar comentaris a c++
 Comentaris inici fitxers
 Missatges throws
 comprovar funcions constants
-Allen_relationsEPS mapes amb funcions
-Comprovar parametres per referencia o no (a python tot es passa per ref)
-comprovar tots els gets si han de retornar referència
+millorar arbre
+reservar mida vectors
 
 analitzar millores de temps podant o no l'arbre
 millores de temps paralelitzant amb consum energetic

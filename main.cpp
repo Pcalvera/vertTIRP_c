@@ -35,7 +35,7 @@ bool trans = true;  // whether to use transitivity properties when assign a rela
 char sep = ';';  // delimiter to use with the scv file
 /* //TOY.csv
 string result_file_name = "toy_result_file.csv";  // an output file
-string filepath = R"(D:\COLE\TFG_clion\toy.csv)";  // a path to time interval data. Any valid string path is acceptable.
+string filepath = R"(..\toy.csv)";  // a path to time interval data. Any valid string path is acceptable.
 string sid_column = "sid";   // sequence column name
 string date_column_name_start = "start_time";  // start time column name
 string date_column_name_end = "end_time";  // end time column name
@@ -43,8 +43,7 @@ string date_format = "%m/%d/%Y %H:%M";  // the format of the date, e.g. "3/1/200
 vector<string> value_column_name = vector<string>({"value"});  // the interesting attributes to be used in TIRPs discovering
 */ //ASL
 string result_file_name = "asl_result_file.csv";
-string filepath = R"(D:\COLE\TFG_clion\datasets\asl_ds.csv)";
-//string filepath = R"(/mnt/d/COLE/TFG_clion/datasets/asl_ds.csv)";
+string filepath = R"(../datasets/asl_ds.csv)";
 string sid_column = "Session_Scene";
 string date_column_name_start = "Start";
 string date_column_name_end = "End";
@@ -63,13 +62,14 @@ int main () {
     vector<LinkedList> list_of_ti_users = vector<LinkedList>();
     vector<string> list_of_users = vector<string>();
     utils_tiRead(filepath, sep, sid_column, date_column_name_start, date_column_name_end,
-                                       date_format, value_column_name, list_of_users,list_of_ti_users, true,timemode_number);
-
+                                       date_format, value_column_name, list_of_users,list_of_ti_users,timemode_number);
+    Chrono chrono = Chrono();
 
     VertTIRP co = VertTIRP(result_file_name,ver_sup,eps,ming,maxg,mind,maxd,dummy,ps,trans);
-    time_t start_time = time(NULL);
+    chrono.start("Compute time");
     int tirp_count = co.mine_patterns(list_of_ti_users,list_of_users,avoid_same_var_states);
-    cout << "Execution time: " << time(NULL)-start_time << " seconds" << endl;
+    chrono.stop("Compute time");
+    chrono.print();
     co.print_patterns(false);
     cout << "Algorithm finished" << endl;
     return 0;

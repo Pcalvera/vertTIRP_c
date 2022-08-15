@@ -16,7 +16,7 @@ public:
     Relation(pair<PairingStrategy,vector<string>> p);
     bool isString()const;
     string getString()const;
-    pair<PairingStrategy,vector<string>> getPairingStrategy()const;
+    pair<PairingStrategy,vector<string>>& getPairingStrategy();
     unsigned size()const;
 private:
     bool isS; //True if contains a char, false if contaings a PairingStrategy

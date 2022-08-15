@@ -62,7 +62,7 @@ private:
 
 void read_csv(string &filename,string &seq_h,string &start_h, string &end_h, vector<string> &values, map<string,vector<Csv_line>> &content );
 void ti_to_list(const vector<Csv_line> &df, string &date_column_name_start, string &date_column_name_end, vector<string> &val_column_names ,bool timemode_number, LinkedList &list_of_ti);
-void utils_tiRead(string &filepath, char sep, string &seqid_column, string &date_column_name_start, string &date_column_name_end, string &date_format, vector<string> &val_column_names, vector<string> &ret_list_of_sequences,vector<LinkedList> &ret_list_of_ti_sequences ,bool is_null_f= true, bool timemode_number = true);
+void utils_tiRead(string &filepath, char sep, string &seqid_column, string &date_column_name_start, string &date_column_name_end, string &date_format, vector<string> &val_column_names, vector<string> &ret_list_of_sequences,vector<LinkedList> &ret_list_of_ti_sequences, bool timemode_number = true);
 TI utils_stringsToTi(string data_inici,string data_fi,string val,bool timemode_number);
 tm utils_splitDate(const string &s);
 long long utils_mean(vector<time_type> &l);

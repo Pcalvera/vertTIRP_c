@@ -23,7 +23,6 @@ void VertTirpSidList::append_item(TI *ti, string sid, unsigned eid) {
     }
 
     if ( this->definitive_discovered_tirp_dict.empty() ){
-        //this->definitive_discovered_tirp_dict.insert(pair<string,TIRPstatistics>(EMPTY,TIRPstatistics()));    //TODO []
         this->definitive_discovered_tirp_dict[EMPTY] = std::make_shared<TIRPstatistics>( );
         this->seq_str.push_back(ti->get_sym());
     }
@@ -32,7 +31,6 @@ void VertTirpSidList::append_item(TI *ti, string sid, unsigned eid) {
     if ( doid_it == definitive_ones_indices_dict.end() )
         doid_it = this->definitive_ones_indices_dict.insert(pair<string,map<unsigned,vector<shared_ptr<TIRP>>>>(sid,map<unsigned,vector<shared_ptr<TIRP>>>() ) ).first;
 
-    //this->definitive_discovered_tirp_dict.find("")->second.append_tirp(sid,eid,new_tirp); //TODO potser es pot fer abans,    canviar per at()
     this->definitive_discovered_tirp_dict.at(EMPTY)->append_tirp(sid,eid,new_tirp);
 
     auto doid_it2 = doid_it->second.find(eid);
@@ -74,7 +72,7 @@ map<string, shared_ptr<TIRPstatistics>>& VertTirpSidList::get_definitive_discove
     return this->definitive_discovered_tirp_dict;
 }
 
-VertTirpSidList VertTirpSidList::join(VertTirpSidList &f, const Allen &ps, eps_type eps, time_type min_gap, time_type  max_gap,
+VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type eps, time_type min_gap, time_type  max_gap,
                                       time_type max_duration, support_type min_ver_sup, int min_confidence) {
     VertTirpSidList new_sidlist = VertTirpSidList();   //TODO potser millor fer un constructor amb tots els paràmetres
     new_sidlist.seq_str = vector<string>(this->seq_str);
@@ -83,9 +81,8 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f, const Allen &ps, eps_t
     new_sidlist.n_sequences = this->n_sequences;
 
     bool mine_last_equal = this->seq_str.back() < f.seq_str[0];
-    int count = 0;
     //vector<string> contador = vector<string>();
-    this->chrono.start("join");
+    //this->chrono.start("join");
     for ( const auto& item : this->definitive_ones_indices_dict ){
         double temps = 0;
 
@@ -138,7 +135,6 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f, const Allen &ps, eps_t
                                      break;
                                 else{
                                     if ( f_pos > self_first_eid ) {
-                                        //this->chrono.start("update_trips");
                                         unsigned exit_status = new_sidlist.update_tirp_attrs(seq_id, f_pos, f,
                                                                                                  mine_last_equal, ps,
                                                                                                  self_tirps, eps,
@@ -148,7 +144,6 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f, const Allen &ps, eps_t
                                                                                                  this->definitive_discovered_tirp_dict,
                                                                                                  min_confidence, temps);
 
-                                        //this->chrono.stop("update_trips");
                                         if (exit_status == 2)
                                             // max_gap exceeded for all the tirps, break and continue with another 1 of the self sequence
                                             // no sense prove out the next s event id, as max gap exceeded
@@ -162,16 +157,16 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f, const Allen &ps, eps_t
             }
         }
     }
-    this->chrono.stop("join");
+    //this->chrono.stop("join");
     this->chrono.print();
-    new_sidlist.chrono.print();
+    //new_sidlist.chrono.print();
     //cout<<"count:"<<count;
     this->temp_discovered_tirp_dict.clear();
     return new_sidlist;
 }
 
 unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f_eid, VertTirpSidList &f_sidlist,
-                                            bool mine_last_equal, const Allen &ps, const vector<shared_ptr<TIRP>> &tirps_to_extend,
+                                            bool mine_last_equal, Allen &ps, const vector<shared_ptr<TIRP>> &tirps_to_extend,
                                             eps_type eps, time_type min_gap, time_type  max_gap,
                                             time_type max_duration, support_type min_ver_sup,
                                             const map<string,shared_ptr<TIRPstatistics>> &father_discovered_tirp_dict,
