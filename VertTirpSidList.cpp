@@ -203,7 +203,7 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
                 conf_constraint = ((float)vert_supp / father_supp) >= (float)min_confidence; // TODO comprovar conversio unsigned float
             }
 
-            if ( (float)vert_supp >= min_ver_sup && conf_constraint ){
+            if ( (support_type)vert_supp >= min_ver_sup && conf_constraint ){
                 auto new_rel_in_definitive_disc_tirp_dict = this->definitive_discovered_tirp_dict.find(new_rel);
                 if ( new_rel_in_definitive_disc_tirp_dict != this->definitive_discovered_tirp_dict.end() ){
                     // if the new_rel exists in the this->definitive_discovered_tirp_dict
@@ -269,7 +269,6 @@ void VertTirpSidList::first_sorted_extend(const string &sid, unsigned eid, const
     unsigned i = 0;
     unsigned j = new_tirps.size();
     while ( i < j ){
-        //if ( new_tirps[i].get_max_last() > current_tirps.front().get_max_last() ) //TODO afegir al principi i mirar si definitive_ones_indices_dict ha de ser llista
             current_tirps.emplace_back(new_tirps[i]);
             i++;
     }
