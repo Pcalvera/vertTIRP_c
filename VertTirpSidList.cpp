@@ -209,12 +209,12 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
                     // if the new_rel exists in the this->definitive_discovered_tirp_dict
                     new_rel_in_definitive_disc_tirp_dict->second = this->temp_discovered_tirp_dict.at(new_rel);
                     // update this->definitive_ones_indices_dict with a new_tirp
-                    this->definitive_ones_indices_dict[seq_id]; //TODO mes eficient
-                    this->definitive_ones_indices_dict[seq_id][f_eid];
+                    auto &it = this->definitive_ones_indices_dict[seq_id];
+                    //this->definitive_ones_indices_dict[seq_id][f_eid];
 
-                    auto it = this->definitive_ones_indices_dict.find(seq_id);
-                    if ( it == this->definitive_ones_indices_dict.end() )
-                        it->second[f_eid] = vector<shared_ptr<TIRP>>(1,extended_tirp.first );
+                    auto itt = it.find(f_eid);
+                    if ( itt == it.end() )
+                        it[f_eid] = vector<shared_ptr<TIRP>>(1,extended_tirp.first );
                     else
                         this->first_sorted_extend(seq_id, f_eid, vector<shared_ptr<TIRP>>(1,extended_tirp.first ));
                 }
