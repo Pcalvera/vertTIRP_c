@@ -60,7 +60,7 @@ pair<shared_ptr<TIRP>, unsigned>
 TIRP::extend_with(TI* s_ti, eps_type eps, time_type min_gap, time_type max_gap, time_type max_duration,
                   bool mine_last_equal, Allen &allen, Chrono &chrono) const {
     // calc and assign the last relation
-    int* rel = allen.calc_rel(this->ti.back(), s_ti, eps, min_gap,max_gap );
+    int* rel = allen.calc_rel(this->ti.back(), s_ti, eps, min_gap,max_gap, shared_ptr<PairingStrategy>(nullptr), shared_ptr<vector<string>>(nullptr));
     // the s-extension case
     if ( !mine_last_equal && rel[0] == 'e' )
         return make_pair(nullptr, 1);
@@ -102,11 +102,11 @@ TIRP::extend_with(TI* s_ti, eps_type eps, time_type min_gap, time_type max_gap, 
         int pos_to_assign = second_pos - 1;
         TI* existent_node = new_ti[temp-2];
         if ( allen.get_trans() ){
-            Relation possible_rels = allen.get_possible_rels(new_rel[first_pos], new_rel[second_pos] );
+            Relation &possible_rels = allen.get_possible_rels(new_rel[first_pos], new_rel[second_pos] );
             rel = allen.assign_rel(existent_node,s_ti,possible_rels,eps, min_gap, max_gap);
         }
         else {
-            rel = allen.calc_rel(existent_node, s_ti, eps, min_gap, max_gap);
+            rel = allen.calc_rel(existent_node, s_ti, eps, min_gap, max_gap, shared_ptr<PairingStrategy>(nullptr), shared_ptr<vector<string>>(nullptr));
         }
 
         if ( rel[1] < 3 )

@@ -49,7 +49,15 @@ string date_column_name_start = "Start";
 string date_column_name_end = "End";
 string date_format = "%m/%d/%Y %H:%M";
 vector<string> value_column_name = vector<string>({"Main_New_Gloss","D_Start_HS","D_End_HS","Passive_Arm"});
-
+/* //HAR
+string result_file_name = "har_result_file.csv";
+string filepath = R"(../datasets/HAR.csv)";
+string sid_column = "subject";
+string date_column_name_start = "time";
+string date_column_name_end = "time";
+string date_format = "%m/%d/%Y %H:%M";
+vector<string> value_column_name = vector<string>({"BodyAcc","GravityAcc","BodyGyro","Activity"});
+*/
 
 bool avoid_same_var_states = false;
 time_type ming = 0;  // minimum gap in seconds that is the gap between before consecutive elements

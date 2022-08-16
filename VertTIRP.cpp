@@ -76,11 +76,11 @@ void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, Ve
                     s_temp[s] = s_bm;
             }
         }
-        //vector<string> s_syms = utils_getKeys(s_temp);   //TODO fer funcionar la funcio
+
         vector<string> s_syms =  vector<string>();
         for ( const auto &it : s_temp)
             s_syms.push_back( it.first );
-        //TODO fi
+
 
         for ( auto &it : s_temp ){
             vector<string> seq_str_strings = it.second.get_seq_str();

@@ -5,7 +5,8 @@
 #ifndef VERTTIRP_C_GLOBAL_CPP
 #define VERTTIRP_C_GLOBAL_CPP
 #include <iostream>
-
+#include <memory>
+#include "Relation.h"
 
 /*
 #if TIME_MODE_NUMBER == TRUE
@@ -27,6 +28,7 @@ const string NONE = "N";
 const string EMPTY = "";
 const unsigned UNITS_NUMBER[6] = {1,60,60 * 60,60 * 60 * 24, 60 * 60 * 24 * 7, 60 * 60 * 24 * 365};
 const string UNITS_STRING[6] = {"seconds", "minutes", "hours", "days", "weeks", "years"};
-
+const shared_ptr<vector<string>> grArr_nullPtr = nullptr;
+const shared_ptr<PairingStrategy> relsArr_nullPtr = nullptr;
 
 #endif //VERTTIRP_C_GLOBAL_CPP

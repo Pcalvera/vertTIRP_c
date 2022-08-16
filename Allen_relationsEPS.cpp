@@ -168,9 +168,9 @@ Allen_relationsEPS::predefined_rels = {
         { 'l',rel_l3 }
 };
 
-pair<PairingStrategy,vector<string>> Allen_relationsEPS::get_pairing_strategy(string str_rels){ //TODO arreglar
-    PairingStrategy rels_arr = PairingStrategy();
-    vector<string> gr_arr = vector<string>();
+pair< shared_ptr<PairingStrategy>,shared_ptr<vector<string>> > Allen_relationsEPS::get_pairing_strategy(string str_rels){
+    shared_ptr<PairingStrategy> rels_arr = make_shared<PairingStrategy>();
+    shared_ptr<vector<string>> gr_arr = make_shared<vector<string>>();
 
     int i = 0,j = 0,k = 0;
     char c;
@@ -180,14 +180,14 @@ pair<PairingStrategy,vector<string>> Allen_relationsEPS::get_pairing_strategy(st
         c = str_rels.at(i);
         c_in_added = added.find(c) != added.end();
         if ( !c_in_added && c == 'b') {
-            rels_arr.add(c);
-            gr_arr.emplace_back(NONE);
+            rels_arr->add(c);
+            gr_arr->emplace_back(NONE);
             added[c] = true;
         }
         else if ( !c_in_added && (c=='c' || c=='f' || c=='m' || c=='o') ){
-            gr_arr.emplace_back("cfmo");
+            gr_arr->emplace_back("cfmo");
             if ( c == 'm' || c == 'o' ){
-                rels_arr.add2(c);
+                rels_arr->add2(c);
                 added[c] = true;
                 j = i + 1;
 
@@ -196,7 +196,7 @@ pair<PairingStrategy,vector<string>> Allen_relationsEPS::get_pairing_strategy(st
                     c = str_rels.at(k);
                     c_in_added = added.find(c) != added.end();
                     if ( !c_in_added && (c == 'm' || c == 'o') ){
-                        rels_arr.append2(c);
+                        rels_arr->append2(c);
                         added[c] = true;
                     }
                     k++;
@@ -205,14 +205,14 @@ pair<PairingStrategy,vector<string>> Allen_relationsEPS::get_pairing_strategy(st
                     c = str_rels.at(j);
                     c_in_added = added.find(c) != added.end();
                     if ( !c_in_added && (c == 'c' || c == 'f') ){
-                        rels_arr.append(c);
+                        rels_arr->append(c);
                         added[c] = true;
                     }
                     j++;
                 }
             }
-            else{                            //TODO comprovar si funciona
-                rels_arr.add(c);
+            else{
+                rels_arr->add(c);
                 added[c] = true;
                 j = i + 1;
                 while ( j < str_rels.size() ){
@@ -220,18 +220,18 @@ pair<PairingStrategy,vector<string>> Allen_relationsEPS::get_pairing_strategy(st
                     c_in_added = added.find(c) != added.end();
                     if ( !c_in_added ){
                         if ( c == 'c' || c == 'f'){
-                            rels_arr.append(c);
+                            rels_arr->append(c);
                             added[c] = true;
                         }
                         else if ( c == 'm' || c == 'o' ){
-                            rels_arr.appendAdd(c);
+                            rels_arr->appendAdd(c);
                             added[c] = true;
                             k = j + 1;
                             while ( k < str_rels.size() ){
                                 c = str_rels.at(k);
                                 c_in_added = added.find(c) != added.end();
                                 if ( !c_in_added && (c == 'm' || c == 'o') ){
-                                    rels_arr.append2(c);
+                                    rels_arr->append2(c);
                                     added[c] = true;
                                 }
                                 k++;
@@ -244,16 +244,16 @@ pair<PairingStrategy,vector<string>> Allen_relationsEPS::get_pairing_strategy(st
         }
         else{
             if ( !c_in_added ) {
-                rels_arr.add(c);
+                rels_arr->add(c);
                 added[c] = true;
-                gr_arr.emplace_back("sel");
+                gr_arr->emplace_back("sel");
                 j = i + 1;
                 while (j < str_rels.size()) {
                     c = str_rels.at(j);
                     c_in_added = added.find(c) != added.end();
                     if (!c_in_added) {
                         if (c == 's' || c == 'e' || c == 'l') {
-                            rels_arr.append(c);
+                            rels_arr->append(c);
                             added[c] = true;
                         }
                     }

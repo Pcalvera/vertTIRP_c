@@ -1,12 +1,16 @@
 //
-// Created by pauca on 10/04/2022.
-//
 
 #include "PairingStrategy.h"
 
 
 PairingStrategy::PairingStrategy() {
     this->ps = vector<vector<Node>>();
+}
+
+//
+// Created by pauca on 10/04/2022.
+PairingStrategy::PairingStrategy(const PairingStrategy &o) {
+    this->ps = o.ps;
 }
 
 void PairingStrategy::append(char c) {
@@ -17,9 +21,9 @@ void PairingStrategy::append(char c) {
 void PairingStrategy::append2(char c) {
     if ( this->ps.empty() ) throw("\"PairingStrategy->ps\" is empty");
     vector<Node> back = this->ps.back();
-    if ( back.empty() ) throw("La llsita és buida");  //TODO missatge error
+    if ( back.empty() ) throw("Empty list");
     Node back2 = back.back();
-    if ( !back2.dif ) throw("");  //TODO missatge error
+    if ( !back2.dif ) throw("Empty list");
     this->ps.back().back().l.push_back(c);
 }
 

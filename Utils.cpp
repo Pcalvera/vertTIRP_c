@@ -183,7 +183,7 @@ string utils_unifyChars (string &seq_chars ){
 }
 
 template<typename T, typename V>
-vector<T> utils_getKkeys(map<T, V> m) {
+vector<T> utils_getKeys(map<T, V> m) {
     vector<T> res =  vector<T>();
     for ( const auto &it : m)
         res.push_back( it.first );

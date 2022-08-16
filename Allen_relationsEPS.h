@@ -36,7 +36,7 @@ class Allen_relationsEPS {
 public:
 
 
-    static pair<PairingStrategy,vector<string>> get_pairing_strategy(string str_rels);
+    static pair< shared_ptr<PairingStrategy>,shared_ptr<vector<string>> > get_pairing_strategy(string str_rels);
 
     // Trans table based on Mantaining Knowledge about Temporal Intervals
     // by James F.Allen
@@ -45,7 +45,6 @@ public:
     static unordered_map<string,Relation> trans_table;
     static unordered_map<char,int*> predefined_rels;
 
-    //TODO potser hi ha maneres mes eficients d'implementar-ho
     static unordered_map<char,function<int*(const TI*, const TI*, eps_type, time_type, time_type)>> ind_func_dict;
     static unordered_map<string,function<bool(const TI*, const TI*, eps_type, time_type, time_type)>> cond_dict;
 
@@ -82,6 +81,4 @@ public:
     static int*  left_contains(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap);
     //---------------------------------------------- END DUMMY AUX FUNC ------------------------------------------------
 };
-
-//TODO hi han funcions que no necessiten el min_gap i max_gap
 #endif //VERTTIRP_C_ALLEN_RELATIONSEPS_H

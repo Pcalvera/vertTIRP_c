@@ -91,11 +91,9 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type e
         auto f_at_seq_id = f.definitive_ones_indices_dict.find(seq_id);
         if ( f_at_seq_id != f.definitive_ones_indices_dict.end() ) {
 
-            //vector<int> f_eids = utils_getKeys(f.definitive_ones_indices_dict[seq_id]);   //TODO fer funcionar la funcio
             vector<unsigned> f_eids = vector<unsigned>();
             for (const auto &it: f_at_seq_id->second)
                 f_eids.push_back(it.first);
-            //TODO fi
 
             time_type last_f_first = f_at_seq_id->second.at(f_eids.back())[0]->get_first();
             time_type first_f_first = f_at_seq_id->second.at(f_eids.front())[0]->get_first();

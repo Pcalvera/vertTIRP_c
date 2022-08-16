@@ -20,6 +20,7 @@ struct Node {
 class PairingStrategy {
 public:
     PairingStrategy();
+    PairingStrategy(const PairingStrategy &o);
     void append(char c);
     void append2(char c);
     void appendAdd(char c);

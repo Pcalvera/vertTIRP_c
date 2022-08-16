@@ -70,7 +70,4 @@ string utils_unifyStrings(vector<string> &seq_str_strings);
 string utils_unifyStrings2(vector<string> &seq_str_strings);
 string utils_unifyChars (string &seq_chars );
 
-
-template <typename T,typename V> vector<T> utils_getKeys(map<T,V> m);
-
 #endif //VERTTIRP_C_UTILS_H
