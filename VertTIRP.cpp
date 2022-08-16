@@ -5,7 +5,7 @@
 #include "VertTIRP.h"
 
 VertTIRP::VertTIRP(string &out_file, support_type min_sup_rel, eps_type eps, time_type min_gap, time_type max_gap,
-                   int min_duration, time_type max_duration, bool dummy_calc, string &ps, bool trans, int min_confidence , int max_length, int min_length) {
+                   int min_duration, time_type max_duration, bool dummy_calc, string &ps, bool trans, float min_confidence , int max_length, int min_length) {
 
     this->out_file = out_file;
     events_per_sequence = map<string,unsigned>();

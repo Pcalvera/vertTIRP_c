@@ -73,7 +73,7 @@ map<string, shared_ptr<TIRPstatistics>>& VertTirpSidList::get_definitive_discove
 }
 
 VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type eps, time_type min_gap, time_type  max_gap,
-                                      time_type max_duration, support_type min_ver_sup, int min_confidence) {
+                                      time_type max_duration, support_type min_ver_sup, float min_confidence) {
     VertTirpSidList new_sidlist = VertTirpSidList();
     new_sidlist.seq_str = vector<string>(this->seq_str);
     new_sidlist.seq_str.push_back(f.seq_str[0]);
@@ -168,7 +168,7 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
                                             eps_type eps, time_type min_gap, time_type  max_gap,
                                             time_type max_duration, support_type min_ver_sup,
                                             const map<string,shared_ptr<TIRPstatistics>> &father_discovered_tirp_dict,
-                                            int min_confidence,
+                                            float min_confidence,
                                             double &temps) {
     vector<TI*> f_ti = f_sidlist.definitive_ones_indices_dict.at(seq_id).at(f_eid)[0]->get_ti();
 

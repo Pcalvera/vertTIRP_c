@@ -34,14 +34,14 @@ using namespace std;
 
 class VertTIRP {
 public:
-    VertTIRP(string &out_file, support_type min_sup_rel, eps_type eps, time_type min_gap, time_type max_gap, int min_duration, time_type max_duration, bool dummy_calc, string &ps, bool trans, int min_confidence = -1, int max_length=-1, int min_length=1);
+    VertTIRP(string &out_file, support_type min_sup_rel, eps_type eps, time_type min_gap, time_type max_gap, int min_duration, time_type max_duration, bool dummy_calc, string &ps, bool trans, float min_confidence = -1, int max_length=-1, int min_length=1);
     int mine_patterns(vector<LinkedList> &list_of_ti_seqs, vector<string> const &list_of_seqs, bool avoid_same_var_states = true);
     void print_patterns(bool dfs);
 private:
     string out_file;  // output file
     map<string,unsigned> events_per_sequence;   // necessary for relative horizontal support
     support_type min_sup_rel;  // relative minimum vertical support
-    int min_confidence;
+    float min_confidence;
     int min_gap;  // minimum gap in seconds that is the gap between before consecutive elements
     time_type max_gap;  // maximum gap in seconds that is the gap between before consecutive elements
     time_type min_duration; // each event interval should have a duration of at least min_duration seconds
