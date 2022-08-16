@@ -36,7 +36,7 @@ public:
 
 private:
     vector<string> seq_str;
-    map<string,map<unsigned,vector<shared_ptr<TIRP>>>> definitive_ones_indices_dict; //TODO potser list (first_sorted_extend() fa inserció a davant)
+    map<string,map<unsigned,vector<shared_ptr<TIRP>>>> definitive_ones_indices_dict;
     map<string,shared_ptr<TIRPstatistics>> definitive_discovered_tirp_dict;
     map<string,shared_ptr<TIRPstatistics>> temp_discovered_tirp_dict;
     unsigned n_sequences;

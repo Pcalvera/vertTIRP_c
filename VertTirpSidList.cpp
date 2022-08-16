@@ -74,7 +74,7 @@ map<string, shared_ptr<TIRPstatistics>>& VertTirpSidList::get_definitive_discove
 
 VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type eps, time_type min_gap, time_type  max_gap,
                                       time_type max_duration, support_type min_ver_sup, int min_confidence) {
-    VertTirpSidList new_sidlist = VertTirpSidList();   //TODO potser millor fer un constructor amb tots els paràmetres
+    VertTirpSidList new_sidlist = VertTirpSidList();
     new_sidlist.seq_str = vector<string>(this->seq_str);
     new_sidlist.seq_str.push_back(f.seq_str[0]);
 
@@ -197,10 +197,10 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
             if ( min_confidence != -1 ){
                 support_type father_supp;
                 if ( tirp_to_extend->get_rel_as_str() == EMPTY )
-                    father_supp = father_discovered_tirp_dict.at(EMPTY)->get_sum_ver_supp();  //TODO retorna unsigned
+                    father_supp = father_discovered_tirp_dict.at(EMPTY)->get_sum_ver_supp();
                 else
-                    father_supp = father_discovered_tirp_dict.at(tirp_to_extend->get_rel_as_str())->get_sum_ver_supp(); //TODO retorna unsigned
-                conf_constraint = ((float)vert_supp / father_supp) >= (float)min_confidence; // TODO comprovar conversio unsigned float
+                    father_supp = father_discovered_tirp_dict.at(tirp_to_extend->get_rel_as_str())->get_sum_ver_supp();
+                conf_constraint = ((float)vert_supp / father_supp) >= (float)min_confidence;
             }
 
             if ( (support_type)vert_supp >= min_ver_sup && conf_constraint ){
