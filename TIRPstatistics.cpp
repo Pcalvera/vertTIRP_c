@@ -54,7 +54,7 @@ unsigned TIRPstatistics::append_tirp(string seq_id, unsigned int eid, shared_ptr
         this->sum_mean_duration.push_back(tirp->get_duration());
         this->n_instances_per_seq.push_back(1);
 
-        this->sequence_events_tirps_dict[seq_id][eid] = vector<shared_ptr<TIRP>>(1,std::make_shared<TIRP>(tirp) );  //TODO crear nou objecte?
+        this->sequence_events_tirps_dict[seq_id][eid] = vector<shared_ptr<TIRP>>(1,tirp );
         this->sum_ver_supp += 1;
 
         // initialize hor support for sequence

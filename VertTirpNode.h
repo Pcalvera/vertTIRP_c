@@ -22,7 +22,6 @@ using namespace std;
 class VertTirpNode {
 public:
     struct Node {
-        //TODO de moment prescideixo de l'atribut parent
         vector<shared_ptr<Node>> child_nodes;
         string patt;
         unsigned pat_len;
@@ -39,17 +38,6 @@ public:
 private:
 
     shared_ptr<Node> node;
-    //bool is_root;
-    //TODO gestionar is_root
-    //TODO de moment prescideixo de l'atribut parent
-
-
-    //VertTirpNode parent;
-    //vector<VertTirpNode> child_nodes;
-    //string patt;
-    //unsigned pat_len;
-    //VertTirpSidList sidlist;
-    //bool is_root;
 };
 
 

@@ -8,7 +8,6 @@ VertTirpNode::VertTirpNode() {
     this->node = shared_ptr<Node>(new Node);
     this->node->patt = EMPTY;
     this->node->pat_len = 0;
-    //this->node->sidlist = sidList; //TODO no pot ser null de moment ho deixo sense inicialitzar
     this->node->is_root = true;
     this->node->child_nodes = vector<shared_ptr<Node>>();
 }
@@ -25,9 +24,6 @@ VertTirpNode::VertTirpNode(string &patt, unsigned pat_len,  const VertTirpSidLis
 void VertTirpNode::add_child(VertTirpNode &ch) {
     this->node->child_nodes.push_back(ch.node);
 }
-
-
-
 
 void VertTirpNode::print_tree(unsigned int min_len, string &o_file,
                               const map<string, unsigned int> &events_per_sequence, bool dfs) {
@@ -46,7 +42,6 @@ void VertTirpNode::print_tree(unsigned int min_len, string &o_file,
 
 void VertTirpNode::print_tree_dfs(const shared_ptr<Node> &node, unsigned int min_len, ostream &stream,
                                   const map<string, unsigned int> &events_per_sequence) {
-    //TODO comentaris
 
     if ( node->pat_len >= min_len ){
         stream<<node->patt<<endl;
@@ -54,7 +49,7 @@ void VertTirpNode::print_tree_dfs(const shared_ptr<Node> &node, unsigned int min
             string rel = relPair.first;
             shared_ptr<TIRPstatistics> tirp_stat = relPair.second;
             stream<< rel
-                  << " # ver: " << node->sidlist.get_ver_support(tirp_stat )   //TODO potser les funcions de support han de ser doubles
+                  << " # ver: " << node->sidlist.get_ver_support(tirp_stat )
                   << " # hor: " << node->sidlist.get_mean_hor_support(events_per_sequence,tirp_stat)
                   << " # duration: " << tirp_stat->get_mean_of_means_duration()
                   << endl;
@@ -87,7 +82,7 @@ void VertTirpNode::print_tree_bfs(const shared_ptr<Node> &root, unsigned int min
                 stream << node->patt
                        << utils_unifyChars(rel)
                        << " # ver: "
-                       << node->sidlist.get_ver_support(tirp_stat )   //TODO potser les funcions de support han de ser doubles
+                       << node->sidlist.get_ver_support(tirp_stat )
                        << " # hor: " << node->sidlist.get_mean_hor_support(events_per_sequence,tirp_stat)
                        << " # duration: " << tirp_stat->get_mean_of_means_duration()
                        << endl;

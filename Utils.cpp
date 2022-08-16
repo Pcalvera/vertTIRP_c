@@ -59,7 +59,7 @@ void read_csv(string &filename,string &seq_h,string &start_h, string &end_h, vec
                 while (getline(str2, word, ';'))
                     row.push_back(word);
                 if ( row.size() != i )
-                    throw(""); //TODO
+                    throw("File read invalid line");
                 Csv_line cl;
                 cl.start_time = row[start_index];
                 cl.end_time = row[end_index];
@@ -100,7 +100,7 @@ void ti_to_list(const vector<Csv_line> &df, string &date_column_name_start, stri
             if (ti == nullptr) {
                 int jdfksljfd;
             }
-            current_node = new Ti_node(ti); //TODO hauria de ser new?
+            current_node = new Ti_node(ti);
             //list_of_ti.push_back(ti);
             if (list_of_ti.getSize() == 21 ||
                 ti->get_sym() == "Passive_Arm_N" && ti->get_start() == 3582 && ti->get_end() == 3633)

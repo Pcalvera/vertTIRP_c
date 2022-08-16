@@ -35,7 +35,7 @@ void VertTirpSidList::append_item(TI *ti, string sid, unsigned eid) {
 
     auto doid_it2 = doid_it->second.find(eid);
     if ( doid_it2 == doid_it->second.end() )
-        doid_it->second.insert(pair<unsigned,vector<shared_ptr<TIRP>>>(eid,vector<shared_ptr<TIRP>>(1, make_shared<TIRP>(new_tirp)))); //TODO crear nou objecte?
+        doid_it->second.insert(pair<unsigned,vector<shared_ptr<TIRP>>>(eid,vector<shared_ptr<TIRP>>(1, new_tirp )));
     else
         doid_it2->second.emplace_back(new_tirp);
 }
@@ -64,7 +64,7 @@ unsigned VertTirpSidList::get_seq_length() const {
     return this->seq_str.size();
 }
 
-map<string, map<unsigned, vector<shared_ptr<TIRP>>>>& VertTirpSidList::get_definitive_ones_indices_dict() {  //TODO ref
+map<string, map<unsigned, vector<shared_ptr<TIRP>>>>& VertTirpSidList::get_definitive_ones_indices_dict() {
     return this->definitive_ones_indices_dict;
 }
 
@@ -214,9 +214,9 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
 
                     auto it = this->definitive_ones_indices_dict.find(seq_id);
                     if ( it == this->definitive_ones_indices_dict.end() )
-                        it->second[f_eid] = vector<shared_ptr<TIRP>>(1,std::make_shared<TIRP>(extended_tirp.first) );  //TODO comprovar si s'ha de copiar l'objecte
+                        it->second[f_eid] = vector<shared_ptr<TIRP>>(1,extended_tirp.first );
                     else
-                        this->first_sorted_extend(seq_id, f_eid, vector<shared_ptr<TIRP>>(1,std::make_shared<TIRP>(extended_tirp.first)));  //TODO comprovar si s'ha de copiar l'objecte
+                        this->first_sorted_extend(seq_id, f_eid, vector<shared_ptr<TIRP>>(1,extended_tirp.first ));
                 }
                 else {
                     // If the new_rel does not exists in the self.definitive_discovered_tirp_dict
@@ -225,7 +225,7 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
 
                     // copy all the frequent tirps at the correspondent event ids of
                     // self.definitive_ones_indices_dict
-                    for ( const auto &sid_eidtirps : this->definitive_discovered_tirp_dict.at(new_rel)->get_sequence_events_tirps_dict()){   //TODO retornar per ref
+                    for ( const auto &sid_eidtirps : this->definitive_discovered_tirp_dict.at(new_rel)->get_sequence_events_tirps_dict()){
                         string sid = sid_eidtirps.first;
                         for ( const auto &eid_tirps : sid_eidtirps.second ){
                             unsigned eid = eid_tirps.first;
@@ -243,8 +243,8 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
                                 auto inserted = it2->second.insert(pair<unsigned, vector<shared_ptr<TIRP>>>(
                                         eid,
                                         vector<shared_ptr<TIRP>>())).first;
-                                for ( auto &copyTirp : eid_tirps.second )    //TODO comprovar que funciona
-                                    inserted->second.emplace_back(make_shared<TIRP>(copyTirp));
+                                for ( auto &copyTirp : eid_tirps.second )
+                                    inserted->second.emplace_back(copyTirp);
                             }
                             else
                                 this->first_sorted_extend(sid,eid, eid_tirps.second);
@@ -256,7 +256,6 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
         else if ( extended_tirp.second != 2 )
             all_max_gap_exceeded = false;
     }
-    //cout<<"upd: "<<count<<endl;
     if ( at_least_one_tirp )
         return 3;
     else if ( all_max_gap_exceeded )
@@ -266,7 +265,6 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
 }
 
 void VertTirpSidList::first_sorted_extend(const string &sid, unsigned eid, const vector<shared_ptr<TIRP>> &new_tirps) {
-    //TODO comentaris
     vector<shared_ptr<TIRP>> &current_tirps = this->definitive_ones_indices_dict[sid][eid];
     unsigned i = 0;
     unsigned j = new_tirps.size();

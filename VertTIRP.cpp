@@ -47,7 +47,7 @@ int VertTIRP::mine_patterns(vector<LinkedList> &list_of_ti_seqs, vector<string> 
         vector<string> seq_str_strings = this->vertical_db[i].get_seq_str();
         string seq_str_string = utils_unifyStrings(seq_str_strings);
         VertTirpNode s_node = VertTirpNode(seq_str_string,1,this->vertical_db[i],this->tree);
-        this->dfs_pruning(this->vertical_db[i],this->f1,s_node,this->tree,avoid_same_var_states,0);  //TODO fer pruning
+        this->dfs_pruning(this->vertical_db[i],this->f1,s_node,this->tree,avoid_same_var_states,0);
     }
     return this->tirp_count;
 }
@@ -130,7 +130,7 @@ void VertTIRP::to_vertical(vector<LinkedList> &list_of_ti_seqs, vector<string> c
 
     // save a set of frequent 1-sized items sorted lexicographically
     vector<string> eraseKeys = vector<string>();
-    for ( auto db_pos : this->vertical_db ){
+    for ( auto &db_pos : this->vertical_db ){
         unsigned aux = db_pos.second.get_support();
         if ( db_pos.second.get_support() >= this->min_sup ){
             db_pos.second.set_n_sequences(n_sequences);
