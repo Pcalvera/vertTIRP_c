@@ -17,7 +17,7 @@ VertTirpSidList::VertTirpSidList() {
 }
 
 void VertTirpSidList::append_item(TI *ti, string sid, unsigned eid) {
-    shared_ptr<TIRP> new_tirp =  make_shared<TIRP>(vector<TI*>(1,ti), ti->get_start(), ti->get_end() );  //TODO inicialitzar amb 1?
+    shared_ptr<TIRP> new_tirp =  make_shared<TIRP>(vector<TI*>(1,ti), ti->get_start(), ti->get_end() );
     if ( ti->get_sym()=="Passive_Arm_N" && sid == "ASL_2008_05_29b6"){
         int dffs = 3;
     }

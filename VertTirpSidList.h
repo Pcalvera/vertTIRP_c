@@ -30,7 +30,7 @@ public:
     unsigned get_seq_length()const;
     map<string,map<unsigned,vector<shared_ptr<TIRP>>>>& get_definitive_ones_indices_dict();
     map<string,shared_ptr<TIRPstatistics>>& get_definitive_discovered_tirp_dict();
-    VertTirpSidList join(VertTirpSidList &f, Allen &ps, eps_type eps, time_type min_gap = 0, time_type max_gap = MAXGAP, time_type max_duration = MAXDURATION, support_type min_ver_sup = 0, float min_confidence = 0.9);  //TODO min_confidence es int pero li dona valor 0.9
+    VertTirpSidList join(VertTirpSidList &f, Allen &ps, eps_type eps, time_type min_gap = 0, time_type max_gap = MAXGAP, time_type max_duration = MAXDURATION, support_type min_ver_sup = 0, float min_confidence = 0.9);
     unsigned update_tirp_attrs(const string &seq_id, unsigned f_eid, VertTirpSidList &f_sidlist, bool mine_last_equal, Allen &ps, const vector<shared_ptr<TIRP>> &tirps_to_extend, eps_type eps, time_type  min_gap, time_type  max_gap, time_type max_duration, support_type min_ver_sup, const map<string,shared_ptr<TIRPstatistics>>  &father_discovered_tirp_dict, float min_confidence,double &temps);
     void first_sorted_extend(const string &sid, unsigned eid, const vector<shared_ptr<TIRP>> &new_tirps);
 
