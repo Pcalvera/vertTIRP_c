@@ -1,9 +1,5 @@
-//
-
 #include "TI.h"
 
-//
-// Created by pauca on 31/03/2022.
 TI::TI() {
     this->sym = "null";
     this->start = 0;
@@ -30,19 +26,7 @@ bool TI::operator==(const TI &rhs) const {
 bool TI::operator!=(const TI &rhs) const {
     return !(rhs == *this);
 }
-/*
-bool TI::operator<(const TI &rhs) const {
-    if (start < rhs.start)
-        return true;
-    if ( start == rhs.start) {
-        if (end < rhs.end)
-            return true;
-        if (end == rhs.end)
-            return sym < rhs.sym;
-    }
-    return false;
-}
-*/
+
 bool TI::operator<(const TI &rhs) const {
     if (this->start < rhs.start)
         return true;
@@ -61,20 +45,6 @@ bool TI::operator<(const TI &rhs) const {
             return false;
     }
 }
-/*
-
-bool TI::operator>(const TI &rhs) const {
-    return rhs < *this;
-}
-
-bool TI::operator<=(const TI &rhs) const {
-    return !(rhs < *this);
-}
-
-bool TI::operator>=(const TI &rhs) const {
-    return !(*this < rhs);
-}
-*/
 time_type TI::get_start()const {
     return this->start;
 }

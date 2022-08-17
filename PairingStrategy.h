@@ -27,19 +27,10 @@ public:
     void add(char c);
     void add2(char c);
     bool empty()const;
-    vector<Node> &operator[](int i);
     vector<vector<Node>> & get_ps();
-    //Node * appendSub(Node * n, char c);
-    //void appendSubLast(char c);
-    //void appendSub2Last(char c);
-    //bool isEmpty() const;
 
 private:
-    // inv: arrel és un punter a una jerarquia disjunta de nodes (o és NULL)
     vector<vector<Node>> ps; // representació de l’arbre
-
-    //bool isEmpty(Node * n) const;
 };
-//TODO arreglar la classe
 
 #endif //VERTTIRP_C_PAIRINGSTRATEGY_H

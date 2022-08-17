@@ -1,5 +1,3 @@
-//
-
 #include "PairingStrategy.h"
 
 
@@ -7,8 +5,6 @@ PairingStrategy::PairingStrategy() {
     this->ps = vector<vector<Node>>();
 }
 
-//
-// Created by pauca on 10/04/2022.
 PairingStrategy::PairingStrategy(const PairingStrategy &o) {
     this->ps = o.ps;
 }
@@ -20,11 +16,11 @@ void PairingStrategy::append(char c) {
 
 void PairingStrategy::append2(char c) {
     if ( this->ps.empty() ) throw("\"PairingStrategy->ps\" is empty");
-    vector<Node> back = this->ps.back();
+    vector<Node> &back = this->ps.back();
     if ( back.empty() ) throw("Empty list");
-    Node back2 = back.back();
+    Node &back2 = back.back();
     if ( !back2.dif ) throw("Empty list");
-    this->ps.back().back().l.push_back(c);
+    back2.l.push_back(c);
 }
 
 void PairingStrategy::appendAdd(char c) {
@@ -42,10 +38,6 @@ void PairingStrategy::add2(char c) {
 
 bool PairingStrategy::empty() const {
     return ps.empty();
-}
-
-vector<Node> &PairingStrategy::operator[](int i) { //TODO
-    return ps[i];
 }
 
 vector<vector<Node>> &PairingStrategy::get_ps() {
