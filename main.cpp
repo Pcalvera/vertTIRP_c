@@ -1,7 +1,5 @@
 #include <iostream>
-#include <ctime>
 #include "VertTIRP.h"
-#include "TI.h"
 #include "Global.h"
 #include "PairingStrategy.h"
 /*
