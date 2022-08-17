@@ -8,7 +8,6 @@
 #include <memory>
 #include "PairingStrategy.h"
 #include "Allen_relationsEPS.h"
-#include "Chrono.h"
 
 using namespace std;
 

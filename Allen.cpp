@@ -1,7 +1,4 @@
-//
-
 #include "Allen.h"
-
 #include <utility>
 
 Allen::Allen() {
@@ -72,8 +69,6 @@ Relation& Allen::get_possible_rels(char a, char b) {
 
 int*
 Allen::calc_rel(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap, shared_ptr<PairingStrategy> rels_arr, shared_ptr<vector<std::string>> gr_arr)const {
-    //TODO molt temps en aquesta funció
-
     // if b is less than a
     if ( b->get_start() < a->get_start() || ( b->get_start()==a->get_start() && b->get_end()<a->get_end() ) )
         return rel_11;

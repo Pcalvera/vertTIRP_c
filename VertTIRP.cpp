@@ -81,7 +81,6 @@ void VertTIRP::dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, Ve
         for ( const auto &it : s_temp)
             s_syms.push_back( it.first );
 
-
         for ( auto &it : s_temp ){
             vector<string> seq_str_strings = it.second.get_seq_str();
             string seq_str_string = utils_unifyStrings(seq_str_strings);

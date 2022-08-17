@@ -5,7 +5,7 @@
 #include "VertTirpNode.h"
 
 VertTirpNode::VertTirpNode() {
-    this->node = shared_ptr<Node>(new Node);
+    this->node = make_shared<Node>();
     this->node->patt = EMPTY;
     this->node->pat_len = 0;
     this->node->is_root = true;
@@ -103,5 +103,3 @@ void VertTirpNode::print_tree_bfs(const shared_ptr<Node> &root, unsigned int min
         }
     }
 }
-
-

@@ -1,25 +1,14 @@
-//
-// Created by pauca on 31/05/2022.
-//
-
 #ifndef VERTTIRP_C_GLOBAL_CPP
 #define VERTTIRP_C_GLOBAL_CPP
 #include <iostream>
 #include <memory>
 #include "Relation.h"
+#include "Chrono.h"
 
-/*
-#if TIME_MODE_NUMBER == TRUE
-//typedef long long time_type;
-#else
-//typedef long long time_type;
-#endif
-*/
 typedef double time_type;
 typedef double dif_time_type;
 typedef float support_type;
 typedef float eps_type;
-
 
 using namespace std;
 
@@ -30,5 +19,5 @@ const unsigned UNITS_NUMBER[6] = {1,60,60 * 60,60 * 60 * 24, 60 * 60 * 24 * 7, 6
 const string UNITS_STRING[6] = {"seconds", "minutes", "hours", "days", "weeks", "years"};
 const shared_ptr<vector<string>> grArr_nullPtr = nullptr;
 const shared_ptr<PairingStrategy> relsArr_nullPtr = nullptr;
-
+//extern Chrono timeChrono;
 #endif //VERTTIRP_C_GLOBAL_CPP

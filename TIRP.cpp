@@ -58,7 +58,7 @@ vector<TI*>&  TIRP::get_ti() {
 
 pair<shared_ptr<TIRP>, unsigned>
 TIRP::extend_with(TI* s_ti, eps_type eps, time_type min_gap, time_type max_gap, time_type max_duration,
-                  bool mine_last_equal, Allen &allen, Chrono &chrono) const {
+                  bool mine_last_equal, Allen &allen) const {
     // calc and assign the last relation
     int* rel = allen.calc_rel(this->ti.back(), s_ti, eps, min_gap,max_gap, shared_ptr<PairingStrategy>(nullptr), shared_ptr<vector<string>>(nullptr));
     // the s-extension case

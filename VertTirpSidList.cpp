@@ -1,10 +1,4 @@
-//
-// Created by pauca on 10/04/2022.
-//
-
 #include "VertTirpSidList.h"
-
-#include <memory>
 
 VertTirpSidList::VertTirpSidList() {
     this->seq_str = vector<string>();
@@ -13,7 +7,6 @@ VertTirpSidList::VertTirpSidList() {
     this->temp_discovered_tirp_dict = map<string,shared_ptr<TIRPstatistics>>();
     this->n_sequences = 0;
     this->support = 0;
-    this->chrono = Chrono();
 }
 
 void VertTirpSidList::append_item(TI *ti, string sid, unsigned eid) {
@@ -79,12 +72,8 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type e
     new_sidlist.seq_str.push_back(f.seq_str[0]);
 
     new_sidlist.n_sequences = this->n_sequences;
-
     bool mine_last_equal = this->seq_str.back() < f.seq_str[0];
-    //vector<string> contador = vector<string>();
-    //this->chrono.start("join");
     for ( const auto& item : this->definitive_ones_indices_dict ){
-        double temps = 0;
 
         string seq_id = item.first;
         map<unsigned,vector<shared_ptr<TIRP>>> dict_pos_tirps = item.second;
@@ -140,8 +129,7 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type e
                                                                                                  max_duration,
                                                                                                  min_ver_sup,
                                                                                                  this->definitive_discovered_tirp_dict,
-                                                                                                 min_confidence, temps);
-
+                                                                                                 min_confidence);
                                         if (exit_status == 2)
                                             // max_gap exceeded for all the tirps, break and continue with another 1 of the self sequence
                                             // no sense prove out the next s event id, as max gap exceeded
@@ -155,10 +143,6 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type e
             }
         }
     }
-    //this->chrono.stop("join");
-    this->chrono.print();
-    //new_sidlist.chrono.print();
-    //cout<<"count:"<<count;
     this->temp_discovered_tirp_dict.clear();
     return new_sidlist;
 }
@@ -168,8 +152,7 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
                                             eps_type eps, time_type min_gap, time_type  max_gap,
                                             time_type max_duration, support_type min_ver_sup,
                                             const map<string,shared_ptr<TIRPstatistics>> &father_discovered_tirp_dict,
-                                            float min_confidence,
-                                            double &temps) {
+                                            float min_confidence) {
     vector<TI*> f_ti = f_sidlist.definitive_ones_indices_dict.at(seq_id).at(f_eid)[0]->get_ti();
 
     bool all_max_gap_exceeded = true;
@@ -179,7 +162,7 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
     for ( const shared_ptr<TIRP> &tirp_to_extend : tirps_to_extend ){
         // the extension will return a new tirp and a status
         // status is: if ok:3, fi max_gap:2, otherwise:1
-        pair<shared_ptr<TIRP>,unsigned> extended_tirp = tirp_to_extend->extend_with(f_ti[0],eps,min_gap,max_gap,max_duration,mine_last_equal,ps,chrono);
+        pair<shared_ptr<TIRP>,unsigned> extended_tirp = tirp_to_extend->extend_with(f_ti[0],eps,min_gap,max_gap,max_duration,mine_last_equal,ps);
 
         if ( extended_tirp.first != nullptr ){
             count++;

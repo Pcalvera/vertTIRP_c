@@ -28,7 +28,7 @@ bool timemode_number = true;
 support_type ver_sup = 0.9;  // vertical support
 support_type hor_sup = 0;  // horizontal support
 eps_type eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids crisp borders in relations
-bool dummy = false;  // whether to execute relations without a pairing strategies
+bool dummy = true;  // whether to execute relations without a pairing strategies
 bool trans = true;  // whether to use transitivity properties when assign a relation
 //string result_file_name = "my_result_file.csv";  // an output file
 //string filepath = "/mnt/d/COLE/TFG/toy.csv";  // a path to time interval data. Any valid string path is acceptable.
@@ -66,18 +66,19 @@ time_type mind = 0;  // each event interval should have a duration of at least m
 time_type maxd = 3155695200;   // each tirp should have a duration of at most min_duration seconds
 string ps = "mocfbes";
 
+Chrono timeChrono;
 int main () {
     vector<LinkedList> list_of_ti_users = vector<LinkedList>();
     vector<string> list_of_users = vector<string>();
     utils_tiRead(filepath, sep, sid_column, date_column_name_start, date_column_name_end,
                                        date_format, value_column_name, list_of_users,list_of_ti_users,timemode_number);
-    Chrono chrono = Chrono();
+
 
     VertTIRP co = VertTIRP(result_file_name,ver_sup,eps,ming,maxg,mind,maxd,dummy,ps,trans);
-    chrono.start("Compute time");
+    timeChrono.start("Compute time");
     int tirp_count = co.mine_patterns(list_of_ti_users,list_of_users,avoid_same_var_states);
-    chrono.stop("Compute time");
-    chrono.print();
+    timeChrono.stop("Compute time");
+    timeChrono.print();
     co.print_patterns(false);
     cout << "Algorithm finished" << endl;
     return 0;

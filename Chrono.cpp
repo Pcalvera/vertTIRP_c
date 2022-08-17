@@ -5,7 +5,6 @@ Chrono::Chrono(){
     taux = map<string,chrono::time_point<chrono::high_resolution_clock>>();
 }
 void Chrono::start(string name){
-    //auto dsfjs = chrono::high_resolution_clock::now();
     taux[name] = chrono::high_resolution_clock::now();
 }
 void Chrono::stop(string name){
