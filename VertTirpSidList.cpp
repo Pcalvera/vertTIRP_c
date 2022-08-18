@@ -73,7 +73,7 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type e
 
     new_sidlist.n_sequences = this->n_sequences;
     bool mine_last_equal = this->seq_str.back() < f.seq_str[0];
-    for ( const auto& item : this->definitive_ones_indices_dict ){
+    for ( auto& item : this->definitive_ones_indices_dict ){
 
         string seq_id = item.first;
         map<unsigned,vector<shared_ptr<TIRP>>> dict_pos_tirps = item.second;
@@ -86,21 +86,21 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type e
 
             time_type last_f_first = f_at_seq_id->second.at(f_eids.back())[0]->get_first();
             time_type first_f_first = f_at_seq_id->second.at(f_eids.front())[0]->get_first();
-            for (const auto &item2: dict_pos_tirps) {
+            for (auto &item2: dict_pos_tirps) {
 
                 unsigned self_first_eid = item2.first;
-                vector<shared_ptr<TIRP>> self_tirps = item2.second;
+                vector<shared_ptr<TIRP>> &self_tirps = item2.second;
                 // if there exists eids in f greater than my first eid
                 if (self_first_eid < f_eids.back()) {
 
                     // first tirp
-                    TIRP first_one_me = self_tirps.front();
+                    shared_ptr<TIRP> &first_one_me = self_tirps.front();
                     // first tirp's start time
-                    time_type me_first = first_one_me.get_first();
+                    time_type me_first = first_one_me->get_first();
 
                     // determine from which point in time start to search
                     if ( min_gap > 0 )
-                        me_first = first_one_me.get_first() + min_gap;
+                        me_first = first_one_me->get_first() + min_gap;
 
 
                     // if last element of f, sidlist matchs the min gap restriction
@@ -114,22 +114,22 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type e
                             me_second_init = true;
                         }
                         if ( max_gap == MAXGAP || ( me_second_init && first_f_first <= me_second ) ){
-                            for ( const auto &item3 : f.definitive_ones_indices_dict.at(seq_id) ){
+                            for ( auto &item3 : f.definitive_ones_indices_dict.at(seq_id) ){
                                 unsigned f_pos = item3.first;
-                                vector<shared_ptr<TIRP>> f_tirps = item3.second;
+                                vector<shared_ptr<TIRP>> &f_tirps = item3.second;
 
                                 if ( me_second_init && f_tirps[0]->get_first() > me_second )
-                                     break;
+                                    break;
                                 else{
                                     if ( f_pos > self_first_eid ) {
                                         unsigned exit_status = new_sidlist.update_tirp_attrs(seq_id, f_pos, f,
-                                                                                                 mine_last_equal, ps,
-                                                                                                 self_tirps, eps,
-                                                                                                 min_gap, max_gap,
-                                                                                                 max_duration,
-                                                                                                 min_ver_sup,
-                                                                                                 this->definitive_discovered_tirp_dict,
-                                                                                                 min_confidence);
+                                                                                             mine_last_equal, ps,
+                                                                                             self_tirps, eps,
+                                                                                             min_gap, max_gap,
+                                                                                             max_duration,
+                                                                                             min_ver_sup,
+                                                                                             this->definitive_discovered_tirp_dict,
+                                                                                             min_confidence);
                                         if (exit_status == 2)
                                             // max_gap exceeded for all the tirps, break and continue with another 1 of the self sequence
                                             // no sense prove out the next s event id, as max gap exceeded
@@ -158,31 +158,28 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
     bool all_max_gap_exceeded = true;
     bool at_least_one_tirp = false;
 
-    int to_extend_size = tirps_to_extend.size();
-    if ( to_extend_size> omp_get_max_threads())
-        omp_set_num_threads(omp_get_max_threads());
-    else
-        omp_set_num_threads(to_extend_size);
+    //int to_extend_size = tirps_to_extend.size();
+    //if ( to_extend_size> omp_get_max_threads())
+    //    omp_set_num_threads(omp_get_max_threads());
+    //else
+    //    omp_set_num_threads(to_extend_size);
 
-    vector<pair<shared_ptr<TIRP>,unsigned>> extended_tirps = vector<pair<shared_ptr<TIRP>,unsigned>>();
-    extended_tirps.reserve(tirps_to_extend.size());
-    int emp_index;
+    vector<pair<shared_ptr<TIRP>,unsigned>> extended_tirps = vector<pair<shared_ptr<TIRP>,unsigned>>(tirps_to_extend.size());
+    int index;
     int tirps_to_extend_size = tirps_to_extend.size();
 
-    //#pragma omp parallel default(none) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size) private(emp_index) {
-    //    emp_index = omp_get_thread_num();
-    //    while ( emp_index < tirps_to_extend_size ){
-    //        pair<shared_ptr<TIRP>,unsigned> extended_tirp = tirps_to_extend[emp_index]->extend_with(f_ti[0],eps,min_gap,max_gap,max_duration,mine_last_equal,ps);
-    //        #pragma omp critical
-    //        extended_tirps[emp_index] = extended_tirp;
-    //        emp_index += omp_get_thread_num();
-    //    }
-    //}
 
-    for ( auto &extended_tirp : extended_tirps ){
+    #pragma omp parallel for private(index) schedule(dynamic) order(concurrent)
+    for (index = 0; index < tirps_to_extend_size; index++) {
+        extended_tirps[index] = tirps_to_extend[index]->extend_with(f_ti[0], eps, min_gap, max_gap, max_duration,
+                                                                    mine_last_equal, ps);
+    }
+
+    for ( index = 0 ; index < tirps_to_extend_size ; index++ ){
         // the extension will return a new tirp and a status
         // status is: if ok:3, fi max_gap:2, otherwise:1
         //pair<shared_ptr<TIRP>,unsigned> extended_tirp = tirp_to_extend->extend_with(f_ti[0],eps,min_gap,max_gap,max_duration,mine_last_equal,ps);
+        auto &extended_tirp = extended_tirps[index];
 
         if ( extended_tirp.first != nullptr ){
             at_least_one_tirp = true;
@@ -198,6 +195,7 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
             bool conf_constraint = true;
             if ( min_confidence != -1 ){
                 support_type father_supp;
+                auto &tirp_to_extend = tirps_to_extend[index];
                 if ( tirp_to_extend->get_rel_as_str() == EMPTY )
                     father_supp = father_discovered_tirp_dict.at(EMPTY)->get_sum_ver_supp();
                 else
