@@ -5,6 +5,7 @@
 #ifndef VERTTIRP_C_VERTTIRPSIDLIST_H
 #define VERTTIRP_C_VERTTIRPSIDLIST_H
 #include <iostream>
+#include <omp.h>
 #include "Chrono.h"
 #include "Global.h"
 #include "TI.h"
@@ -12,7 +13,7 @@
 #include "TIRPstatistics.h"
 #include "map"
 #include "vector"
-#include "list"
+#include "stack"
 
 using namespace std;
 

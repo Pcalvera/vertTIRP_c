@@ -158,14 +158,33 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
     bool all_max_gap_exceeded = true;
     bool at_least_one_tirp = false;
 
-    int count = 0;
-    for ( const shared_ptr<TIRP> &tirp_to_extend : tirps_to_extend ){
+    int to_extend_size = tirps_to_extend.size();
+    if ( to_extend_size> omp_get_max_threads())
+        omp_set_num_threads(omp_get_max_threads());
+    else
+        omp_set_num_threads(to_extend_size);
+
+    vector<pair<shared_ptr<TIRP>,unsigned>> extended_tirps = vector<pair<shared_ptr<TIRP>,unsigned>>();
+    extended_tirps.reserve(tirps_to_extend.size());
+    int emp_index;
+    int tirps_to_extend_size = tirps_to_extend.size();
+
+    //#pragma omp parallel default(none) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size) private(emp_index) {
+    //    emp_index = omp_get_thread_num();
+    //    while ( emp_index < tirps_to_extend_size ){
+    //        pair<shared_ptr<TIRP>,unsigned> extended_tirp = tirps_to_extend[emp_index]->extend_with(f_ti[0],eps,min_gap,max_gap,max_duration,mine_last_equal,ps);
+    //        #pragma omp critical
+    //        extended_tirps[emp_index] = extended_tirp;
+    //        emp_index += omp_get_thread_num();
+    //    }
+    //}
+
+    for ( auto &extended_tirp : extended_tirps ){
         // the extension will return a new tirp and a status
         // status is: if ok:3, fi max_gap:2, otherwise:1
-        pair<shared_ptr<TIRP>,unsigned> extended_tirp = tirp_to_extend->extend_with(f_ti[0],eps,min_gap,max_gap,max_duration,mine_last_equal,ps);
+        //pair<shared_ptr<TIRP>,unsigned> extended_tirp = tirp_to_extend->extend_with(f_ti[0],eps,min_gap,max_gap,max_duration,mine_last_equal,ps);
 
         if ( extended_tirp.first != nullptr ){
-            count++;
             at_least_one_tirp = true;
 
             string new_rel = extended_tirp.first->get_rel_as_str();
