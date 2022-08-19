@@ -169,27 +169,29 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
     int tirps_to_extend_size = tirps_to_extend.size();
 
 
-    #pragma omp parallel for private(index) schedule(dynamic) order(concurrent)
+    #pragma omp parallel for default(none) private(index) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size,f_ti,eps,min_gap,max_gap,max_duration,mine_last_equal,ps,at_least_one_tirp,seq_id,f_eid,min_confidence,EMPTY,father_discovered_tirp_dict,min_ver_sup,all_max_gap_exceeded) num_threads(4) schedule(dynamic)
     for (index = 0; index < tirps_to_extend_size; index++) {
-        extended_tirps[index] = tirps_to_extend[index]->extend_with(f_ti[0], eps, min_gap, max_gap, max_duration,
-                                                                    mine_last_equal, ps);
-    }
-
-    for ( index = 0 ; index < tirps_to_extend_size ; index++ ){
         // the extension will return a new tirp and a status
         // status is: if ok:3, fi max_gap:2, otherwise:1
-        //pair<shared_ptr<TIRP>,unsigned> extended_tirp = tirp_to_extend->extend_with(f_ti[0],eps,min_gap,max_gap,max_duration,mine_last_equal,ps);
-        auto &extended_tirp = extended_tirps[index];
+        auto extended_tirp = tirps_to_extend[index]->extend_with(f_ti[0], eps, min_gap, max_gap, max_duration,
+                                                                    mine_last_equal, ps);
+
 
         if ( extended_tirp.first != nullptr ){
+            #pragma omp critical
             at_least_one_tirp = true;
 
             string new_rel = extended_tirp.first->get_rel_as_str();
             // append it to a temporal discovered
             auto temp_it = this->temp_discovered_tirp_dict.find(new_rel);
-            if ( temp_it == this->temp_discovered_tirp_dict.end() )
-                temp_it = this->temp_discovered_tirp_dict.insert(make_pair(new_rel,std::make_shared<TIRPstatistics>())).first;
-            unsigned vert_supp = temp_it->second->append_tirp( seq_id,f_eid,extended_tirp.first );
+            if ( temp_it == this->temp_discovered_tirp_dict.end() ) {
+
+                temp_it = this->temp_discovered_tirp_dict.insert(
+                        make_pair(new_rel, std::make_shared<TIRPstatistics>())).first;
+            }
+            unsigned vert_supp;
+            #pragma omp critical
+            vert_supp = temp_it->second->append_tirp(seq_id, f_eid, extended_tirp.first);
 
             // confidence calculation
             bool conf_constraint = true;
@@ -208,19 +210,23 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
                 if ( new_rel_in_definitive_disc_tirp_dict != this->definitive_discovered_tirp_dict.end() ){
                     // if the new_rel exists in the this->definitive_discovered_tirp_dict
                     new_rel_in_definitive_disc_tirp_dict->second = this->temp_discovered_tirp_dict.at(new_rel);
-                    // update this->definitive_ones_indices_dict with a new_tirp
-                    auto &it = this->definitive_ones_indices_dict[seq_id];
-                    //this->definitive_ones_indices_dict[seq_id][f_eid];
+                    #pragma omp critical
+                    {
+                        // update this->definitive_ones_indices_dict with a new_tirp
+                        auto &it = this->definitive_ones_indices_dict[seq_id];
+                        //this->definitive_ones_indices_dict[seq_id][f_eid];
 
-                    auto itt = it.find(f_eid);
-                    if ( itt == it.end() )
-                        it[f_eid] = vector<shared_ptr<TIRP>>(1,extended_tirp.first );
-                    else
-                        this->first_sorted_extend(seq_id, f_eid, vector<shared_ptr<TIRP>>(1,extended_tirp.first ));
+                        auto itt = it.find(f_eid);
+                        if (itt == it.end())
+                            it[f_eid] = vector<shared_ptr<TIRP>>(1, extended_tirp.first);
+                        else
+                            this->first_sorted_extend(seq_id, f_eid, vector<shared_ptr<TIRP>>(1, extended_tirp.first));
+                    };
                 }
                 else {
                     // If the new_rel does not exists in the self.definitive_discovered_tirp_dict
                     // what means that the new_rel just became frequent
+                    #pragma omp critical
                     this->definitive_discovered_tirp_dict[new_rel] = this->temp_discovered_tirp_dict.at(new_rel);
 
                     // copy all the frequent tirps at the correspondent event ids of
@@ -232,6 +238,7 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
                             auto it2 = this->definitive_ones_indices_dict.find(sid);
                             if ( it2 == this->definitive_ones_indices_dict.end() ){
                                 this->support++;
+                                #pragma omp critical
                                 it2 = this->definitive_ones_indices_dict.insert(pair<string,map<unsigned,vector<shared_ptr<TIRP>>>>(
                                         sid,
                                         map<unsigned,vector<shared_ptr<TIRP>>>()
@@ -240,20 +247,26 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
 
                             auto it3 = it2->second.find(eid);
                             if ( it3 == it2->second.end() ) {
-                                auto inserted = it2->second.insert(pair<unsigned, vector<shared_ptr<TIRP>>>(
-                                        eid,
-                                        vector<shared_ptr<TIRP>>())).first;
-                                for ( auto &copyTirp : eid_tirps.second )
-                                    inserted->second.emplace_back(copyTirp);
+                                #pragma omp critical
+                                {
+                                    auto inserted = it2->second.insert(pair<unsigned, vector<shared_ptr<TIRP>>>(
+                                            eid,
+                                            vector<shared_ptr<TIRP>>())).first;
+                                    for (auto &copyTirp: eid_tirps.second)
+                                        inserted->second.emplace_back(copyTirp);
+                                }
                             }
-                            else
-                                this->first_sorted_extend(sid,eid, eid_tirps.second);
+                            else {
+                                #pragma omp critical
+                                this->first_sorted_extend(sid, eid, eid_tirps.second);
+                            }
                         }
                     }
                 }
             }
         }
         else if ( extended_tirp.second != 2 )
+            #pragma omp critical
             all_max_gap_exceeded = false;
     }
     if ( at_least_one_tirp )
