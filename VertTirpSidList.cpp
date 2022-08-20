@@ -169,7 +169,7 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
     int tirps_to_extend_size = tirps_to_extend.size();
 
 
-    #pragma omp parallel for default(none) private(index) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size,f_ti,eps,min_gap,max_gap,max_duration,mine_last_equal,ps,at_least_one_tirp,seq_id,f_eid,min_confidence,EMPTY,father_discovered_tirp_dict,min_ver_sup,all_max_gap_exceeded) num_threads(4) schedule(dynamic)
+    #pragma omp parallel for default(none) private(index) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size,f_ti,eps,min_gap,max_gap,max_duration,mine_last_equal,ps,at_least_one_tirp,seq_id,f_eid,min_confidence,EMPTY,father_discovered_tirp_dict,min_ver_sup,all_max_gap_exceeded) num_threads(2) schedule(dynamic)
     for (index = 0; index < tirps_to_extend_size; index++) {
         // the extension will return a new tirp and a status
         // status is: if ok:3, fi max_gap:2, otherwise:1
