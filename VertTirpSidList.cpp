@@ -153,7 +153,7 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
                                             time_type max_duration, support_type min_ver_sup,
                                             const map<string,shared_ptr<TIRPstatistics>> &father_discovered_tirp_dict,
                                             float min_confidence) {
-    vector<TI*> f_ti = f_sidlist.definitive_ones_indices_dict.at(seq_id).at(f_eid)[0]->get_ti();
+    TI** f_ti = f_sidlist.definitive_ones_indices_dict.at(seq_id).at(f_eid)[0]->get_ti();
 
     bool all_max_gap_exceeded = true;
     bool at_least_one_tirp = false;
@@ -164,14 +164,15 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
     //else
     //    omp_set_num_threads(to_extend_size);
 
-    vector<pair<shared_ptr<TIRP>,unsigned>> extended_tirps = vector<pair<shared_ptr<TIRP>,unsigned>>(tirps_to_extend.size());
+    //vector<pair<shared_ptr<TIRP>,unsigned>> extended_tirps = vector<pair<shared_ptr<TIRP>,unsigned>>(tirps_to_extend.size());
     int index;
     int tirps_to_extend_size = tirps_to_extend.size();
+    pair<shared_ptr<TIRP>,unsigned> extended_tirps[tirps_to_extend_size];
+    TI *f_ti_0 = f_ti[0];
 
-
-    #pragma omp parallel for default(none) private(index) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size,f_ti,eps,min_gap,max_gap,max_duration,mine_last_equal,ps) num_threads(8) schedule(dynamic)
+    #pragma omp parallel for default(none) private(index) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size,f_ti_0,eps,min_gap,max_gap,max_duration,mine_last_equal,ps) num_threads(6) schedule(dynamic)
     for ( index = 0 ; index < tirps_to_extend_size ; index++)
-        extended_tirps[index] = tirps_to_extend[index]->extend_with(f_ti[0],eps,min_gap,max_gap,max_duration,mine_last_equal,ps);
+        extended_tirps[index] = tirps_to_extend[index]->extend_with(f_ti_0,eps,min_gap,max_gap,max_duration,mine_last_equal,ps);
 
     for ( index = 0; index<tirps_to_extend_size ; index++ ){
         // the extension will return a new tirp and a status

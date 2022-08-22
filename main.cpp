@@ -24,7 +24,7 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 
 
 bool timemode_number = true;
-support_type ver_sup = 0.4;  // vertical support
+support_type ver_sup = 0.9;  // vertical support
 support_type hor_sup = 0;  // horizontal support
 eps_type eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids crisp borders in relations
 bool dummy = true;  // whether to execute relations without a pairing strategies
