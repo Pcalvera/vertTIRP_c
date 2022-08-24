@@ -72,11 +72,9 @@ void read_csv(string &filename,string &seq_h,string &start_h, string &end_h, vec
     } else
         throw("Could not open the file\n");
 }
-void ti_to_list(const vector<Csv_line> &df, string &date_column_name_start, string &date_column_name_end, vector<string> &val_column_names,bool timemode_number, LinkedList &list_of_ti){
-    //vector<TI> list_of_ti = vector<TI>();
+void ti_to_list(const vector<Csv_line> &df, string &date_column_name_start, string &date_column_name_end, vector<string> &val_column_names,int timemode, LinkedList &list_of_ti){
     if ( df.size() < 2 )
         return;
-        //return list_of_ti;
 
     time_type startTime;
     time_type endTime;
@@ -87,51 +85,43 @@ void ti_to_list(const vector<Csv_line> &df, string &date_column_name_start, stri
         string attr_name = val_column_names[i] + "_";
         last_node = nullptr;
         for ( const Csv_line &line : df ) {
-            if (timemode_number) {
-                startTime = stoll(line.start_time); //*0.000000001
-                endTime = stoll(line.end_time); //*0.000000001
-            } else { //timestramp
+            if (timemode == 1) {  //timestramp
                 tm start = utils_splitDate(line.start_time);
                 tm finish = utils_splitDate(line.end_time);
                 startTime = mktime(&start);
                 endTime = mktime(&finish);
             }
-            TI *ti = new TI(attr_name + line.values[i], startTime, endTime);
-            if (ti == nullptr) {
-                int jdfksljfd;
+            else if (timemode == 2) {
+                startTime = stoll(line.start_time)*0.000000001;
+                endTime = stoll(line.end_time)*0.000000001;
             }
+            else if ( timemode == 3){
+                startTime = stoll(line.start_time);
+                endTime = stoll(line.end_time);
+            }
+            TI *ti = new TI(attr_name + line.values[i], startTime, endTime);
             current_node = new Ti_node(ti);
-            //list_of_ti.push_back(ti);
-            if (list_of_ti.getSize() == 21 ||
-                ti->get_sym() == "Passive_Arm_N" && ti->get_start() == 3582 && ti->get_end() == 3633)
-                int djskflfj = 3;
-            //cout<<list_of_ti.getSize()<<": "<<((last_node != nullptr)? last_node->ti.get_sym() : "null") <<endl;
             list_of_ti.sortedInsert(current_node, last_node);
             last_node = current_node;
         }
     }
-    //std::sort(list_of_ti.begin(), list_of_ti.end());
 }
 void utils_tiRead(string &filepath, char sep, string &seqid_column, string &date_column_name_start,
-                    string &date_column_name_end, string &date_format, vector<string> &val_column_names, vector<string> &ret_list_of_sequences,vector<LinkedList> &ret_list_of_ti_sequences, bool timemode_number) {
+                    string &date_column_name_end, string &date_format, vector<string> &val_column_names, vector<string> &ret_list_of_sequences,vector<LinkedList> &ret_list_of_ti_sequences, int timemode) {
     map<string,vector<Csv_line>> df = map<string,vector<Csv_line>>();
     read_csv(filepath,seqid_column,date_column_name_start,date_column_name_end,val_column_names,df);
     ret_list_of_sequences.reserve(df.size()+1);
     ret_list_of_ti_sequences.reserve(df.size()+1);
     LinkedList ti;
     for ( auto const &item : df ){
-        if ("ASL_2011_07_22_Brady9" == item.first){
-            int jdskflfjd = 3;
-        }
         ti = LinkedList();
         ti_to_list(item.second, date_column_name_start, date_column_name_end, val_column_names,
-                        timemode_number,ti);
+                   timemode,ti);
         if (!ti.empty()) {
             ret_list_of_sequences.push_back(item.first);
             ret_list_of_ti_sequences.emplace_back(ti);
         }
     }
-    //return make_pair(ret_list_of_sequences,ret_list_of_ti_sequences);
 }
 
 tm utils_splitDate(const string &s) {
@@ -182,12 +172,9 @@ string utils_unifyChars (string &seq_chars ){
     }) + "']";
 }
 
-template<typename T, typename V>
-vector<T> utils_getKeys(map<T, V> m) {
-    vector<T> res =  vector<T>();
-    for ( const auto &it : m)
-        res.push_back( it.first );
-    return res;
+dif_time_type truncate(dif_time_type t) {
+    if ( t < 1e-6) return 0;
+    return t;
 }
 
 LinkedList::LinkedList() {
@@ -213,19 +200,9 @@ int LinkedList::getSize() const {
     return this->size;
 }
 
-//void LinkedList::printPointerCount() {
-//    cout<<"First: "<<first.use_count();
-//    Ti_node *p = first.get();
-//    while ( p != nullptr ){
-//        cout<<" "<<p->next.use_count();
-//        p = p->next.get();
-//    }
 LinkedList &LinkedList::operator=(const LinkedList &o) {
     if (this != &o) {
         this->free();
-        //this->size = 0;
-        //this->first = nullptr; //Bad alloc (memory leak if this is not empty)
-        //this->last = nullptr;
         this->copy(o);
     }
     return(*this);
@@ -256,16 +233,11 @@ void LinkedList::sortedInsert(Ti_node *new_node, Ti_node *last_inserted ) {
         this->last = new_node;
         new_node->next = nullptr;
         new_node->ant = nullptr;
-        //cout<<"1"<<endl;
     }
     else if ( *new_node->ti < *this->first->ti ){
-        //cout<<"count "<<new_node->next.use_count()<<endl;
         new_node->next = this->first;
         this->first->ant = new_node;
         this->first = new_node;
-        //cout<<"count "<<new_node->next.use_count()<<endl;
-        //cout<<"count "<<this->first.use_count()<<endl;
-        //cout<<"2"<<endl;
     }
     else{
         Ti_node *present;
@@ -285,7 +257,6 @@ void LinkedList::sortedInsert(Ti_node *new_node, Ti_node *last_inserted ) {
 
         present->next = new_node;
         new_node->ant = present;
-        //cout<<"3"<<endl;
     }
     this->size++;
 }
@@ -309,8 +280,6 @@ TI* LinkedList::getActual() {
 bool LinkedList::isLast() {
     return actual == nullptr;
 }
-
-//}
 
 void LinkedList::free() {
     while ( this->first != nullptr ){

@@ -21,6 +21,7 @@ public:
     TIRP(vector<TI*> ti, time_type first, time_type max_last);
     TIRP(vector<TI*> &ti, time_type first, time_type max_last, vector<char> &r);
     TIRP(TI* ti[], time_type first, time_type max_last, char r[], int ti_size, int r_size);
+    ~TIRP();
     bool operator<(const TIRP &rhs) const;
     string get_rel_as_str()const;
     time_type get_duration()const;

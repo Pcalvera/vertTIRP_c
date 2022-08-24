@@ -11,9 +11,6 @@ VertTirpSidList::VertTirpSidList() {
 
 void VertTirpSidList::append_item(TI *ti, string sid, unsigned eid) {
     shared_ptr<TIRP> new_tirp =  make_shared<TIRP>(vector<TI*>(1,ti), ti->get_start(), ti->get_end() );
-    if ( ti->get_sym()=="Passive_Arm_N" && sid == "ASL_2008_05_29b6"){
-        int dffs = 3;
-    }
 
     if ( this->definitive_discovered_tirp_dict.empty() ){
         this->definitive_discovered_tirp_dict[EMPTY] = std::make_shared<TIRPstatistics>( );
@@ -161,7 +158,7 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
     vector<pair<shared_ptr<TIRP>,unsigned>> extended_tirps = vector<pair<shared_ptr<TIRP>,unsigned>>(tirps_to_extend.size());
     int index;
     int tirps_to_extend_size = tirps_to_extend.size();
-    //pair<shared_ptr<TIRP>,unsigned> extended_tirps[tirps_to_extend_size];
+    //pair<shared_ptr<TIRP>,unsigned> extended_tirps[tirps_to_extend_size];  //TODO fer funcionar vector
     TI *f_ti_0 = f_ti[0];
 
     #pragma omp parallel for default(none) private(index) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size,f_ti_0,eps,min_gap,max_gap,max_duration,mine_last_equal,ps) num_threads(1) schedule(dynamic)

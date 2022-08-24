@@ -1,35 +1,35 @@
-#include "Allen_relationsEPS.h"
+#include "AllenRelationsEPS.h"
 
 unordered_map<char,function<int*(const TI*, const TI*, eps_type, time_type, time_type)>>
-Allen_relationsEPS::ind_func_dict = {
-        {'b', Allen_relationsEPS::before_ind},
-        {'m', Allen_relationsEPS::meets_ind},
-        {'o', Allen_relationsEPS::Allen_relationsEPS::overlaps_ind},
-        {'c', Allen_relationsEPS::contains_ind},
-        {'f', Allen_relationsEPS::finish_by_ind},
-        {'e', Allen_relationsEPS::equal_ind},
-        {'s', Allen_relationsEPS::starts_ind},
-        {'l', Allen_relationsEPS::left_contains_ind}
+AllenRelationsEPS::ind_func_dict = {
+        {'b', AllenRelationsEPS::before_ind},
+        {'m', AllenRelationsEPS::meets_ind},
+        {'o', AllenRelationsEPS::AllenRelationsEPS::overlaps_ind},
+        {'c', AllenRelationsEPS::contains_ind},
+        {'f', AllenRelationsEPS::finish_by_ind},
+        {'e', AllenRelationsEPS::equal_ind},
+        {'s', AllenRelationsEPS::starts_ind},
+        {'l', AllenRelationsEPS::left_contains_ind}
 };
 unordered_map<string,function<bool(const TI*, const TI*, eps_type, time_type, time_type)>>
-Allen_relationsEPS::cond_dict = {
-        {"sel", Allen_relationsEPS::sel_cond},
-        {"cfmo", Allen_relationsEPS::cfmo_cond},
-        {"mo", Allen_relationsEPS::mo_cond}
+AllenRelationsEPS::cond_dict = {
+        {"sel",  AllenRelationsEPS::sel_cond},
+        {"cfmo", AllenRelationsEPS::cfmo_cond},
+        {"mo",   AllenRelationsEPS::mo_cond}
 };
 unordered_map<char,function<int*(const TI*, const TI*, eps_type, time_type, time_type)>>
-Allen_relationsEPS::rel_func_dict = {
-        {'b', Allen_relationsEPS::before},
-        {'m', Allen_relationsEPS::meets},
-        {'o', Allen_relationsEPS::overlaps},
-        {'c', Allen_relationsEPS::contains},
-        {'f', Allen_relationsEPS::finish_by},
-        {'e', Allen_relationsEPS::equal},
-        {'s', Allen_relationsEPS::starts},
-        {'l', Allen_relationsEPS::left_contains}
+AllenRelationsEPS::rel_func_dict = {
+        {'b', AllenRelationsEPS::before},
+        {'m', AllenRelationsEPS::meets},
+        {'o', AllenRelationsEPS::overlaps},
+        {'c', AllenRelationsEPS::contains},
+        {'f', AllenRelationsEPS::finish_by},
+        {'e', AllenRelationsEPS::equal},
+        {'s', AllenRelationsEPS::starts},
+        {'l', AllenRelationsEPS::left_contains}
 };
 unordered_map<string,Relation>
-Allen_relationsEPS::trans_table_0 = {
+AllenRelationsEPS::trans_table_0 = {
         // before b
         {"bb", Relation("b")},
         {"bc", Relation("b")},
@@ -89,7 +89,7 @@ Allen_relationsEPS::trans_table_0 = {
 };
 //Trans table based of the vertTIRP article
 unordered_map<string,Relation>
-Allen_relationsEPS::trans_table = {
+AllenRelationsEPS::trans_table = {
         // before b
         {"bb", Relation("b")},
         {"bc", Relation("b")},
@@ -157,7 +157,7 @@ Allen_relationsEPS::trans_table = {
 };
 
 unordered_map<char,int*>
-Allen_relationsEPS::predefined_rels = {
+AllenRelationsEPS::predefined_rels = {
         { 'b',rel_b3 },
         { 'm',rel_m3 },
         { 'o',rel_o3 },
@@ -168,7 +168,7 @@ Allen_relationsEPS::predefined_rels = {
         { 'l',rel_l3 }
 };
 
-pair< shared_ptr<PairingStrategy>,shared_ptr<vector<string>> > Allen_relationsEPS::get_pairing_strategy(string str_rels){
+pair< shared_ptr<PairingStrategy>,shared_ptr<vector<string>> > AllenRelationsEPS::get_pairing_strategy(string str_rels){
     shared_ptr<PairingStrategy> rels_arr = make_shared<PairingStrategy>();
     shared_ptr<vector<string>> gr_arr = make_shared<vector<string>>();
 
@@ -266,8 +266,8 @@ pair< shared_ptr<PairingStrategy>,shared_ptr<vector<string>> > Allen_relationsEP
     return make_pair(rels_arr,gr_arr);
 }
 
-int* Allen_relationsEPS::before_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
-    dif_time_type b_s_a_e = b->get_start()-a->get_end();
+int* AllenRelationsEPS::before_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
+    dif_time_type b_s_a_e = truncate(b->get_start()-a->get_end());
     if ( b_s_a_e > eps ){
         if ( min_gap != 0 && b_s_a_e < min_gap )
             return rel_11;
@@ -279,120 +279,119 @@ int* Allen_relationsEPS::before_ind(const TI* a, const TI* b, eps_type eps, time
     else
         return rel_noneMinus2;
 }
-int* Allen_relationsEPS::meets_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
-    dif_time_type b_s_a_e = b->get_start()-a->get_end();
+int* AllenRelationsEPS::meets_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
+    dif_time_type b_s_a_e = truncate(b->get_start()-a->get_end());
     if ( abs(b_s_a_e) <= eps )
         return rel_m3;
     else
         return rel_noneMinus2;
 }
-int* Allen_relationsEPS::overlaps_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
-    dif_time_type b_s_a_e = b->get_start()-a->get_end();
+int* AllenRelationsEPS::overlaps_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
+    dif_time_type b_s_a_e = truncate(b->get_start()-a->get_end());
     if ( b_s_a_e < (-eps) )
         return rel_o3;
     else
         return rel_noneMinus2;
 }
-int* Allen_relationsEPS::contains_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
-    dif_time_type b_s_a_e = b->get_end() - a->get_end();
+int* AllenRelationsEPS::contains_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
+    dif_time_type b_s_a_e = truncate(b->get_end() - a->get_end());
     if (b_s_a_e < (-eps))
         return rel_c3;
     else
         return rel_noneMinus2;
 }
-int* Allen_relationsEPS::finish_by_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
-    dif_time_type b_s_a_e = b->get_end()-a->get_end();
+int* AllenRelationsEPS::finish_by_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
+    dif_time_type b_s_a_e = truncate(b->get_end()-a->get_end());
     if ( abs(b_s_a_e) <= eps )
         return rel_f3;
     else
         return rel_noneMinus2;
 }
-int* Allen_relationsEPS::equal_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
-    static int ret[2];
-    dif_time_type b_s_a_e = b->get_end()-a->get_end();
+int* AllenRelationsEPS::equal_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
+    dif_time_type b_s_a_e = truncate(b->get_end()-a->get_end());
     if ( abs(b_s_a_e) <= eps )
         return rel_e3;
     else
         return rel_noneMinus2;
 }
-int* Allen_relationsEPS::starts_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
-    dif_time_type b_s_a_e = b->get_end()-a->get_end();
+int* AllenRelationsEPS::starts_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
+    dif_time_type b_s_a_e = truncate(b->get_end()-a->get_end());
     if ( b_s_a_e > eps )
         return rel_s3;
     else
         return rel_noneMinus2;
 }
-int* Allen_relationsEPS::left_contains_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
-    static int ret[2];
+int* AllenRelationsEPS::left_contains_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
     if ( eps == 0 )
         return rel_none2;
-    dif_time_type b_s_a_e = b->get_end()-a->get_end();
+    dif_time_type b_s_a_e = truncate(b->get_end()-a->get_end());
     if ( b_s_a_e < (-eps) )
         return rel_l3;
     else
         return rel_noneMinus2;
 }
-bool Allen_relationsEPS::sel_cond(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
-    dif_time_type b_s_a_s = b->get_start()-a->get_start();
+bool AllenRelationsEPS::sel_cond(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
+    dif_time_type b_s_a_s = truncate(b->get_start()-a->get_start());
     return abs(b_s_a_s) <= eps;
 }
-bool Allen_relationsEPS::cfmo_cond(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
-    dif_time_type b_s_a_s = b->get_start()-a->get_start();
+bool AllenRelationsEPS::cfmo_cond(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
+    dif_time_type b_s_a_s = truncate(b->get_start()-a->get_start());
     return b_s_a_s > eps;
 }
-bool Allen_relationsEPS::mo_cond(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
-    dif_time_type b_s_a_e = b->get_end()-a->get_end();
+bool AllenRelationsEPS::mo_cond(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
+    dif_time_type b_s_a_e = truncate(b->get_end()-a->get_end());
     return b_s_a_e > eps;
 }
-bool Allen_relationsEPS::true_cond(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
+
+bool AllenRelationsEPS::true_cond(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap){
     return true;
 }
 
-int* Allen_relationsEPS::before(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
+int* AllenRelationsEPS::before(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
     return ind_func_dict.at('b')(a,b,eps,min_gap,max_gap);
 }
 
-int* Allen_relationsEPS::meets(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
-    if ( abs( b->get_start() - a->get_end()) <= eps && (b->get_start()-a->get_start()) > eps && (b->get_end() - a->get_end()) > eps )
+int* AllenRelationsEPS::meets(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
+    if ( abs( truncate(b->get_start() - a->get_end())) <= eps && truncate(b->get_start()-a->get_start()) > eps && truncate(b->get_end() - a->get_end()) > eps )
         return rel_m3;
     else
         return rel_noneMinus2;
 }
 
-int* Allen_relationsEPS::overlaps(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
-    if ( (b->get_start()-a->get_start()) > eps && (b->get_end()-a->get_end()) > eps && (a->get_end()-b->get_start()) > eps )
+int* AllenRelationsEPS::overlaps(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
+    if ( truncate(b->get_start()-a->get_start()) > eps && truncate(b->get_end()-a->get_end()) > eps && truncate(a->get_end()-b->get_start()) > eps )
         return rel_o3;
     else
         return rel_noneMinus2;
 }
 
-int* Allen_relationsEPS::contains(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
-    if ( (b->get_start() - a->get_start()) > eps && (a->get_end() - b->get_end()) > eps )
+int* AllenRelationsEPS::contains(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
+    if ( truncate(b->get_start() - a->get_start()) > eps && truncate(a->get_end() - b->get_end()) > eps )
         return rel_c3;
     else
         return rel_noneMinus2;
 }
 
-int* Allen_relationsEPS::finish_by(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
+int* AllenRelationsEPS::finish_by(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
     if ( (b->get_start() - a->get_start()) > eps && abs(b->get_end() - a->get_end()) <= eps )
         return rel_f3;
     else
         return rel_noneMinus2;}
 
-int* Allen_relationsEPS::equal(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
-    if ( ( b->get_start() - a->get_start()) <= eps && abs(b->get_end() - a->get_end()) <= eps )
+int* AllenRelationsEPS::equal(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
+    if ( truncate(b->get_start() - a->get_start()) <= eps && abs(truncate(b->get_end() - a->get_end())) <= eps )
         return rel_e3;
     else
         return rel_noneMinus2;}
 
-int* Allen_relationsEPS::starts(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
-    if ( abs(b->get_start() - a->get_start()) <= eps && (b->get_end() - a->get_end()) > eps )
+int* AllenRelationsEPS::starts(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
+    if ( abs(truncate(b->get_start() - a->get_start())) <= eps && truncate(b->get_end() - a->get_end()) > eps )
         return rel_s3;
     else
         return rel_noneMinus2;}
 
-int* Allen_relationsEPS::left_contains(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
-    if ( eps > 0 && abs(b->get_start() - a->get_start()) <= eps && (b->get_end() - a->get_end()) < (-eps) )
+int* AllenRelationsEPS::left_contains(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap) {
+    if ( eps > 0 && abs(truncate(b->get_start() - a->get_start())) <= eps && truncate(b->get_end() - a->get_end()) < (-eps) )
         return rel_l3;
     else
         return rel_noneMinus2;

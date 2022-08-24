@@ -44,6 +44,12 @@ TIRP::TIRP(TI* ti[], time_type first, time_type max_last, char r[], int ti_size,
     this->max_last = max_last;
 }
 
+TIRP::~TIRP() {
+    delete []ti;
+    if ( r_size > 0)
+        delete []r;
+}
+
 bool TIRP::operator<(const TIRP &rhs) const {
     if ( this->first < rhs.first)
         return true;
@@ -92,7 +98,7 @@ TIRP::extend_with(TI* s_ti, eps_type eps, time_type min_gap, time_type max_gap, 
     //for ( const char &c : this->r ) new_rel.emplace_back(to_string(c));
     for ( int i = 0 ; i < this->ti_size ; i++ ) new_rel[this->r_size+i] = '\0';
 
-    new_rel[r_size-1] = rel[0];
+    new_rel[new_rel_size-1] = rel[0];
 
     // copy if this->ti
     int new_ti_size = ti_size+1;
@@ -108,17 +114,14 @@ TIRP::extend_with(TI* s_ti, eps_type eps, time_type min_gap, time_type max_gap, 
         new_max_last = this->max_last;
 
     // max duration constraint
-    if ( (new_max_last-this->first) > max_duration )
+    if ( truncate(new_max_last-this->first) > max_duration )
         return make_pair(nullptr, 1);
 
-    int size_rel = this->r_size;
-    int size_sym = new_ti_size;
-
     int r_idx = 1;
-    int temp = size_sym - r_idx;
+    int temp = new_ti_size - r_idx;
     int first_pos = int(((pow(temp,2)-temp)/2)-1);
     while ( first_pos >= 0 ){
-        int second_pos = size_rel - r_idx;
+        int second_pos = new_rel_size - r_idx;
         int pos_to_assign = second_pos - 1;
         TI* existent_node = new_ti[temp-2];
         if ( allen.get_trans() ){
@@ -138,12 +141,10 @@ TIRP::extend_with(TI* s_ti, eps_type eps, time_type min_gap, time_type max_gap, 
         new_rel[pos_to_assign] = rel[0];
 
         r_idx++;
-        temp = size_sym - r_idx;
+        temp = new_ti_size - r_idx;
         first_pos = int(((pow(temp,2) - temp) / 2) - 1);
     }
-    TIRP djsflkdj = TIRP(new_ti,new_ti[0]->get_start() ,new_max_last,new_rel,new_ti_size,new_rel_size);
     return make_pair(shared_ptr<TIRP>(new TIRP(new_ti,new_ti[0]->get_start() ,new_max_last,new_rel,new_ti_size,new_rel_size)),3);
-    //return make_pair(std::make_shared<TIRP>(new_ti,new_ti[0]->get_start() ,new_max_last,new_rel,new_ti_size,new_rel_size),3);
 }
 
 time_type TIRP::get_max_last() const {

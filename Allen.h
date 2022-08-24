@@ -7,7 +7,7 @@
 #include <iostream>
 #include <memory>
 #include "PairingStrategy.h"
-#include "Allen_relationsEPS.h"
+#include "AllenRelationsEPS.h"
 
 using namespace std;
 

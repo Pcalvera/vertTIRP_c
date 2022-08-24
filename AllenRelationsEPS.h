@@ -3,15 +3,15 @@
 // Created by pauca on 04/05/2022.
 //
 
-#ifndef VERTTIRP_C_ALLEN_RELATIONSEPS_H
-#define VERTTIRP_C_ALLEN_RELATIONSEPS_H
+#ifndef VERTTIRP_C_ALLENRELATIONSEPS_H
+#define VERTTIRP_C_ALLENRELATIONSEPS_H
 #include <iostream>
 #include <cstdlib>
 #include <functional>
 #include <memory>
-#include "map"
+#include <cmath>
 #include "unordered_map"
-#include "list"
+#include "Utils.h"
 #include "Global.h"
 #include "TI.h"
 #include "PairingStrategy.h"
@@ -32,7 +32,7 @@ static int rel_l3[2] = {'l',3};
 static int rel_none2[2] = {'\0',2};
 static int rel_noneMinus2[2] = {'\0',-2};
 
-class Allen_relationsEPS {
+class AllenRelationsEPS {
 public:
 
 
@@ -54,7 +54,6 @@ public:
     private:
 
     static void update_added(map<char,bool> &added,char c, bool b);
-
     //---------------------------------------------- AUX FUNC ----------------------------------------------------------
     static int* before_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap);
     static int* meets_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap);
@@ -81,4 +80,4 @@ public:
     static int*  left_contains(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap);
     //---------------------------------------------- END DUMMY AUX FUNC ------------------------------------------------
 };
-#endif //VERTTIRP_C_ALLEN_RELATIONSEPS_H
+#endif //VERTTIRP_C_ALLENRELATIONSEPS_H
