@@ -30,8 +30,6 @@ void read_csv(string &filename,string &seq_h,string &start_h, string &end_h, vec
             line.erase(std::remove(line.begin(), line.end(), '\n' ), line.end());
             row.clear();
             stringstream str(line);
-            //if ( line.back() == '\r')
-            //    line.resize(line.size()-1);
             int i = 0;
             while (getline(str, word, ';')) {
                 if ( word == seq_h )
@@ -157,12 +155,6 @@ string utils_unifyStrings(vector<string> &seq_str_strings){
     {
         return ss.empty() ? s : ss + "', '" + s;
     }) + "']";
-}
-string utils_unifyStrings2(vector<string> &seq_str_strings){
-    return accumulate(seq_str_strings.begin(),seq_str_strings.end(),string(""),[](string &ss, string &s)
-    {
-        return ss.empty() ? s : ss + "_" + s;
-    });
 }
 string utils_unifyChars (string &seq_chars ){
     if ( seq_chars.empty() ) return "[' ']";

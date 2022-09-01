@@ -10,11 +10,11 @@
 using namespace std;
 
 struct Node {
+    Node(char c, bool i);
+
     char cont;
     vector<char> l;
-
     bool dif;  //FALSE-valor    TRUE-llista valors
-    Node(char c, bool i);
 };
 
 class PairingStrategy {
@@ -30,7 +30,7 @@ public:
     vector<vector<Node>> & get_ps();
 
 private:
-    vector<vector<Node>> ps; // representació de l’arbre
+    vector<vector<Node>> ps;
 };
 
 #endif //VERTTIRP_C_PAIRINGSTRATEGY_H

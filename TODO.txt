@@ -1,11 +1,7 @@
-Comprovar zips mateixa mida
 adaptar comentaris a c++
 Comentaris inici fitxers
-Missatges throws
-comprovar funcions constants
-millorar arbre
 reservar mida vectors
 
-analitzar millores de temps podant o no l'arbre
+
 millores de temps paralelitzant amb consum energetic
-readme explicar el TOY.CSV ede test
+gestio openmp amb arguments main

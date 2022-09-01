@@ -19,7 +19,7 @@ Allen::Allen(bool dummy_calc, bool trans, eps_type eps, string calc_sort) {
         this->rels_arr = aux_pair.first;
         this->gr_arr = aux_pair.second;
 
-        this->sorted_trans_table = map<string,Relation>();
+        this->sorted_trans_table = unordered_map<string,Relation>();
 
         if ( this->eps > 0 ){
             for ( const auto &it : AllenRelationsEPS::trans_table ){

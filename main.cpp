@@ -23,14 +23,12 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 */
 
 
-int timemode = 3;
-support_type ver_sup = 0.4;  // vertical support
+int timemode = 2;
+support_type ver_sup = 1;  // vertical support
 support_type hor_sup = 0;  // horizontal support
-eps_type eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids crisp borders in relations
-bool dummy = true;  // whether to execute relations without a pairing strategies
-bool trans = true;  // whether to use transitivity properties when assign a relation
-//string result_file_name = "my_result_file.csv";  // an output file
-//string filepath = "/mnt/d/COLE/TFG/toy.csv";  // a path to time interval data. Any valid string path is acceptable.
+eps_type eps = 0.0;  // epsilon value in seconds, that allows uncertainty and avoids crisp borders in relations
+bool dummy = false;  // whether to execute relations without a pairing strategies
+bool trans = false;  // whether to use transitivity properties when assign a relation
 char sep = ';';  // delimiter to use with the scv file
  /*//TOY.csv
 string result_file_name = "toy_result_file.csv";  // an output file

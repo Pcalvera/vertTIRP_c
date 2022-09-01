@@ -94,8 +94,6 @@ TIRP::extend_with(TI* s_ti, eps_type eps, time_type min_gap, time_type max_gap, 
     int new_rel_size = this->r_size+this->ti_size;
     char new_rel[new_rel_size];
     copy(r,r+this->r_size,new_rel);
-    //vector<char> new_rel = vector<char>(this->r);
-    //for ( const char &c : this->r ) new_rel.emplace_back(to_string(c));
     for ( int i = 0 ; i < this->ti_size ; i++ ) new_rel[this->r_size+i] = '\0';
 
     new_rel[new_rel_size-1] = rel[0];
@@ -104,7 +102,7 @@ TIRP::extend_with(TI* s_ti, eps_type eps, time_type min_gap, time_type max_gap, 
     int new_ti_size = ti_size+1;
     TI* new_ti[new_ti_size];
     copy(ti,ti+ti_size,new_ti);
-    //vector<TI*> new_ti = vector<TI*>(ti);
+
     // append s_ti
     new_ti[ti_size] = s_ti;
 

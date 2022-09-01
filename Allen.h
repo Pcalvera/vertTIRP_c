@@ -29,7 +29,7 @@ private:
     //For non dummy
     shared_ptr<PairingStrategy> rels_arr;
     shared_ptr<vector<string>> gr_arr;
-    map<string,Relation> sorted_trans_table;
+    unordered_map<string,Relation> sorted_trans_table;
 };
 
 

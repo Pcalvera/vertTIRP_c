@@ -50,10 +50,8 @@ public:
 
     static unordered_map<char,function<int*(const TI*, const TI*, eps_type, time_type, time_type)>> rel_func_dict;
 
+private:
 
-    private:
-
-    static void update_added(map<char,bool> &added,char c, bool b);
     //---------------------------------------------- AUX FUNC ----------------------------------------------------------
     static int* before_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap);
     static int* meets_ind(const TI* a, const TI* b, eps_type eps, time_type min_gap, time_type max_gap);

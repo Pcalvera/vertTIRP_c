@@ -36,7 +36,6 @@ public:
     static void print_tree_bfs(const shared_ptr<Node> &root, unsigned min_len, ostream &stream, const map<string,unsigned> &events_per_sequence);
 
 private:
-
     shared_ptr<Node> node;
 };
 

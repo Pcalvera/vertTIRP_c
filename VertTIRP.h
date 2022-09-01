@@ -24,10 +24,7 @@ Keywords: Time Interval Related Patterns; Temporal data mining; Sequential patte
 #include <algorithm>
 #include <vector>
 #include <map>
-#include "Global.h"
-#include "Allen.h"
 #include "TI.h"
-#include "VertTirpSidList.h"
 #include "VertTirpNode.h"
 
 using namespace std;
@@ -38,8 +35,13 @@ public:
     int mine_patterns(vector<LinkedList> &list_of_ti_seqs, vector<string> const &list_of_seqs, bool avoid_same_var_states = true);
     void print_patterns(bool dfs);
 private:
-    string out_file;  // output file
+    Allen allen;
     map<string,unsigned> events_per_sequence;   // necessary for relative horizontal support
+    map<string,VertTirpSidList> vertical_db;  // holds database represented vertically
+    vector<string> f1;  // holds frequent 1-size items
+    VertTirpNode tree;  // we will save the patterns in a tree structure
+
+    string out_file;  // output file
     support_type min_sup_rel;  // relative minimum vertical support
     float min_confidence;
     int min_gap;  // minimum gap in seconds that is the gap between before consecutive elements
@@ -51,12 +53,7 @@ private:
     eps_type eps;  // karma lego epsilon in nanoseconds
     int tirp_count;
     support_type min_sup;  // absolute support
-    vector<string> f1;  // holds frequent 1-size items
-    map<string,VertTirpSidList> vertical_db;  // holds database represented vertically
-    VertTirpNode tree;  // we will save the patterns in a tree structure
     int time_mode;  //  1- timestamp mode, 2- datetime mode 3- number mode(e.g. number of frame)
-
-    Allen allen;
 
     bool same_variable(string s1,string s2, bool avoid_same_var_states = true);
     void dfs_pruning(VertTirpSidList &pat_sidlist, vector<string> &f_l, VertTirpNode &node,VertTirpNode &father,int level, bool avoid_same_var_states = true );

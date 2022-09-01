@@ -99,10 +99,8 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type e
                     if ( min_gap > 0 )
                         me_first = first_one_me->get_first() + min_gap;
 
-
                     // if last element of f, sidlist matchs the min gap restriction
                     if ( last_f_first >= me_first ){
-                        //contador.push_back(seq_id+ " - " +to_string(self_first_eid));
 
                         time_type me_second;
                         bool me_second_init = false;
@@ -158,10 +156,10 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
     vector<pair<shared_ptr<TIRP>,unsigned>> extended_tirps = vector<pair<shared_ptr<TIRP>,unsigned>>(tirps_to_extend.size());
     int index;
     int tirps_to_extend_size = tirps_to_extend.size();
-    //pair<shared_ptr<TIRP>,unsigned> extended_tirps[tirps_to_extend_size];  //TODO fer funcionar vector
     TI *f_ti_0 = f_ti[0];
 
-    #pragma omp parallel for default(none) private(index) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size,f_ti_0,eps,min_gap,max_gap,max_duration,mine_last_equal,ps) num_threads(1) schedule(dynamic)
+    //#pragma omp parallel for default(none) private(index) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size,f_ti_0,eps,min_gap,max_gap,max_duration,mine_last_equal,ps) num_threads(omp_get_num_threads()) schedule(dynamic)
+    #pragma omp parallel for default(none) private(index) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size,f_ti_0,eps,min_gap,max_gap,max_duration,mine_last_equal,ps) num_threads(6) schedule(dynamic)
     for ( index = 0 ; index < tirps_to_extend_size ; index++)
         extended_tirps[index] = tirps_to_extend[index]->extend_with(f_ti_0,eps,min_gap,max_gap,max_duration,mine_last_equal,ps);
 
@@ -244,6 +242,7 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
         else if ( extended_tirp.second != 2 )
             all_max_gap_exceeded = false;
     }
+    //delete []extended_tirps;
     if ( at_least_one_tirp )
         return 3;
     else if ( all_max_gap_exceeded )

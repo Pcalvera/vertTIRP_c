@@ -1,10 +1,6 @@
 #include "TI.h"
 
-TI::TI() {
-    this->sym = "null";
-    this->start = 0;
-    this->end = 0;
-}
+
 
 TI::TI(string sym, time_type start, time_type end) {
     this->sym = sym;
@@ -53,7 +49,7 @@ time_type TI::get_end()const {
     return this->end;
 }
 
-string TI::get_sym()const {
+string& TI::get_sym() {
     return this->sym;
 }
 
