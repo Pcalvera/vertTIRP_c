@@ -2,7 +2,7 @@
 /.idea/
 /executable
 /*.o
-/.run
+/.run/
 /vertTIRP_c
 /vert_tirp_c
 /massif.out.4088

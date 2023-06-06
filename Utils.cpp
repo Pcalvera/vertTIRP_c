@@ -165,7 +165,7 @@ string utils_unifyChars (string &seq_chars ){
 }
 
 dif_time_type truncate(dif_time_type t) {
-    if ( t < 1e-6) return 0;
+    //if ( t < 1e-6) return 0;
     return t;
 }
 

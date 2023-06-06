@@ -158,8 +158,7 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
     int tirps_to_extend_size = tirps_to_extend.size();
     TI *f_ti_0 = f_ti[0];
 
-    //#pragma omp parallel for default(none) private(index) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size,f_ti_0,eps,min_gap,max_gap,max_duration,mine_last_equal,ps) num_threads(omp_get_num_threads()) schedule(dynamic)
-    //#pragma omp parallel for default(none) private(index) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size,f_ti_0,eps,min_gap,max_gap,max_duration,mine_last_equal,ps) num_threads(6) schedule(dynamic)
+    #pragma omp parallel for default(none) private(index) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size,f_ti_0,eps,min_gap,max_gap,max_duration,mine_last_equal,ps) num_threads(n_threads) schedule(dynamic)
     for ( index = 0 ; index < tirps_to_extend_size ; index++)
         extended_tirps[index] = tirps_to_extend[index]->extend_with(f_ti_0,eps,min_gap,max_gap,max_duration,mine_last_equal,ps);
 
