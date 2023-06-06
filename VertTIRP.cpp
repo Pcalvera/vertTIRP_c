@@ -109,7 +109,7 @@ void VertTIRP::to_vertical(vector<LinkedList> &list_of_ti_seqs, vector<string> c
         list_of_ti_seqs[i].setFirst();
         while ( !list_of_ti_seqs[i].isLast() ){
             // duration constraints
-            duration = list_of_ti_seqs[i].getActual()->get_end() - list_of_ti_seqs[i].getActual()->get_start();
+            duration =  truncate(list_of_ti_seqs[i].getActual()->get_end() - list_of_ti_seqs[i].getActual()->get_start());
             if (duration >= this->min_duration && duration <= this->max_duration) {
                 this->vertical_db[list_of_ti_seqs[i].getActual()->get_sym()].append_item(list_of_ti_seqs[i].getActual(),name,eid);
                 eid++;

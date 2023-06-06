@@ -2,3 +2,9 @@
 /.idea/
 /executable
 /*.o
+/.run/
+/vertTIRP_c
+/vert_tirp_c
+/massif.out.4088
+/massif.out.4169
+/Global.h.gch

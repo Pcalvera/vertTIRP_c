@@ -9,6 +9,7 @@ typedef double time_type;
 typedef double dif_time_type;
 typedef float support_type;
 typedef float eps_type;
+static int n_threads = 1;
 
 using namespace std;
 

@@ -11,9 +11,6 @@ VertTirpSidList::VertTirpSidList() {
 
 void VertTirpSidList::append_item(TI *ti, string sid, unsigned eid) {
     shared_ptr<TIRP> new_tirp =  make_shared<TIRP>(vector<TI*>(1,ti), ti->get_start(), ti->get_end() );
-    if ( ti->get_sym()=="Passive_Arm_N" && sid == "ASL_2008_05_29b6"){
-        int dffs = 3;
-    }
 
     if ( this->definitive_discovered_tirp_dict.empty() ){
         this->definitive_discovered_tirp_dict[EMPTY] = std::make_shared<TIRPstatistics>( );
@@ -73,7 +70,7 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type e
 
     new_sidlist.n_sequences = this->n_sequences;
     bool mine_last_equal = this->seq_str.back() < f.seq_str[0];
-    for ( const auto& item : this->definitive_ones_indices_dict ){
+    for ( auto& item : this->definitive_ones_indices_dict ){
 
         string seq_id = item.first;
         map<unsigned,vector<shared_ptr<TIRP>>> dict_pos_tirps = item.second;
@@ -86,26 +83,24 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type e
 
             time_type last_f_first = f_at_seq_id->second.at(f_eids.back())[0]->get_first();
             time_type first_f_first = f_at_seq_id->second.at(f_eids.front())[0]->get_first();
-            for (const auto &item2: dict_pos_tirps) {
+            for (auto &item2: dict_pos_tirps) {
 
                 unsigned self_first_eid = item2.first;
-                vector<shared_ptr<TIRP>> self_tirps = item2.second;
+                vector<shared_ptr<TIRP>> &self_tirps = item2.second;
                 // if there exists eids in f greater than my first eid
                 if (self_first_eid < f_eids.back()) {
 
                     // first tirp
-                    TIRP first_one_me = self_tirps.front();
+                    shared_ptr<TIRP> &first_one_me = self_tirps.front();
                     // first tirp's start time
-                    time_type me_first = first_one_me.get_first();
+                    time_type me_first = first_one_me->get_first();
 
                     // determine from which point in time start to search
                     if ( min_gap > 0 )
-                        me_first = first_one_me.get_first() + min_gap;
-
+                        me_first = first_one_me->get_first() + min_gap;
 
                     // if last element of f, sidlist matchs the min gap restriction
                     if ( last_f_first >= me_first ){
-                        //contador.push_back(seq_id+ " - " +to_string(self_first_eid));
 
                         time_type me_second;
                         bool me_second_init = false;
@@ -114,22 +109,22 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type e
                             me_second_init = true;
                         }
                         if ( max_gap == MAXGAP || ( me_second_init && first_f_first <= me_second ) ){
-                            for ( const auto &item3 : f.definitive_ones_indices_dict.at(seq_id) ){
+                            for ( auto &item3 : f.definitive_ones_indices_dict.at(seq_id) ){
                                 unsigned f_pos = item3.first;
-                                vector<shared_ptr<TIRP>> f_tirps = item3.second;
+                                vector<shared_ptr<TIRP>> &f_tirps = item3.second;
 
                                 if ( me_second_init && f_tirps[0]->get_first() > me_second )
-                                     break;
+                                    break;
                                 else{
                                     if ( f_pos > self_first_eid ) {
                                         unsigned exit_status = new_sidlist.update_tirp_attrs(seq_id, f_pos, f,
-                                                                                                 mine_last_equal, ps,
-                                                                                                 self_tirps, eps,
-                                                                                                 min_gap, max_gap,
-                                                                                                 max_duration,
-                                                                                                 min_ver_sup,
-                                                                                                 this->definitive_discovered_tirp_dict,
-                                                                                                 min_confidence);
+                                                                                             mine_last_equal, ps,
+                                                                                             self_tirps, eps,
+                                                                                             min_gap, max_gap,
+                                                                                             max_duration,
+                                                                                             min_ver_sup,
+                                                                                             this->definitive_discovered_tirp_dict,
+                                                                                             min_confidence);
                                         if (exit_status == 2)
                                             // max_gap exceeded for all the tirps, break and continue with another 1 of the self sequence
                                             // no sense prove out the next s event id, as max gap exceeded
@@ -153,19 +148,26 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
                                             time_type max_duration, support_type min_ver_sup,
                                             const map<string,shared_ptr<TIRPstatistics>> &father_discovered_tirp_dict,
                                             float min_confidence) {
-    vector<TI*> f_ti = f_sidlist.definitive_ones_indices_dict.at(seq_id).at(f_eid)[0]->get_ti();
+    TI** f_ti = f_sidlist.definitive_ones_indices_dict.at(seq_id).at(f_eid)[0]->get_ti();
 
     bool all_max_gap_exceeded = true;
     bool at_least_one_tirp = false;
 
-    int count = 0;
-    for ( const shared_ptr<TIRP> &tirp_to_extend : tirps_to_extend ){
+    vector<pair<shared_ptr<TIRP>,unsigned>> extended_tirps = vector<pair<shared_ptr<TIRP>,unsigned>>(tirps_to_extend.size());
+    int index;
+    int tirps_to_extend_size = tirps_to_extend.size();
+    TI *f_ti_0 = f_ti[0];
+
+    #pragma omp parallel for default(none) private(index) shared(extended_tirps,tirps_to_extend,tirps_to_extend_size,f_ti_0,eps,min_gap,max_gap,max_duration,mine_last_equal,ps) num_threads(n_threads) schedule(dynamic)
+    for ( index = 0 ; index < tirps_to_extend_size ; index++)
+        extended_tirps[index] = tirps_to_extend[index]->extend_with(f_ti_0,eps,min_gap,max_gap,max_duration,mine_last_equal,ps);
+
+    for ( index = 0; index<tirps_to_extend_size ; index++ ){
         // the extension will return a new tirp and a status
         // status is: if ok:3, fi max_gap:2, otherwise:1
-        pair<shared_ptr<TIRP>,unsigned> extended_tirp = tirp_to_extend->extend_with(f_ti[0],eps,min_gap,max_gap,max_duration,mine_last_equal,ps);
+        pair<shared_ptr<TIRP>,unsigned> &extended_tirp = extended_tirps[index];
 
         if ( extended_tirp.first != nullptr ){
-            count++;
             at_least_one_tirp = true;
 
             string new_rel = extended_tirp.first->get_rel_as_str();
@@ -179,10 +181,10 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
             bool conf_constraint = true;
             if ( min_confidence != -1 ){
                 support_type father_supp;
-                if ( tirp_to_extend->get_rel_as_str() == EMPTY )
+                if ( tirps_to_extend[index]->get_rel_as_str() == EMPTY )
                     father_supp = father_discovered_tirp_dict.at(EMPTY)->get_sum_ver_supp();
                 else
-                    father_supp = father_discovered_tirp_dict.at(tirp_to_extend->get_rel_as_str())->get_sum_ver_supp();
+                    father_supp = father_discovered_tirp_dict.at(tirps_to_extend[index]->get_rel_as_str())->get_sum_ver_supp();
                 conf_constraint = ((float)vert_supp / father_supp) >= (float)min_confidence;
             }
 
@@ -218,7 +220,7 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
                                 it2 = this->definitive_ones_indices_dict.insert(pair<string,map<unsigned,vector<shared_ptr<TIRP>>>>(
                                         sid,
                                         map<unsigned,vector<shared_ptr<TIRP>>>()
-                                        )).first;
+                                )).first;
                             }
 
                             auto it3 = it2->second.find(eid);
@@ -239,6 +241,7 @@ unsigned VertTirpSidList::update_tirp_attrs(const string &seq_id, unsigned int f
         else if ( extended_tirp.second != 2 )
             all_max_gap_exceeded = false;
     }
+    //delete []extended_tirps;
     if ( at_least_one_tirp )
         return 3;
     else if ( all_max_gap_exceeded )

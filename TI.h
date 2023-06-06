@@ -11,23 +11,17 @@ using namespace std;
 
 class TI {
 public:
-    TI();
+
     TI(string sym, time_type start, time_type end);
     time_type get_start()const;
     time_type get_end()const;
-    string get_sym()const;
+    string& get_sym();
 
     friend ostream &operator<<(ostream &os, const TI &ti);
     bool operator==(const TI &rhs) const;
     bool operator!=(const TI &rhs) const;
 
     bool operator<(const TI &rhs) const;
-
-    bool operator>(const TI &rhs) const;
-
-    bool operator<=(const TI &rhs) const;
-
-    bool operator>=(const TI &rhs) const;
 
 private:
     string sym;
