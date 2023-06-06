@@ -73,7 +73,7 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type e
 
     new_sidlist.n_sequences = this->n_sequences;
     bool mine_last_equal = this->seq_str.back() < f.seq_str[0];
-    for ( auto& item : this->definitive_ones_indices_dict ){
+    for ( const auto& item : this->definitive_ones_indices_dict ){
 
         string seq_id = item.first;
         map<unsigned,vector<shared_ptr<TIRP>>> dict_pos_tirps = item.second;
@@ -86,21 +86,21 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type e
 
             time_type last_f_first = f_at_seq_id->second.at(f_eids.back())[0]->get_first();
             time_type first_f_first = f_at_seq_id->second.at(f_eids.front())[0]->get_first();
-            for (auto &item2: dict_pos_tirps) {
+            for (const auto &item2: dict_pos_tirps) {
 
                 unsigned self_first_eid = item2.first;
-                vector<shared_ptr<TIRP>> &self_tirps = item2.second;
+                vector<shared_ptr<TIRP>> self_tirps = item2.second;
                 // if there exists eids in f greater than my first eid
                 if (self_first_eid < f_eids.back()) {
 
                     // first tirp
-                    shared_ptr<TIRP> &first_one_me = self_tirps.front();
+                    TIRP first_one_me = self_tirps.front();
                     // first tirp's start time
-                    time_type me_first = first_one_me->get_first();
+                    time_type me_first = first_one_me.get_first();
 
                     // determine from which point in time start to search
                     if ( min_gap > 0 )
-                        me_first = first_one_me->get_first() + min_gap;
+                        me_first = first_one_me.get_first() + min_gap;
 
 
                     // if last element of f, sidlist matchs the min gap restriction
@@ -114,9 +114,9 @@ VertTirpSidList VertTirpSidList::join(VertTirpSidList &f,  Allen &ps, eps_type e
                             me_second_init = true;
                         }
                         if ( max_gap == MAXGAP || ( me_second_init && first_f_first <= me_second ) ){
-                            for ( auto &item3 : f.definitive_ones_indices_dict.at(seq_id) ){
+                            for ( const auto &item3 : f.definitive_ones_indices_dict.at(seq_id) ){
                                 unsigned f_pos = item3.first;
-                                vector<shared_ptr<TIRP>> &f_tirps = item3.second;
+                                vector<shared_ptr<TIRP>> f_tirps = item3.second;
 
                                 if ( me_second_init && f_tirps[0]->get_first() > me_second )
                                      break;
