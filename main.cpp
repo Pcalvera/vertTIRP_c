@@ -22,8 +22,8 @@ Abstract: Time-interval-related pattern (TIRP) mining algorithms find patterns s
 Keywords: Time Interval Related Patterns; Temporal data mining; Sequential pattern mining; Temporal relations
 */
 
-int timemode = 1;
-support_type ver_sup = 0.2;  // vertical support
+int timemode = 3;
+support_type ver_sup = 0.1;  // vertical support
 eps_type eps = 0;  // epsilon value in seconds, that allows uncertainty and avoids crisp borders in relations
 bool dummy = false;  // whether to execute relations without a pairing strategies
 bool trans = true;  // whether to use transitivity properties when assign a relation
@@ -35,13 +35,12 @@ time_type mind = 0;  // each event interval should have a duration of at least m
 time_type maxd = 3155695200;   // each tirp should have a duration of at most min_duration seconds
 string ps = "mocfbes";
 
-string result_file_name = "toy_result_file.csv";  // an output file
-string filepath = R"(../toy.csv)";  // a path to time interval data. Any valid string path is acceptable.
-string sid_column = "sid";   // sequence column name
-string date_column_name_start = "start_time";  // start time column name
-string date_column_name_end = "end_time";  // end time column name
-string date_format = "%m/%d/%Y %H:%M";  // the format of the date, e.g. "3/1/2003 10:10" will be "%m/%d/%Y %H:%M"
-vector<string> value_column_name = vector<string>({"value"});  // the interesting attributes to be used in TIRPs discovering
+string result_file_name = "har_result_file.csv";
+string filepath = R"(../datasets/har.csv)";
+string sid_column = "sid";
+string date_column_name_start = "start_time";
+string date_column_name_end = "end_time";
+vector<string> value_column_name = vector<string>({"value"});
 
 Chrono timeChrono;
 int main (int argc, char* argv[]) {
