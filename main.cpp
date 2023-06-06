@@ -35,8 +35,8 @@ time_type mind = 0;  // each event interval should have a duration of at least m
 time_type maxd = 3155695200;   // each tirp should have a duration of at most min_duration seconds
 string ps = "mocfbes";
 
-string result_file_name = "toy_result_file.csv";  // an output file
-string filepath = R"(../toy.csv)";  // a path to time interval data. Any valid string path is acceptable.
+string result_file_name = "mav_result_file.csv";  // an output file
+string filepath = R"(../datasets/mav.csv)";  // a path to time interval data. Any valid string path is acceptable.
 string sid_column = "sid";   // sequence column name
 string date_column_name_start = "start_time";  // start time column name
 string date_column_name_end = "end_time";  // end time column name
